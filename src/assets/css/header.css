@@ -1,0 +1,31 @@
+header {
+    padding: 50px 100px;
+    background-color: #b8ac0b;
+}
+
+.nav-link {
+    color: black;
+    padding: 5px 10px;
+    font-size: 25px;
+}
+
+.nav-link:hover {
+    color: red;
+}
+
+.nav-link.active {
+    font-weight: bold;
+    color: blue;
+}
+
+nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+ul {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
