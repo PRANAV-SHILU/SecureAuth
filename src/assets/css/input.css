@@ -1,0 +1,17 @@
+.form{
+    display: grid;
+    justify-content: center;
+    gap: 20px;
+}
+.input-container{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.errorMSG{
+    color: red;
+}
+.input-container button{
+    padding: 10 20px;
+    background-color: lightblue;
+}

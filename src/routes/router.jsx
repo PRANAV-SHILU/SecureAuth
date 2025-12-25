@@ -24,12 +24,7 @@ const router = createBrowserRouter([
       { index: true, Component: Home },
       { path: "login", Component: Login, action: loginAction },
       { path: "register", Component: Register, action: registerAction },
-      {
-        path: "dashboard",
-        Component: Dashboard,
-        loader: requireAuth,
-        action: logoutAction,
-      },
+      {path: "dashboard",Component: Dashboard,loader: requireAuth,action: logoutAction, },
       { path: "edit/:userID", Component: Edit, loader: requireAuth },
     ],
   },
