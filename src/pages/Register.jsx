@@ -4,8 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Form } from "react-router-dom";
 import "../assets/css/input.css";
 import { useActionData } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import { useEffect } from "react";
 
 export default function Register() {
@@ -19,7 +18,6 @@ export default function Register() {
 
   const {
     register,
-    handleSubmit,
     formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(registerSchema),
@@ -30,7 +28,7 @@ export default function Register() {
     <section>
       <h1 style={{ textAlign: "center" }}>Register</h1>
 
-      <Form method="post" className="form" onSubmit={handleSubmit(() => {})}>
+      <Form method="post" className="form">
         <div className="input-container">
           <label htmlFor="name">Name : </label>
           <input
@@ -77,12 +75,6 @@ export default function Register() {
           </button>
         </div>
       </Form>
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        closeOnClick
-      />
     </section>
   );
 }
