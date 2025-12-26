@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom"
 import "../assets/css/pagenotfound.css"
 export default function PageNotFound(){
     return(

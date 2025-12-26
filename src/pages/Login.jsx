@@ -3,6 +3,7 @@ import { Form, useActionData, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
+import { NavLink } from "react-router-dom";
 
 import "../assets/css/input.css";
 import { loginSchema } from "../utils/loginSchema";
@@ -71,6 +72,10 @@ export default function Login() {
           </button>
         </div>
       </Form>
+
+      <h3>
+        Haven't registered : <NavLink to="/register">Register</NavLink>
+      </h3>
     </section>
   );
 }

@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import AppLayout from "../Layout/AppLayout.jsx";
-import NotFoundPage from "../pages/PageNotFound.jsx";
+import PageNotFound from "../pages/PageNotFound.jsx";
 
 import Home from "../pages/Home.jsx";
 import Login from "../pages/Login.jsx";
@@ -10,10 +10,11 @@ import Edit from "../pages/Edit.jsx";
 
 import { registerAction } from "../actions/registerAction";
 import { loginAction } from "../actions/loginAction";
-import { logoutAction } from "../actions/logoutAction";
+import { logoutAction } from "../actions/logoutAction.jsx";
+import { editAction } from "../actions/editAction.jsx";
 
-import { requireAuth } from "../loaders/requireAuth";
-import { checkCurrentUser } from "../loaders/checkCurrentUser";
+import { userLoader } from "../loaders/userLoader.jsx";
+import { checkCurrentUser } from "../actions/checkCurrentUser.jsx";
 
 const router = createBrowserRouter([
   {
@@ -28,13 +29,13 @@ const router = createBrowserRouter([
       {
         path: "dashboard",
         Component: Dashboard,
-        loader: requireAuth,
+        loader: userLoader,
         action: logoutAction,
       },
-      { path: "edit/:userID", Component: Edit, loader: requireAuth },
+      { path: "edit", Component: Edit, loader: userLoader, action: editAction },
     ],
   },
-  { path: "*", Component: NotFoundPage },
+  { path: "*", Component: PageNotFound },
 ]);
 
 export default router;

@@ -9,12 +9,9 @@ export const registerSchema = yup.object({
     .transform((value) =>
       value
         ? value
-            .split(" ")
-            .map(
-              (word) =>
-                word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-            )
-            .join(" ")
+            .trim()
+            .toLowerCase()
+            .replace(/\b\w/g, (char) => char.toUpperCase())
         : value
     ),
   mobile: commonSchema

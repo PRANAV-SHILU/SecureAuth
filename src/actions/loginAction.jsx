@@ -22,9 +22,12 @@ export async function loginAction({ request }) {
 
   // change loggedin status to user
   await fetch(`${url}/${user.id}`, {
-    method: "patch",
-    body: JSON.stringify({ isLoggedIn: true }),
-  });
+  method: "PATCH",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({ isLoggedIn: true }),
+});
 
   localStorage.setItem("currentUserID", user.id);
 

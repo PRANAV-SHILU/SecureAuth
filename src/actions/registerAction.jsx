@@ -28,6 +28,9 @@ export async function registerAction({ request }) {
 
   await fetch(url, {
     method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(newUser),
   });
 
