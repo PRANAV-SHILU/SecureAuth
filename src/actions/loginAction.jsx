@@ -8,6 +8,11 @@ export async function loginAction({ request }) {
   const password = formData.get("password");
 
   const res = await fetch(url);
+
+  if (!res.ok) {
+    throw res;
+  }
+
   const users = await res.json();
 
   //checking whether user exists or not
@@ -21,13 +26,17 @@ export async function loginAction({ request }) {
   }
 
   // change loggedin status to user
-  await fetch(`${url}/${user.id}`, {
-  method: "PATCH",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({ isLoggedIn: true }),
-});
+  const patchResponse = await fetch(`${url}/${user.id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ isLoggedIn: true }),
+  });
+
+  if (!patchResponse.ok) {
+    throw patchResponse;
+  }
 
   localStorage.setItem("currentUserID", user.id);
 

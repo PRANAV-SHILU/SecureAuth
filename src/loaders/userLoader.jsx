@@ -10,8 +10,12 @@ export async function userLoader() {
   }
 
   const res = await fetch(url);
-  const users = await res.json();
 
+  if (!res.ok) {
+    throw res;
+  }
+
+  const users = await res.json();
   const user = users.find((u) => u.id === currentUserID);
 
   if (!user || !user.isLoggedIn) {

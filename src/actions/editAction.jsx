@@ -13,6 +13,9 @@ export async function editAction({ request }) {
   const mobile = formData.get("mobile");
 
   const res = await fetch(url);
+  if (!res.ok) {
+    throw res;
+  }
   const users = await res.json();
 
   const mobileExists = users.some(
@@ -23,13 +26,17 @@ export async function editAction({ request }) {
     return { error: "Mobile number already exists" };
   }
 
-  await fetch(`${url}/${currentUserID}`, {
+  const patchResponse = await fetch(`${url}/${currentUserID}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ name, mobile, password }),
   });
+
+  if (!patchResponse.ok) {
+    throw patchResponse;
+  }
 
   return redirect("/dashboard?edited=success");
 }

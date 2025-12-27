@@ -3,17 +3,8 @@ import * as yup from "yup";
 const commonSchema = yup.string().required("This field is required");
 
 export const registerSchema = yup.object({
-  name: commonSchema
-    .min(3, "Minimum 3 character long name required")
-    .trim()
-    .transform((value) =>
-      value
-        ? value
-            .trim()
-            .toLowerCase()
-            .replace(/\b\w/g, (char) => char.toUpperCase())
-        : value
-    ),
+  name: commonSchema.min(3, "Minimum 3 character long name required").trim(),
+
   mobile: commonSchema
     .transform((v) => (v ? v.replace(/\s+/g, "") : v))
     .matches(/^[0-9]{10}$/, "Mobile must be 10 digits"),

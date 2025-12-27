@@ -3,7 +3,7 @@ import "../assets/css/header.css";
 
 export default function Header() {
     const authData = useRouteLoaderData("root");
-    const isLoggedIn = authData?.isLoggedIn;
+    const isLoggedIn = authData.isLoggedIn;
 
   return (
     <header>

@@ -7,6 +7,7 @@ react-hook-form
 yup
 @hookform/resolvers
 react-toastify
+react-spinners
 ```
 
 `useSearchParams();` is used from `react-router-dom` to read and modify the query string in the URL.
