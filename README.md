@@ -1,6 +1,6 @@
 # React Authentication System
 
-A lightweight authentication system built with React and React Router DOM, using a JSON Server–based self-made API. The project demonstrates a complete client-side authentication flow without any backend or database, focusing on routing, form handling, and controlled state management.
+A lightweight authentication system built with React and React Router DOM, using a JSON Server–based self-made API. The project demonstrates a complete client-side authentication flow without any backend or database, focusing on routing, form handling, and controlled state management with a mini color mixer project.
 
 ---
 
