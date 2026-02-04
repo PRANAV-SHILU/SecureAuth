@@ -10,7 +10,7 @@ export default function Header() {
       <nav>
         <div>
           <NavLink to="/" className="nav-link">
-            Logo
+            SecureAuth
           </NavLink>
         </div>
         <div>

@@ -7,9 +7,9 @@ export default function AppLayout() {
   return (
     <>
       <Header />
-      <div>
-        <Outlet />
-      </div>
+
+      <Outlet />
+
       <ToastContainer position="top-right" autoClose={3000} />
     </>
   );
