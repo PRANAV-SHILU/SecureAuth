@@ -4,8 +4,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
 import { NavLink } from "react-router-dom";
-
-import "../assets/css/input.css";
+import "../assets/css/login.css";
 import { loginSchema } from "../utils/loginSchema";
 
 export default function Login() {
@@ -42,10 +41,9 @@ export default function Login() {
   });
 
   return (
-    <section>
-      <h1 style={{ textAlign: "center" }}>Login</h1>
-
+    <section className="login-section">
       <Form method="post" className="form">
+        <h1>Login</h1>
         <div className="input-container">
           <label>Mobile</label>
           <input
@@ -71,11 +69,10 @@ export default function Login() {
             Login
           </button>
         </div>
+        <h3>
+          Haven't registered : <NavLink to="/register">Register</NavLink>
+        </h3>
       </Form>
-
-      <h3>
-        Haven't registered : <NavLink to="/register">Register</NavLink>
-      </h3>
     </section>
   );
 }

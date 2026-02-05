@@ -1,8 +1,8 @@
 import { registerSchema } from "../utils/RegisterSchema";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Form } from "react-router-dom";
-import "../assets/css/input.css";
+import { Form, NavLink } from "react-router-dom";
+import "../assets/css/login.css";
 import { useActionData } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
@@ -25,10 +25,9 @@ export default function Register() {
   });
 
   return (
-    <section>
-      <h1 style={{ textAlign: "center" }}>Register</h1>
-
+    <section className="login-section">
       <Form method="post" className="form">
+        <h1>Register</h1>
         <div className="input-container">
           <label htmlFor="name">Name : </label>
           <input
@@ -74,6 +73,9 @@ export default function Register() {
             Register
           </button>
         </div>
+        <h3>
+          Already registered : <NavLink to="/login">Login</NavLink>
+        </h3>
       </Form>
     </section>
   );

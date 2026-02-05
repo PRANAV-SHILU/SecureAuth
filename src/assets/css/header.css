@@ -66,11 +66,6 @@ ul {
     padding: 16px 24px;
   }
 
-  nav {
-    flex-direction: column;
-    gap: 14px;
-  }
-
   ul {
     gap: 16px;
     flex-wrap: wrap;
