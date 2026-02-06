@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+// style on index.css
 export default function ColorMixer() {
   const color = JSON.parse(localStorage.getItem("color"));
 
@@ -12,13 +13,12 @@ export default function ColorMixer() {
   }
 
   return (
-    <section>
+    <section className="color-mixer-section">
       <h1>color mixer</h1>
 
       <div
+        className="box"
         style={{
-          height: "200px",
-          width: "200px",
           backgroundColor: "rgb(" + r + "," + g + "," + b + ")",
         }}
       ></div>
