@@ -1,4 +1,5 @@
-const url = "http://localhost:3000/users";
+const url = "https://secureauth-api.onrender.com/users";
+// const url = "http://localhost:3000/users";
 
 export async function checkCurrentUser() {
   const currentUserID = localStorage.getItem("currentUserID");

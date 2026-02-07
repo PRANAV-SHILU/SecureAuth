@@ -1,6 +1,6 @@
 import { redirect } from "react-router-dom";
 
-const url = "http://localhost:3000/users";
+const url = "https://secureauth-api.onrender.com/users";
 
 export async function userLoader() {
   const currentUserID = localStorage.getItem("currentUserID");
