@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Redirecting…</title>
+
+    <script>
+        /*
+          GitHub Pages SPA redirect
+          Repo name: SecureAuth
+        */
+
+        const repoName = "SecureAuth";
+        const basePath = "/" + repoName;
+
+        const fullPath =
+            location.pathname.replace(basePath, "") +
+            location.search +
+            location.hash;
+
+        location.replace(
+            basePath + "/?/" + fullPath.replace(/^\/+/, "")
+        );
+    </script>
+</head>
+
+<body></body>
+
+</html>

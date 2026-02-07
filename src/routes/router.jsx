@@ -18,28 +18,38 @@ import { userLoader } from "../loaders/userLoader.jsx";
 import { checkCurrentUser } from "../loaders/checkCurrentUser.jsx";
 import ColorMixer from "../pages/ColorMixer.jsx";
 
-const router = createBrowserRouter([
+const router = createBrowserRouter(
+  [
+    {
+      id: "root",
+      path: "/",
+      Component: AppLayout,
+      loader: checkCurrentUser,
+      errorElement: <ErrorBoundary />,
+      children: [
+        { index: true, Component: Home },
+        { path: "login", Component: Login, action: loginAction },
+        { path: "register", Component: Register, action: registerAction },
+        {
+          path: "dashboard",
+          Component: Dashboard,
+          loader: userLoader,
+          action: logoutAction,
+        },
+        { path: "colormixer", Component: ColorMixer, loader: userLoader },
+        {
+          path: "edit",
+          Component: Edit,
+          loader: userLoader,
+          action: editAction,
+        },
+      ],
+    },
+    { path: "*", Component: PageNotFound },
+  ],
   {
-    id: "root",
-    path: "/",
-    Component: AppLayout,
-    loader: checkCurrentUser,
-    errorElement: <ErrorBoundary />,
-    children: [
-      { index: true, Component: Home },
-      { path: "login", Component: Login, action: loginAction },
-      { path: "register", Component: Register, action: registerAction },
-      {
-        path: "dashboard",
-        Component: Dashboard,
-        loader: userLoader,
-        action: logoutAction,
-      },
-      { path: "colormixer", Component: ColorMixer, loader: userLoader },
-      { path: "edit", Component: Edit, loader: userLoader, action: editAction },
-    ],
+    basename: "/SecureAuth",
   },
-  { path: "*", Component: PageNotFound },
-]);
+);
 
 export default router;

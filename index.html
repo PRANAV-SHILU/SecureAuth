@@ -7,6 +7,20 @@
   <link rel="stylesheet" href="index.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>authentication-project</title>
+  <script>
+    (function () {
+      const search = window.location.search;
+      if (search.startsWith("?/")) {
+        const route = search.slice(2);
+        window.history.replaceState(
+          null,
+          "",
+          "/" + route + window.location.hash
+        );
+      }
+    })();
+  </script>
+
 </head>
 
 <body>
