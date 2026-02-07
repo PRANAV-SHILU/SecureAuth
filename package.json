@@ -1,5 +1,6 @@
 {
-  "name": "secureauth",
+  "homepage": "https://PRANAV-SHILU.github.io/SecureAuth",
+  "name": "SecureAuth",
   "private": true,
   "version": "1.0.0",
   "type": "module",
