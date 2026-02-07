@@ -11,13 +11,14 @@ export async function checkCurrentUser() {
   const res = await fetch(`${url}/${currentUserID}`);
 
   if (!res.ok) {
+    localStorage.removeItem("currentUserID");
     throw res;
   }
 
   const user = await res.json();
 
   if (!user.isLoggedIn) {
-    localStorage.removeItem("currentUserId");
+    localStorage.removeItem("currentUserID");
     return { isLoggedIn: false, user: null };
   }
 
