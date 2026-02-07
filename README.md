@@ -1,5 +1,25 @@
 # 🔐 SecureAuth – React Authentication System
 
+> ⚠️ **Demo Notice (Important)**  
+> This project uses a JSON Server API hosted on a free-tier service.  
+> **User registrations, logins, and profile edits are not permanently stored.**  
+> Data may reset when the API restarts, sleeps due to inactivity, or is redeployed.
+>
+> You can freely register and test the application with your own data, but please note that **your data will not be stored permanently**.
+
+---
+
+## 🧪 Demo User (Always Available After Reset)
+
+You can use the following pre-seeded demo account to test login functionality at any time if you don't want to use your own data:
+
+```
+  "id": "0",
+  "name": "Demo User",
+  "mobile": "9999999999",
+  "password": "demo123",
+```
+
 SecureAuth is A lightweight authentication system built with React and React Router DOM, using a JSON Server–based self-made API. The project demonstrates a complete client-side authentication flow without any backend or database, focusing on routing, form handling, and controlled state management with a mini color mixer project.
 
 ---
@@ -40,7 +60,7 @@ yup
 @hookform/resolvers
 react-toastify
 react-spinners
-```
+````
 
 ---
 
@@ -69,16 +89,16 @@ Used to access data returned from route `action` functions after form submission
 
 ## ⚠️ Project Scope
 
-* No backend authentication
-* No database
-* No JWT, cookies, or sessions
-* Designed purely for frontend architecture and learning purposes
+- No backend authentication
+- No database
+- No JWT, cookies, or sessions
+- Designed purely for frontend architecture and learning purposes
 
 ---
 
 ## 🎯 Ideal For
 
-* Understanding React Router authentication patterns
-* Learning action-based form handling
-* Practicing frontend-only auth systems
-* Rapid prototyping without backend complexity
+- Understanding React Router authentication patterns
+- Learning action-based form handling
+- Practicing frontend-only auth systems
+- Rapid prototyping without backend complexity
