@@ -72,6 +72,41 @@ export default function Home() {
       </div>
 
       <div className="home-block">
+        <h3>Demo Notice ⚠️</h3>
+        <p>
+          This project uses a JSON Server API hosted on a free-tier service.{" "}
+          <strong>
+            User registrations, logins, and profile edits are not permanently
+            stored.
+          </strong>
+          Data may reset when the API restarts, sleeps due to inactivity, or is
+          redeployed.
+        </p>
+        <p>
+          You can freely register and test the application with your own data,
+          but please note that{" "}
+          <strong>your data will not be stored permanently</strong>.
+        </p>
+      </div>
+
+      <div className="home-block">
+        <h3>🧪 Demo User (Always Available After Reset)</h3>
+        <p>
+          You can use the following pre-seeded demo account to test login
+          functionality at any time:
+        </p>
+        <pre style={{ color: "white", marginTop: "10px" }}>
+          {"id: 0"}
+          <br />
+          {"name: Demo User"}
+          <br />
+          {"mobile: 9999999999"}
+          <br />
+          {"password: demo123"}
+        </pre>
+      </div>
+
+      <div className="home-block">
         <h3>Project Scope</h3>
         <p>
           This project is intentionally frontend-only. It does not use backend
