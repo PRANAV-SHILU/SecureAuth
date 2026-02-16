@@ -86,4 +86,8 @@ ul {
   .nav-link {
     font-size: 14px;
   }
+  .nav-col {
+    gap: 25px;
+    flex-direction: column;
+  }
 }

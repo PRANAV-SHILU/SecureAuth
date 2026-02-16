@@ -7,7 +7,7 @@ export default function Header() {
 
   return (
     <header>
-      <nav style={isLoggedIn ? { gap: "25px", flexDirection: "column" } : {}}>
+      <nav className={isLoggedIn ? "nav-col" : ""}>
         <div>
           <NavLink to="/" className="nav-link">
             SecureAuth
