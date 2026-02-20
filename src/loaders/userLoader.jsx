@@ -9,6 +9,8 @@ export async function userLoader() {
     return redirect("/login");
   }
 
+  // try  const res = await fetch(url/currentUserID);
+
   const res = await fetch(url);
 
   if (!res.ok) {
