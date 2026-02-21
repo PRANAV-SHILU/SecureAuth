@@ -35,9 +35,16 @@
   background: linear-gradient(180deg, #121821, #181f2b);
   padding: 28px 32px;
   border-radius: 14px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  border: 1px solid transparent;
+}
+
+.home-block:hover {
+  transform: translateY(-4px);
+  border-color: rgba(77, 163, 255, 0.18);
   box-shadow:
-    0 20px 40px rgba(0, 0, 0, 0.6),
-    0 0 30px rgba(77, 163, 255, 0.06);
+    0 28px 50px rgba(0, 0, 0, 0.7),
+    0 0 40px rgba(77, 163, 255, 0.1);
 }
 
 .home-block h3 {
@@ -70,6 +77,57 @@
   font-size: 15px;
 }
 
+/* ── Future Plans ── */
+
+.home-future {
+  border: 1px solid rgba(77, 163, 255, 0.12);
+}
+
+.future-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 4px;
+}
+
+.future-card {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  background: rgba(77, 163, 255, 0.04);
+  border: 1px solid rgba(77, 163, 255, 0.1);
+  border-radius: 10px;
+  padding: 16px 18px;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.future-card:hover {
+  border-color: rgba(77, 163, 255, 0.28);
+  background: rgba(77, 163, 255, 0.08);
+}
+
+.future-emoji {
+  font-size: 22px;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.future-title {
+  color: #c9d1d9;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 6px 0;
+  letter-spacing: 0.01em;
+}
+
+.future-desc {
+  color: #6b7280;
+  font-size: 13px;
+  line-height: 1.55;
+  margin: 0;
+}
+
 /* ---------- Responsive Home ---------- */
 
 @media (max-width: 1024px) {
@@ -99,6 +157,10 @@
   .home-block {
     padding: 22px 24px;
   }
+
+  .future-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 480px) {
@@ -122,5 +184,17 @@
   .home-block p,
   .home-block li {
     font-size: 14px;
+  }
+
+  .future-card {
+    padding: 14px 16px;
+  }
+
+  .future-title {
+    font-size: 13px;
+  }
+
+  .future-desc {
+    font-size: 12px;
   }
 }
