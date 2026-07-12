@@ -139,6 +139,7 @@ export default function Footer() {
               >
                 FAQ
               </NavLink>
+
               <NavLink
                 to="/about-us"
                 className="text-(--text-secondary) hover:text-(--primary-500) transition-colors text-sm"
@@ -176,6 +177,12 @@ export default function Footer() {
                 className="text-(--text-secondary) hover:text-(--primary-500) transition-colors text-sm"
               >
                 Roadmap
+              </NavLink>
+              <NavLink
+                to="/contact-us"
+                className="text-(--text-secondary) hover:text-(--primary-500) transition-colors text-sm"
+              >
+                Contact Us
               </NavLink>
             </div>
           </div>
