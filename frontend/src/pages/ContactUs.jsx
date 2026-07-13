@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useRef, useContext } from "react";
 import { Form, useNavigation } from "react-router-dom";
 import {
   MessageSquare,
@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import useDocumentMetadata from "../hooks/useDocumentMetadata";
 import BackButton from "../shared-components/BackButton";
+import { ContactFormContext } from "../context/ContactFormContext";
 
 const CATEGORY_OPTIONS = [
   { value: "", label: "Select a category *" },
@@ -28,32 +29,26 @@ export default function ContactUs() {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
-  // Pre-fill from localStorage
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [category, setCategory] = useState("");
-  const [message, setMessage] = useState("");
-  const [imageFile, setImageFile] = useState(null);
-  const [videoFile, setVideoFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
-  const [videoPreview, setVideoPreview] = useState(null);
+  const {
+    formData,
+    setFormData,
+    imageFile,
+    setImageFile,
+    videoFile,
+    setVideoFile,
+    imagePreview,
+    setImagePreview,
+    videoPreview,
+    setVideoPreview,
+  } = useContext(ContactFormContext);
+
+  // Helper to update text fields easily
+  const updateField = (field, value) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
   const imageInputRef = useRef(null);
   const videoInputRef = useRef(null);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    try {
-      const stored = localStorage.getItem("user");
-      if (stored) {
-        const user = JSON.parse(stored);
-        if (user.username) setUsername(user.username);
-        if (user.email) setEmail(user.email);
-      }
-    } catch {
-      // Ignore parse errors
-    }
-  }, []);
 
   // Handle image selection
   const handleImageChange = (e) => {
@@ -166,8 +161,8 @@ export default function ContactUs() {
               type="text"
               required
               placeholder="Your username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={formData.username}
+              onChange={(e) => updateField("username", e.target.value)}
               className="w-full px-4 py-3 rounded-xl border text-sm font-medium transition-all focus:outline-none focus:ring-2"
               style={inputStyle}
               {...focusHandlers}
@@ -190,8 +185,8 @@ export default function ContactUs() {
               type="email"
               required
               placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formData.email}
+              onChange={(e) => updateField("email", e.target.value)}
               className="w-full px-4 py-3 rounded-xl border text-sm font-medium transition-all focus:outline-none focus:ring-2"
               style={inputStyle}
               {...focusHandlers}
@@ -213,14 +208,18 @@ export default function ContactUs() {
                 id="contact-category"
                 name="category"
                 required
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
+                value={formData.category}
+                onChange={(e) => updateField("category", e.target.value)}
                 className="w-full px-4 py-3 rounded-xl border text-sm font-medium transition-all focus:outline-none focus:ring-2 appearance-none cursor-pointer"
                 style={inputStyle}
                 {...focusHandlers}
               >
                 {CATEGORY_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value} disabled={opt.value === ""}>
+                  <option
+                    key={opt.value}
+                    value={opt.value}
+                    disabled={opt.value === ""}
+                  >
                     {opt.label}
                   </option>
                 ))}
@@ -249,8 +248,8 @@ export default function ContactUs() {
               required
               rows={5}
               placeholder="Tell us what's on your mind..."
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              value={formData.message}
+              onChange={(e) => updateField("message", e.target.value)}
               className="w-full px-4 py-3 rounded-xl border text-sm font-medium transition-all focus:outline-none focus:ring-2 resize-y min-h-[120px]"
               style={inputStyle}
               {...focusHandlers}
@@ -302,7 +301,10 @@ export default function ContactUs() {
                     />
                   </label>
                 ) : (
-                  <div className="relative rounded-xl overflow-hidden border" style={{ borderColor: "var(--border-normal)" }}>
+                  <div
+                    className="relative rounded-xl overflow-hidden border"
+                    style={{ borderColor: "var(--border-normal)" }}
+                  >
                     <img
                       src={imagePreview}
                       alt="Preview"
@@ -349,7 +351,10 @@ export default function ContactUs() {
                     />
                   </label>
                 ) : (
-                  <div className="relative rounded-xl overflow-hidden border" style={{ borderColor: "var(--border-normal)" }}>
+                  <div
+                    className="relative rounded-xl overflow-hidden border"
+                    style={{ borderColor: "var(--border-normal)" }}
+                  >
                     <video
                       src={videoPreview}
                       className="w-full h-32 object-cover"
