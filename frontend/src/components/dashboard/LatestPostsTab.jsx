@@ -72,10 +72,7 @@ export default function LatestPostsTab({ latestPosts: initialPosts, now }) {
   const [hoveredPostUser, setHoveredPostUser] = useState(null);
 
   const handlePostClick = async (post) => {
-    setSelectedPost({
-      ...post,
-      userId: post.userId && typeof post.userId === "object" ? post.userId._id : post.userId
-    });
+    setSelectedPost(post);
 
     if (post._id) {
       try {
