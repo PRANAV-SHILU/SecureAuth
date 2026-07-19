@@ -225,8 +225,6 @@ export const PRIVACY_SECTIONS = [
     ],
   },
 
-
-
   /*
   {
     id: "data-retention",

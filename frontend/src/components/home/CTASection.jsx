@@ -91,8 +91,8 @@ export default function CTASection({ user }) {
             FAQ
           </NavLink>
           <span className="text-white/10 dark:text-white/10 select-none">•</span>
-          <NavLink to="/about-us" className="hover:text-(--primary-500) transition-colors no-underline">
-            About Us
+          <NavLink to="/contact-us" className="hover:text-(--primary-500) transition-colors no-underline">
+            Contact Us
           </NavLink>
         </div>
       </div>

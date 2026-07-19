@@ -15,12 +15,13 @@ import useDocumentMetadata from "../hooks/useDocumentMetadata";
 import BackButton from "../shared-components/BackButton";
 import { ContactFormContext } from "../context/ContactFormContext";
 
-const CATEGORY_OPTIONS = [
-  { value: "", label: "Select a category *" },
-  { value: "support", label: "Support" },
-  { value: "improvement", label: "Improvement" },
-  { value: "suggestion", label: "Suggestion" },
+const CATEGORY_OPTIONS = [  
   { value: "general", label: "General" },
+  { value: "feedback", label: "Feedback" }, 
+  { value: "suggestion", label: "Suggestion & Improvement" },
+  { value: "bug", label: "Issue & Bug Report" },
+  { value: "security", label: "Security Concern" },
+  { value: "hiring", label: "Hiring / Business Inquiry" },
 ];
 
 export default function ContactUs() {
@@ -145,22 +146,22 @@ export default function ContactUs() {
           onSubmit={handleSubmit}
           className="flex flex-col gap-5"
         >
-          {/* Username */}
+          {/* Name */}
           <div className="flex flex-col gap-1.5">
             <label
-              htmlFor="contact-username"
+              htmlFor="contact-name"
               className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5"
               style={{ color: "var(--text-muted)" }}
             >
               <User size={14} />
-              Username <span className="text-red-500">*</span>
+              Name <span className="text-red-500">*</span>
             </label>
             <input
-              id="contact-username"
+              id="contact-name"
               name="username"
               type="text"
               required
-              placeholder="Your username"
+              placeholder="Your name"
               value={formData.username}
               onChange={(e) => updateField("username", e.target.value)}
               className="w-full px-4 py-3 rounded-xl border text-sm font-medium transition-all focus:outline-none focus:ring-2"
