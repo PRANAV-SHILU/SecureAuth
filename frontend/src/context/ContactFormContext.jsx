@@ -16,24 +16,24 @@ export function ContactFormProvider({ children }) {
   const user = getInitialUser();
   
   const [formData, setFormData] = useState({
-    username: user?.username || "",
+    name: user?.username || "",
     email: user?.email || "",
-    category: "",
+    category: "general",
     message: "",
   });
 
-  const [imageFile, setImageFile] = useState(null);
+  const [imageFiles, setImageFiles] = useState([]);
   const [videoFile, setVideoFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
+  const [imagePreviews, setImagePreviews] = useState([]);
   const [videoPreview, setVideoPreview] = useState(null);
 
   return (
     <ContactFormContext.Provider
       value={{
         formData, setFormData,
-        imageFile, setImageFile,
+        imageFiles, setImageFiles,
         videoFile, setVideoFile,
-        imagePreview, setImagePreview,
+        imagePreviews, setImagePreviews,
         videoPreview, setVideoPreview
       }}
     >

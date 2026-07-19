@@ -1,5 +1,10 @@
-import { useRef, useContext } from "react";
-import { Form, useNavigation } from "react-router-dom";
+import { useRef, useContext, useEffect } from "react";
+import {
+  Form,
+  useNavigation,
+  useSubmit,
+  useActionData,
+} from "react-router-dom";
 import {
   MessageSquare,
   User,
@@ -14,10 +19,12 @@ import {
 import useDocumentMetadata from "../hooks/useDocumentMetadata";
 import BackButton from "../shared-components/BackButton";
 import { ContactFormContext } from "../context/ContactFormContext";
+import { contactSchema } from "../schema/contactSchema";
+import { useState } from "react";
 
-const CATEGORY_OPTIONS = [  
+const CATEGORY_OPTIONS = [
   { value: "general", label: "General" },
-  { value: "feedback", label: "Feedback" }, 
+  { value: "feedback", label: "Feedback" },
   { value: "suggestion", label: "Suggestion & Improvement" },
   { value: "bug", label: "Issue & Bug Report" },
   { value: "security", label: "Security Concern" },
@@ -28,24 +35,32 @@ export default function ContactUs() {
   useDocumentMetadata("Contact Us");
 
   const navigation = useNavigation();
+  const submit = useSubmit();
+  const actionData = useActionData();
   const isSubmitting = navigation.state === "submitting";
 
   const {
     formData,
     setFormData,
-    imageFile,
-    setImageFile,
+    imageFiles,
+    setImageFiles,
     videoFile,
     setVideoFile,
-    imagePreview,
-    setImagePreview,
+    imagePreviews,
+    setImagePreviews,
     videoPreview,
     setVideoPreview,
   } = useContext(ContactFormContext);
 
+  const [errors, setErrors] = useState({});
+
   // Helper to update text fields easily
   const updateField = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    // Clear error when user types
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: null }));
+    }
   };
 
   const imageInputRef = useRef(null);
@@ -53,12 +68,22 @@ export default function ContactUs() {
 
   // Handle image selection
   const handleImageChange = (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setImageFile(file);
-    const reader = new FileReader();
-    reader.onloadend = () => setImagePreview(reader.result);
-    reader.readAsDataURL(file);
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+
+    const newImageFiles = files.filter((f) => f.type.startsWith("image/"));
+
+    const spaceLeft = 5 - imageFiles.length;
+    const filesToAdd = newImageFiles.slice(0, spaceLeft);
+
+    if (filesToAdd.length > 0) {
+      setImageFiles((prev) => [...prev, ...filesToAdd]);
+
+      const newPreviews = filesToAdd.map((f) => URL.createObjectURL(f));
+      setImagePreviews((prev) => [...prev, ...newPreviews]);
+    }
+
+    if (imageInputRef.current) imageInputRef.current.value = "";
   };
 
   // Handle video selection
@@ -69,10 +94,12 @@ export default function ContactUs() {
     setVideoPreview(URL.createObjectURL(file));
   };
 
-  const removeImage = () => {
-    setImageFile(null);
-    setImagePreview(null);
-    if (imageInputRef.current) imageInputRef.current.value = "";
+  const removeImage = (index) => {
+    setImageFiles((prev) => prev.filter((_, i) => i !== index));
+    setImagePreviews((prev) => {
+      URL.revokeObjectURL(prev[index]);
+      return prev.filter((_, i) => i !== index);
+    });
   };
 
   const removeVideo = () => {
@@ -82,9 +109,79 @@ export default function ContactUs() {
     if (videoInputRef.current) videoInputRef.current.value = "";
   };
 
-  // TODO: Implement submit logic
-  const handleSubmit = (e) => {
-    // Empty — will be connected to the action later
+  // Clear form on success
+  useEffect(() => {
+    if (actionData?.success) {
+      let user = null;
+      try {
+        const stored = localStorage.getItem("user");
+        if (stored) user = JSON.parse(stored);
+      } catch {
+        // ignore
+      }
+
+      setFormData({ 
+        name: user?.username || "", 
+        email: user?.email || "", 
+        category: "general", 
+        message: "" 
+      });
+      setImageFiles([]);
+      setImagePreviews([]);
+      setVideoFile(null);
+      setVideoPreview(null);
+    }
+  }, [
+    actionData,
+    setFormData,
+    setImageFiles,
+    setImagePreviews,
+    setVideoFile,
+    setVideoPreview,
+  ]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      await contactSchema.validate(formData, { abortEarly: false });
+      setErrors({});
+    } catch (err) {
+      const newErrors = {};
+      if (err.inner) {
+        err.inner.forEach((error) => {
+          if (!newErrors[error.path]) {
+            newErrors[error.path] = error.message;
+          }
+        });
+      }
+      setErrors(newErrors);
+      return;
+    }
+
+    const data = new FormData();
+    data.append("name", formData.name);
+    data.append("email", formData.email);
+    data.append("category", formData.category);
+    data.append("message", formData.message);
+
+    try {
+      const stored = localStorage.getItem("user");
+      const user = stored ? JSON.parse(stored) : null;
+      data.append("userId", user && user._id ? user._id : null);
+    } catch {
+      data.append("userId", null);
+    }
+
+    imageFiles.forEach((file) => {
+      data.append("images", file);
+    });
+
+    if (videoFile) {
+      data.append("video", videoFile);
+    }
+
+    submit(data, { method: "post", encType: "multipart/form-data" });
   };
 
   // Shared input styles
@@ -158,16 +255,24 @@ export default function ContactUs() {
             </label>
             <input
               id="contact-name"
-              name="username"
+              name="name"
               type="text"
               required
               placeholder="Your name"
-              value={formData.username}
-              onChange={(e) => updateField("username", e.target.value)}
+              value={formData.name}
+              onChange={(e) => updateField("name", e.target.value)}
               className="w-full px-4 py-3 rounded-xl border text-sm font-medium transition-all focus:outline-none focus:ring-2"
               style={inputStyle}
               {...focusHandlers}
             />
+            {errors.name && (
+              <p
+                className="text-xs mt-1.5"
+                style={{ color: "var(--status-error)" }}
+              >
+                {errors.name}
+              </p>
+            )}
           </div>
 
           {/* Email */}
@@ -192,6 +297,14 @@ export default function ContactUs() {
               style={inputStyle}
               {...focusHandlers}
             />
+            {errors.email && (
+              <p
+                className="text-xs mt-1.5"
+                style={{ color: "var(--status-error)" }}
+              >
+                {errors.email}
+              </p>
+            )}
           </div>
 
           {/* Category Dropdown */}
@@ -231,18 +344,39 @@ export default function ContactUs() {
                 style={{ color: "var(--text-muted)" }}
               />
             </div>
+            {errors.category && (
+              <p
+                className="text-xs mt-1.5"
+                style={{ color: "var(--status-error)" }}
+              >
+                {errors.category}
+              </p>
+            )}
           </div>
 
           {/* Message */}
           <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="contact-message"
-              className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5"
-              style={{ color: "var(--text-muted)" }}
-            >
-              <MessageSquare size={14} />
-              Message <span className="text-red-500">*</span>
-            </label>
+            <div className="flex items-center justify-between">
+              <label
+                htmlFor="contact-message"
+                className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5"
+                style={{ color: "var(--text-muted)" }}
+              >
+                <MessageSquare size={14} />
+                Message <span className="text-red-500">*</span>
+              </label>
+              <span
+                className="text-[10px] font-medium tracking-wide"
+                style={{
+                  color:
+                    formData.message.length > 1000
+                      ? "#ef4444"
+                      : "var(--text-muted)",
+                }}
+              >
+                {formData.message.length} / 1000
+              </span>
+            </div>
             <textarea
               id="contact-message"
               name="message"
@@ -255,6 +389,14 @@ export default function ContactUs() {
               style={inputStyle}
               {...focusHandlers}
             />
+            {errors.message && (
+              <p
+                className="text-xs mt-1.5"
+                style={{ color: "var(--status-error)" }}
+              >
+                {errors.message}
+              </p>
+            )}
           </div>
 
           {/* Optional Uploads */}
@@ -272,106 +414,182 @@ export default function ContactUs() {
               </span>
             </p>
 
-            <div className="grid grid-cols-1 xsm:grid-cols-2 gap-3">
-              {/* Image Upload */}
-              <div>
-                {!imagePreview ? (
-                  <label
-                    htmlFor="contact-image"
-                    className="flex flex-col items-center justify-center gap-2 p-5 rounded-xl border-2 border-dashed cursor-pointer transition-all hover:border-(--primary-500) group"
-                    style={{ borderColor: "var(--border-normal)" }}
-                  >
-                    <ImagePlus
-                      size={24}
-                      className="text-(--text-muted) group-hover:text-(--primary-500) transition-colors"
-                    />
-                    <span
-                      className="text-xs font-semibold group-hover:text-(--primary-500) transition-colors"
-                      style={{ color: "var(--text-muted)" }}
+            <div
+              className="p-5 rounded-2xl border flex flex-col gap-4 transition-all"
+              style={{
+                backgroundColor: "var(--surface-input)",
+                borderColor: "var(--border-normal)",
+              }}
+            >
+              {/* Empty State: Big Dropzones */}
+              {imagePreviews.length === 0 && !videoPreview && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <label className="flex flex-col items-center justify-center gap-3 p-6 rounded-2xl border-2 border-dashed border-gray-300 dark:border-gray-600 cursor-pointer transition-all hover:bg-blue-500/5 hover:border-blue-500/50 group text-center">
+                    <div
+                      className="w-12 h-12 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
+                      style={{
+                        backgroundColor: "var(--surface-background)",
+                        color: "var(--text-muted)",
+                      }}
                     >
-                      Upload Image
-                    </span>
+                      <ImagePlus
+                        size={22}
+                        className="group-hover:text-blue-500 transition-colors"
+                      />
+                    </div>
+                    <div>
+                      <span
+                        className="text-sm font-bold"
+                        style={{ color: "var(--text-primary)" }}
+                      >
+                        Add Images
+                      </span>
+                      <p
+                        className="text-xs mt-1"
+                        style={{ color: "var(--text-muted)" }}
+                      >
+                        Select up to 5 images
+                      </p>
+                    </div>
                     <input
-                      id="contact-image"
-                      ref={imageInputRef}
-                      name="image"
                       type="file"
                       accept="image/*"
+                      multiple
                       onChange={handleImageChange}
                       className="hidden"
                     />
                   </label>
-                ) : (
-                  <div
-                    className="relative rounded-xl overflow-hidden border"
-                    style={{ borderColor: "var(--border-normal)" }}
-                  >
-                    <img
-                      src={imagePreview}
-                      alt="Preview"
-                      className="w-full h-32 object-cover"
-                    />
-                    <button
-                      type="button"
-                      onClick={removeImage}
-                      className="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/60 hover:bg-red-500 flex items-center justify-center text-white border-none cursor-pointer transition-colors"
-                      aria-label="Remove image"
-                    >
-                      <X size={14} />
-                    </button>
-                  </div>
-                )}
-              </div>
 
-              {/* Video Upload */}
-              <div>
-                {!videoPreview ? (
-                  <label
-                    htmlFor="contact-video"
-                    className="flex flex-col items-center justify-center gap-2 p-5 rounded-xl border-2 border-dashed cursor-pointer transition-all hover:border-(--primary-500) group"
-                    style={{ borderColor: "var(--border-normal)" }}
-                  >
-                    <Video
-                      size={24}
-                      className="text-(--text-muted) group-hover:text-(--primary-500) transition-colors"
-                    />
-                    <span
-                      className="text-xs font-semibold group-hover:text-(--primary-500) transition-colors"
-                      style={{ color: "var(--text-muted)" }}
+                  <label className="flex flex-col items-center justify-center gap-3 p-6 rounded-2xl border-2 border-dashed border-gray-300 dark:border-gray-600 cursor-pointer transition-all hover:bg-purple-500/5 hover:border-purple-500/50 group text-center">
+                    <div
+                      className="w-12 h-12 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
+                      style={{
+                        backgroundColor: "var(--surface-background)",
+                        color: "var(--text-muted)",
+                      }}
                     >
-                      Upload Video
-                    </span>
+                      <Video
+                        size={22}
+                        className="group-hover:text-purple-500 transition-colors"
+                      />
+                    </div>
+                    <div>
+                      <span
+                        className="text-sm font-bold"
+                        style={{ color: "var(--text-primary)" }}
+                      >
+                        Add Video
+                      </span>
+                      <p
+                        className="text-xs mt-1"
+                        style={{ color: "var(--text-muted)" }}
+                      >
+                        Select 1 video max
+                      </p>
+                    </div>
                     <input
-                      id="contact-video"
-                      ref={videoInputRef}
-                      name="video"
                       type="file"
                       accept="video/*"
                       onChange={handleVideoChange}
                       className="hidden"
                     />
                   </label>
-                ) : (
-                  <div
-                    className="relative rounded-xl overflow-hidden border"
-                    style={{ borderColor: "var(--border-normal)" }}
-                  >
-                    <video
-                      src={videoPreview}
-                      className="w-full h-32 object-cover"
-                      muted
-                    />
-                    <button
-                      type="button"
-                      onClick={removeVideo}
-                      className="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/60 hover:bg-red-500 flex items-center justify-center text-white border-none cursor-pointer transition-colors"
-                      aria-label="Remove video"
+                </div>
+              )}
+
+              {/* Gallery State: Horizontal Strip of Media */}
+              {(imagePreviews.length > 0 || videoPreview) && (
+                <div className="flex flex-wrap gap-4 items-center">
+                  {/* Render Image Previews */}
+                  {imagePreviews.map((src, idx) => (
+                    <div
+                      key={src}
+                      className="relative group w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden shadow-sm border"
+                      style={{ borderColor: "var(--border-normal)" }}
                     >
-                      <X size={14} />
-                    </button>
+                      <img
+                        src={src}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        alt={`Upload ${idx}`}
+                      />
+                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+                        <button
+                          type="button"
+                          onClick={() => removeImage(idx)}
+                          className="w-8 h-8 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform shadow-lg"
+                        >
+                          <X size={16} />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+
+                  {/* Render Video Preview */}
+                  {videoPreview && (
+                    <div
+                      className="relative group w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden shadow-sm border"
+                      style={{ borderColor: "var(--border-normal)" }}
+                    >
+                      <video
+                        src={videoPreview}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        muted
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none flex items-end p-2">
+                        <Video size={16} className="text-white/90" />
+                      </div>
+                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+                        <button
+                          type="button"
+                          onClick={removeVideo}
+                          className="w-8 h-8 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform shadow-lg"
+                        >
+                          <X size={16} />
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Add More Buttons */}
+                  <div className="flex flex-col gap-2 shrink-0">
+                    {imagePreviews.length < 5 && (
+                      <label
+                        className="flex items-center justify-center w-12 h-12 rounded-full border-2 border-dashed border-gray-300 dark:border-gray-600 cursor-pointer hover:bg-blue-500/10 hover:border-blue-500/50 transition-all group"
+                        title="Add more images"
+                      >
+                        <ImagePlus
+                          size={18}
+                          className="text-(--text-muted) group-hover:text-blue-500 transition-colors"
+                        />
+                        <input
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          onChange={handleImageChange}
+                          className="hidden"
+                        />
+                      </label>
+                    )}
+                    {!videoPreview && (
+                      <label
+                        className="flex items-center justify-center w-12 h-12 rounded-full border-2 border-dashed border-gray-300 dark:border-gray-600 cursor-pointer hover:bg-purple-500/10 hover:border-purple-500/50 transition-all group"
+                        title="Add video"
+                      >
+                        <Video
+                          size={18}
+                          className="text-(--text-muted) group-hover:text-purple-500 transition-colors"
+                        />
+                        <input
+                          type="file"
+                          accept="video/*"
+                          onChange={handleVideoChange}
+                          className="hidden"
+                        />
+                      </label>
+                    )}
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </div>
 
