@@ -15,7 +15,8 @@ export const contactSchema = yup.object({
     .min(3, "Email must be at least 3 characters long"),
   category: yup
     .string()
-    .required("Please select a category"),
+    .required("Please select a category")
+    .oneOf(["general", "feedback", "suggestion", "issue", "security", "inquiry"], "Invalid category selected"),
   message: yup
     .string()
     .trim()
