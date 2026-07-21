@@ -30,11 +30,11 @@ export const checkMediaSize = (req, res, next) => {
     const isVideo = mimetype.startsWith("video/");
 
     if (isImage && size > 10 * 1024 * 1024) {
-      return res.status(400).json({ message: "Image file size cannot exceed 10 MB" });
+      return res.status(400).json({ message: "Single image file size cannot exceed 10 MB" });
     }
 
     if (isVideo && size > 100 * 1024 * 1024) {
-      return res.status(400).json({ message: "Video file size cannot exceed 100 MB" });
+      return res.status(400).json({ message: "Single video file size cannot exceed 100 MB" });
     }
   }
 
