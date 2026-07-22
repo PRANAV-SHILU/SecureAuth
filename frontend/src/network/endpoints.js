@@ -18,6 +18,6 @@ export const ENDPOINTS = {
     METRICS: "/admin/matrics",
   },
   CONTACT: {
-    SUBMIT: "/contact-us",
+    SUBMIT: "/contact/submit",
   },
 };

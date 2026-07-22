@@ -13,6 +13,7 @@ import userRoutes from "./routes/user.routes.js";
 import postRoutes from "./routes/post.routes.js";
 import adminRoutes from "./routes/admin.route.js";
 import { setupErrorHandlers, startServerWithErrorHandling, retryWithBackoff } from "./utils/errorHandler.js";
+import contactRouter from "./routes/contact.route.js";
 
 // Fix: Node.js's async DNS resolver fails on SRV lookups on some networks, Force it to use Google's public DNS which correctly handles mongodb+srv:// SRV records.
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
@@ -80,6 +81,7 @@ app.get("/health", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
+app.use("/api/contact",contactRouter)
 app.use("/api/admin",adminRoutes)
 
 // 404 handler - for unmatched routes
