@@ -4,7 +4,9 @@ import {
   useNavigation,
   useSubmit,
   useActionData,
+  useNavigate,
 } from "react-router-dom";
+import { toast } from "react-toastify";
 import {
   MessageSquare,
   User,
@@ -26,9 +28,9 @@ const CATEGORY_OPTIONS = [
   { value: "general", label: "General" },
   { value: "feedback", label: "Feedback" },
   { value: "suggestion", label: "Suggestion & Improvement" },
-  { value: "bug", label: "Issue & Bug Report" },
+  { value: "issue", label: "Issue & Bug Report" },
   { value: "security", label: "Security Concern" },
-  { value: "hiring", label: "Hiring / Business Inquiry" },
+  { value: "inquiry", label: "Hiring / Business Inquiry" },
 ];
 
 export default function ContactUs() {
@@ -37,6 +39,7 @@ export default function ContactUs() {
   const navigation = useNavigation();
   const submit = useSubmit();
   const actionData = useActionData();
+  const navigate = useNavigate();
   const isSubmitting = navigation.state === "submitting";
 
   const {
@@ -165,13 +168,21 @@ export default function ContactUs() {
     data.append("category", formData.category);
     data.append("message", formData.message);
 
+    let user = null;
     try {
       const stored = localStorage.getItem("user");
-      const user = stored ? JSON.parse(stored) : null;
-      data.append("userId", user && user._id ? user._id : null);
+      if (stored) user = JSON.parse(stored);
     } catch {
-      data.append("userId", null);
+      // ignore
     }
+
+    if (!user || !user._id) {
+      toast.info("You must be logged in to submit a contact form.");
+      navigate("/login");
+      return;
+    }
+
+    data.append("userId", user._id);
 
     imageFiles.forEach((file) => {
       data.append("images", file);
@@ -258,10 +269,11 @@ export default function ContactUs() {
               name="name"
               type="text"
               required
+              disabled={isSubmitting}
               placeholder="Your name"
               value={formData.name}
               onChange={(e) => updateField("name", e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border text-sm font-medium transition-all focus:outline-none focus:ring-2"
+              className="w-full px-4 py-3 rounded-xl border text-sm font-medium transition-all focus:outline-none focus:ring-2 disabled:cursor-not-allowed disabled:opacity-60"
               style={inputStyle}
               {...focusHandlers}
             />
@@ -290,6 +302,7 @@ export default function ContactUs() {
               name="email"
               type="email"
               required
+              disabled={isSubmitting}
               placeholder="you@example.com"
               value={formData.email}
               onChange={(e) => updateField("email", e.target.value)}
@@ -322,9 +335,10 @@ export default function ContactUs() {
                 id="contact-category"
                 name="category"
                 required
+                disabled={isSubmitting}
                 value={formData.category}
                 onChange={(e) => updateField("category", e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border text-sm font-medium transition-all focus:outline-none focus:ring-2 appearance-none cursor-pointer"
+                className="w-full px-4 py-3 rounded-xl border text-sm font-medium transition-all focus:outline-none focus:ring-2 appearance-none cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
                 style={inputStyle}
                 {...focusHandlers}
               >
@@ -381,11 +395,12 @@ export default function ContactUs() {
               id="contact-message"
               name="message"
               required
+              disabled={isSubmitting}
               rows={5}
               placeholder="Tell us what's on your mind..."
               value={formData.message}
               onChange={(e) => updateField("message", e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border text-sm font-medium transition-all focus:outline-none focus:ring-2 resize-y min-h-[120px]"
+              className="w-full px-4 py-3 rounded-xl border text-sm font-medium transition-all focus:outline-none focus:ring-2 resize-y min-h-30 disabled:cursor-not-allowed disabled:opacity-60"
               style={inputStyle}
               {...focusHandlers}
             />
@@ -424,7 +439,7 @@ export default function ContactUs() {
               {/* Empty State: Big Dropzones */}
               {imagePreviews.length === 0 && !videoPreview && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <label className="flex flex-col items-center justify-center gap-3 p-6 rounded-2xl border-2 border-dashed border-gray-300 dark:border-gray-600 cursor-pointer transition-all hover:bg-blue-500/5 hover:border-blue-500/50 group text-center">
+                  <label className={`flex flex-col items-center justify-center gap-3 p-6 rounded-2xl border-2 border-dashed border-gray-300 dark:border-gray-600 transition-all text-center group ${isSubmitting ? 'cursor-not-allowed opacity-60' : 'cursor-pointer hover:bg-blue-500/5 hover:border-blue-500/50'}`}>
                     <div
                       className="w-12 h-12 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
                       style={{
@@ -456,11 +471,12 @@ export default function ContactUs() {
                       accept="image/*"
                       multiple
                       onChange={handleImageChange}
+                      disabled={isSubmitting}
                       className="hidden"
                     />
                   </label>
 
-                  <label className="flex flex-col items-center justify-center gap-3 p-6 rounded-2xl border-2 border-dashed border-gray-300 dark:border-gray-600 cursor-pointer transition-all hover:bg-purple-500/5 hover:border-purple-500/50 group text-center">
+                  <label className={`flex flex-col items-center justify-center gap-3 p-6 rounded-2xl border-2 border-dashed border-gray-300 dark:border-gray-600 transition-all text-center group ${isSubmitting ? 'cursor-not-allowed opacity-60' : 'cursor-pointer hover:bg-purple-500/5 hover:border-purple-500/50'}`}>
                     <div
                       className="w-12 h-12 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
                       style={{
@@ -491,6 +507,7 @@ export default function ContactUs() {
                       type="file"
                       accept="video/*"
                       onChange={handleVideoChange}
+                      disabled={isSubmitting}
                       className="hidden"
                     />
                   </label>
@@ -516,7 +533,8 @@ export default function ContactUs() {
                         <button
                           type="button"
                           onClick={() => removeImage(idx)}
-                          className="w-8 h-8 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform shadow-lg"
+                          disabled={isSubmitting}
+                          className="w-8 h-8 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           <X size={16} />
                         </button>
@@ -535,14 +553,15 @@ export default function ContactUs() {
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         muted
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none flex items-end p-2">
+                      <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent pointer-events-none flex items-end p-2">
                         <Video size={16} className="text-white/90" />
                       </div>
                       <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
                         <button
                           type="button"
                           onClick={removeVideo}
-                          className="w-8 h-8 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform shadow-lg"
+                          disabled={isSubmitting}
+                          className="w-8 h-8 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           <X size={16} />
                         </button>
@@ -554,7 +573,7 @@ export default function ContactUs() {
                   <div className="flex flex-col gap-2 shrink-0">
                     {imagePreviews.length < 5 && (
                       <label
-                        className="flex items-center justify-center w-12 h-12 rounded-full border-2 border-dashed border-gray-300 dark:border-gray-600 cursor-pointer hover:bg-blue-500/10 hover:border-blue-500/50 transition-all group"
+                        className={`flex items-center justify-center w-12 h-12 rounded-full border-2 border-dashed border-gray-300 dark:border-gray-600 transition-all group ${isSubmitting ? 'cursor-not-allowed opacity-60' : 'cursor-pointer hover:bg-blue-500/10 hover:border-blue-500/50'}`}
                         title="Add more images"
                       >
                         <ImagePlus
@@ -566,13 +585,14 @@ export default function ContactUs() {
                           accept="image/*"
                           multiple
                           onChange={handleImageChange}
+                          disabled={isSubmitting}
                           className="hidden"
                         />
                       </label>
                     )}
                     {!videoPreview && (
                       <label
-                        className="flex items-center justify-center w-12 h-12 rounded-full border-2 border-dashed border-gray-300 dark:border-gray-600 cursor-pointer hover:bg-purple-500/10 hover:border-purple-500/50 transition-all group"
+                        className={`flex items-center justify-center w-12 h-12 rounded-full border-2 border-dashed border-gray-300 dark:border-gray-600 transition-all group ${isSubmitting ? 'cursor-not-allowed opacity-60' : 'cursor-pointer hover:bg-purple-500/10 hover:border-purple-500/50'}`}
                         title="Add video"
                       >
                         <Video
@@ -583,6 +603,7 @@ export default function ContactUs() {
                           type="file"
                           accept="video/*"
                           onChange={handleVideoChange}
+                          disabled={isSubmitting}
                           className="hidden"
                         />
                       </label>
