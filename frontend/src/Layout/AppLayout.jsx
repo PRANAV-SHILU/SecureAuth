@@ -12,7 +12,7 @@ export default function AppLayout() {
   const navigation = useNavigation();
   const isLoading = navigation.state === "loading";
 
-  const isNoPaddingPage = location.pathname === "/feed" || location.pathname === "/explore" || location.pathname.startsWith("/profile");
+  const isNoPaddingPage = location.pathname === "/feed" || location.pathname === "/explore" || location.pathname.startsWith("/profile") || location.pathname === "/dashboard" || location.pathname === "/admin/contact";
 
   return (
     <ContactFormProvider>
@@ -34,7 +34,7 @@ export default function AppLayout() {
           closeOnClick={true}
         />
         <Analytics />
-        <SpeedInsights />
+                      <SpeedInsights />
       </div>
     </ContactFormProvider>
   );

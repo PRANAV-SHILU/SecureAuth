@@ -20,6 +20,7 @@ const FAQ = lazy(() => import("../pages/FAQ.jsx"));
 const About = lazy(() => import("../pages/About.jsx"));
 const Roadmap = lazy(() => import("../pages/Roadmap.jsx"));
 const ContactUs = lazy(() => import("../pages/ContactUs.jsx"));
+const AdminContact = lazy(() => import("../pages/AdminContact.jsx"));
 
 import FeedSkeleton from "../skeletons/FeedSkeleton.jsx";
 import ExploreSkeleton from "../skeletons/ExploreSkeleton.jsx";
@@ -105,6 +106,14 @@ const router = createBrowserRouter([
           </Suspense>
         ),
         loader: dashboardLoader,
+      },
+      {
+        path: "admin/contact",
+        element: (
+          <Suspense fallback={<div className="top-loading-bar" />}>
+            <AdminContact />
+          </Suspense>
+        ),
       },
       {
         path: "explore",
