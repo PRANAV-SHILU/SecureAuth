@@ -9,46 +9,54 @@ export const submitContactForm = async (req, res) => {
       .json({ success: false, message: errors.array()[0].msg });
   }
 
-  try {
-    const { name, email, category, message, userId } = req.body;
+  const { name, email, category, message, userId } = req.body;
 
-    // Separate images and video from the uploaded URLs
-    const images = [];
-    let video = null;
+  // Separate images and video from the uploaded URLs
+  const images = [];
+  let video = null;
 
-    if (req.cloudinaryUrls && req.cloudinaryUrls.length > 0) {
-      req.cloudinaryUrls.forEach((url) => {
-        if (url.includes("/video/")) {
-          video = url;
-        } else {
-          images.push(url);
-        }
-      });
-    }
-
-    const contactData = {
-      name,
-      email,
-      category,
-      message,
-    };
-
-    if (userId && userId !== "null") contactData.userId = userId;
-    if (images.length > 0) contactData.images = images;
-    if (video) contactData.video = video;
-
-    const newContact = new Contact(contactData);
-
-    await newContact.save();
-
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "Your message has been sent successfully!",
-      });
-  } catch (error) {
-    console.error("Error submitting contact form:", error);
-    res.status(500).json({ success: false, message: "Internal server error" });
+  if (req.cloudinaryUrls && req.cloudinaryUrls.length > 0) {
+    req.cloudinaryUrls.forEach((url) => {
+      if (url.includes("/video/")) {
+        video = url;
+      } else {
+        images.push(url);
+      }
+    });
   }
+
+  const contactData = {
+    name,
+    email,
+    category,
+    message,
+  };
+
+  if (userId && userId !== "null") contactData.userId = userId;
+  if (images.length > 0) contactData.images = images;
+  if (video) contactData.video = video;
+
+  const newContact = new Contact(contactData);
+
+  await newContact.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Your message has been sent successfully!",
+  });
+};
+
+export const getContactData = async (req, res) => {
+  const isResponded = req.query.isResponded;
+
+  const query = (isResponded === "true" || isResponded === true)
+    ? { response: { $ne: "" } }
+    : { response: { $eq: "" } };
+  const contactData = await Contact.find(query);
+
+  return res.status(200).json({
+    success: true,
+    message: "Contact data fetched successfully!",
+    data: contactData,
+  });
 };

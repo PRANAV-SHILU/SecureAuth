@@ -81,7 +81,7 @@ app.get("/health", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
-app.use("/api/contact",contactRouter)
+app.use("/api/contact_support",contactRouter)
 app.use("/api/admin",adminRoutes)
 
 // 404 handler - for unmatched routes
