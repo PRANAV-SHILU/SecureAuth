@@ -52,7 +52,8 @@ export const getContactData = async (req, res) => {
   const query = (isResponded === "true" || isResponded === true)
     ? { response: { $ne: "" } }
     : { response: { $eq: "" } };
-  const contactData = await Contact.find(query);
+  const contactData = await Contact.find(query).populate("userId", "username profileImage email").sort({ createdAt: -1 });
+
 
   return res.status(200).json({
     success: true,

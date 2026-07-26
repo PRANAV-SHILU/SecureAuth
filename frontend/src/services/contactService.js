@@ -10,4 +10,13 @@ export const contactService = {
       throw error;
     }
   },
+  getContactData: async (isResponded) => {
+    try {
+      const response = await contactApi.getContactData(isResponded);
+      return response.data;
+    } catch (error) {
+      console.error("Error in contactService.getContactData:", error);
+      throw error;
+    }
+  },
 };

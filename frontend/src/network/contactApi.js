@@ -9,4 +9,7 @@ export const contactApi = {
       },
     });
   },
+  getContactData: (isResponded) => {
+    return apiClient.get(ENDPOINTS.CONTACT.GET_CONTACTS(isResponded));
+  },
 };
