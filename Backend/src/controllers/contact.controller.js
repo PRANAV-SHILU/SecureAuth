@@ -46,18 +46,34 @@ export const submitContactForm = async (req, res) => {
   });
 };
 
-export const getContactData = async (req, res) => {
-  const isResponded = req.query.isResponded;
+export const getAdminContactData = async (req, res, next) => {
+  try {
+    const isResponded = req.query.isResponded;
 
-  const query = (isResponded === "true" || isResponded === true)
-    ? { response: { $ne: "" } }
-    : { response: { $eq: "" } };
-  const contactData = await Contact.find(query).populate("userId", "username profileImage email").sort({ createdAt: -1 });
+    const query =
+      isResponded === "true" || isResponded === true
+        ? { response: { $ne: "" } }
+        : { response: { $eq: "" } };
 
+    const contactData = await Contact.find(query)
+      .populate("userId", "username profileImage email")
+      .sort({ createdAt: -1 });
 
-  return res.status(200).json({
-    success: true,
-    message: "Contact data fetched successfully!",
-    data: contactData,
-  });
+    const total = await Contact.countDocuments();
+    const responded = await Contact.countDocuments({ response: { $ne: "" } });
+    const pending = total - responded;
+
+    return res.status(200).json({
+      success: true,
+      message: "Contact data fetched successfully!",
+      data: {
+        contacts: contactData,
+        stats: { total, pending, responded }
+      },
+    });
+  } catch (error) {
+    console.error("getAdminContactData error:", error.message);
+    next(error);
+  }
 };
+

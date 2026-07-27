@@ -175,7 +175,7 @@ export default function Header() {
                 {/* Avatar button */}
                 <button
                   onClick={() => setDropdownOpen((prev) => !prev)}
-                  className="bg-transparent border-none cursor-pointer p-0 flex items-center rounded-full ring-2 ring-transparent transition-[box-shadow,transform] duration-300 hover:ring-(--primary-500) hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] hover:translate-y-[-2px] active:scale-95"
+                  className="bg-transparent border-none cursor-pointer p-0 flex items-center rounded-full ring-2 ring-transparent transition-[box-shadow,transform] duration-300 hover:ring-(--primary-500) hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] hover:-translate-y-0.5 active:scale-95"
                   aria-label="User menu"
                 >
                   {user.profileImage && !imgError ? (
@@ -269,7 +269,7 @@ export default function Header() {
             className="fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-md z-40"
             onClick={() => setMobileMenuOpen(false)}
           />
-          <div className="mobile-menu-container fixed top-0 right-0 bottom-0 w-2/3 max-w-[280px] bg-(--surface-normal) border-l border-(--border-normal) shadow-2xl z-50 flex flex-col overflow-y-auto liquid-glass">
+          <div className="mobile-menu-container fixed top-0 right-0 bottom-0 w-2/3 max-w-70 bg-(--surface-normal) border-l border-(--border-normal) shadow-2xl z-50 flex flex-col overflow-y-auto liquid-glass">
               <div className="flex flex-col p-4 pt-6 gap-2">
                 {/* Close Button */}
                 <div className="flex justify-end mb-2">

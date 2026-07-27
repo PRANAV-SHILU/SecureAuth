@@ -42,6 +42,7 @@ import { feedLoader } from "../loaders/feedLoader.jsx";
 import { editProfileLoader } from "../loaders/editProfileLoader.jsx";
 import { redirectIfAuthenticated } from "../loaders/redirectIfAuthenticated.jsx";
 import { dashboardLoader } from "../loaders/dashboardLoader.jsx";
+import { adminContactLoader } from "../loaders/adminContactLoader.jsx";
 
 const router = createBrowserRouter([
   {
@@ -114,6 +115,7 @@ const router = createBrowserRouter([
             <AdminContact />
           </Suspense>
         ),
+        loader: adminContactLoader,
       },
       {
         path: "explore",

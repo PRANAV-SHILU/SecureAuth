@@ -7,13 +7,13 @@ import {
 import { contactValidation } from "../validators/contact.validator.js";
 import {
   submitContactForm,
-  getContactData,
+  getAdminContactData,
 } from "../controllers/contact.controller.js";
-import { verifyToken } from "../middlewares/auth.middleware.js";
+import { verifyToken, isAdmin } from "../middlewares/auth.middleware.js";
 
 const contactRouter = express.Router();
 
-contactRouter.get("/", verifyToken, getContactData);
+contactRouter.get("/", verifyToken, isAdmin, getAdminContactData);
 
 contactRouter.post(
   "/submit",
