@@ -1,5 +1,5 @@
 import { useState, Suspense } from "react";
-import { useLoaderData, Await, useSearchParams } from "react-router-dom";
+import { useLoaderData, Await } from "react-router-dom";
 import useDocumentMetadata from "../hooks/useDocumentMetadata";
 import { ShieldAlert, BarChart3, Clock, ImageIcon } from "lucide-react";
 import AdminSidebar from "../components/admin/AdminSidebar";
@@ -56,7 +56,7 @@ function DashboardContent({ data }) {
 
       {/* Tabs */}
       <div className="flex justify-center">
-        <div className="tab-container flex w-fit p-1 gap-1.5 mt-2 mb-6 sm:p-[0.35rem] sm:gap-2 sm:mt-[10px] sm:mb-8 4xl:p-2.5 4xl:gap-4 4xl:mt-12 4xl:mb-12">
+        <div className="tab-container flex w-fit p-1 gap-1.5 mt-2 mb-6 sm:p-[0.35rem] sm:gap-2 sm:mt-2.5 sm:mb-8 4xl:p-2.5 4xl:gap-4 4xl:mt-12 4xl:mb-12">
           {TABS.map((tab) => (
             <button
               key={tab.key}
@@ -88,7 +88,7 @@ export default function Dashboard() {
     <div className="pb-12 md:pb-16 flex flex-col md:flex-row gap-6 mt-6 w-full">
       <AdminSidebar />
 
-      <main className="flex-1 min-w-0 bg-[var(--surface-card)] border border-[var(--border-normal)] rounded-2xl p-4 sm:p-6 md:p-8">
+      <main className="flex-1 min-w-0 bg-(--surface-card) border border-(--border-normal) rounded-2xl p-4 sm:p-6 md:p-8">
         <Suspense fallback={<DashboardSkeleton />}>
           <Await
             resolve={dashboardData}
