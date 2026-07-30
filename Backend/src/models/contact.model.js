@@ -38,6 +38,7 @@ const contactSchema = new mongoose.Schema(
     response: {
       type: String,
       default: "",
+      maxlength: 1000,
     },
     isRead: {
       type: Boolean,
