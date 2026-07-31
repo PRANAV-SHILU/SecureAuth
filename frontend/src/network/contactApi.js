@@ -12,4 +12,7 @@ export const contactApi = {
   getContactData: (isResponded) => {
     return apiClient.get(ENDPOINTS.CONTACT.GET_CONTACTS(isResponded));
   },
+  respondToContact: (id, response) => {
+    return apiClient.patch(ENDPOINTS.CONTACT.RESPOND(id), { response });
+  },
 };

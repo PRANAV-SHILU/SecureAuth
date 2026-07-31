@@ -19,4 +19,13 @@ export const contactService = {
       throw error;
     }
   },
+  respondToContact: async (id, responseText) => {
+    try {
+      const response = await contactApi.respondToContact(id, responseText);
+      return response.data;
+    } catch (error) {
+      console.error("Error in contactService.respondToContact:", error);
+      throw error;
+    }
+  },
 };

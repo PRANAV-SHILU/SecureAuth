@@ -20,5 +20,7 @@ export const ENDPOINTS = {
   CONTACT: {
     SUBMIT: "/contact_support/submit",
     GET_CONTACTS: (isResponded) => isResponded !== null && isResponded !== undefined ? `/contact_support?isResponded=${isResponded}` : "/contact_support",
+    RESPOND: (id) => `/contact_support/${id}/respond`,
   },
 };
+
