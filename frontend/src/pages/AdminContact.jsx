@@ -40,7 +40,7 @@ function ContactList({ contacts, isResponded }) {
     <div className="flex flex-col gap-4">
 
       {contacts.map((c) => (
-        <ContactCard key={c._id} contact={c} showRespond={isResponded === "false"} />
+        <ContactCard key={c._id} contact={c} />
       ))}
     </div>
   );

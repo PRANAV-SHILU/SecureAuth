@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Image, Play, ChevronDown, ChevronUp, ExternalLink } from "lucide-react";
+import { toast } from "react-toastify";
+import { contactService } from "../../services/contactService";
+import { User, Image, Play, ChevronDown, ChevronUp, ExternalLink, Send, Loader2, X } from "lucide-react";
+
+const RESPONSE_MAX_LENGTH = 1000;
 
 const CATEGORY_STYLES = {
-  general:    { bg: "rgba(156,163,175,0.12)", color: "#9ca3af", label: "General" },
+  general:    { bg: "rgba(6,182,212,0.12)", color: "#06b6d4", label: "General" },
   feedback:   { bg: "rgba(59,130,246,0.12)",  color: "#60a5fa", label: "Feedback" },
   suggestion: { bg: "rgba(16,185,129,0.12)",  color: "#34d399", label: "Suggestion & Improvement" },
   issue:      { bg: "rgba(249,115,22,0.12)",  color: "#fb923c", label: "Issue & Bug Report" },
@@ -11,13 +15,22 @@ const CATEGORY_STYLES = {
   inquiry:    { bg: "rgba(139,92,246,0.12)",  color: "#a78bfa", label: "Hiring / Business Inquiry" },
 };
 
-function timeAgo(dateStr) {
-  const diff = Date.now() - new Date(dateStr).getTime();
+function formatTime(dateStr) {
+  const date = new Date(dateStr);
+  const diff = Date.now() - date.getTime();
   const m = Math.floor(diff / 60000);
-  if (m < 60) return `${m}m ago`;
-  const h = Math.floor(m / 60);
-  if (h < 24) return `${h}h ago`;
-  return `${Math.floor(h / 24)}d ago`;
+  let relative;
+  if (m < 60) relative = `${m}m ago`;
+  else {
+    const h = Math.floor(m / 60);
+    if (h < 24) relative = `${h}h ago`;
+    else relative = `${Math.floor(h / 24)}d ago`;
+  }
+  const exact = date.toLocaleString(undefined, {
+    month: "short", day: "numeric", year: "numeric",
+    hour: "numeric", minute: "2-digit", hour12: true,
+  });
+  return { relative, exact };
 }
 
 function Avatar({ user }) {
@@ -123,22 +136,49 @@ function MediaSection({ images = [], video }) {
   );
 }
 
-export default function ContactCard({ contact, showRespond = true }) {
+export default function ContactCard({ contact, isAdmin = true }) {
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
+  const [showReplyForm, setShowReplyForm] = useState(false);
+  const [replyText, setReplyText] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const { name, email, category, message, images, video, response, userId, createdAt } = contact;
   const catStyle = CATEGORY_STYLES[category] || CATEGORY_STYLES.general;
   const isLong = message.length > 140;
+  const hasResponse = !!response;
+
+  const charCount = replyText.length;
+  const isOverLimit = charCount > RESPONSE_MAX_LENGTH;
+  const isReplyEmpty = replyText.trim().length === 0;
+
+  const handleSubmitReply = async () => {
+    if (isReplyEmpty || isOverLimit || submitting) return;
+
+    setSubmitting(true);
+    try {
+      await contactService.respondToContact(contact._id, replyText.trim());
+      toast.success("Response sent successfully!");
+      setShowReplyForm(false);
+      setReplyText("");
+      // Refresh the page data
+      navigate(window.location.pathname + window.location.search, { replace: true });
+    } catch (err) {
+      toast.error(err?.response?.data?.message || err?.message || "Failed to send response.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div
-      className="rounded-2xl p-5 border flex flex-col gap-3 transition-shadow hover:shadow-md"
+      className="rounded-2xl p-3 xsm:p-4 sm:p-5 border flex flex-col gap-3 transition-shadow hover:shadow-md"
       style={{ backgroundColor: "var(--surface-input)", borderColor: "var(--border-normal)" }}
     >
       {/* Top row: real account info + category + time */}
-      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
-        {userId?.username ? (
+      <div className={`flex flex-col sm:flex-row sm:items-start ${isAdmin ? "justify-between" : "justify-start"} gap-3 sm:gap-4`}>
+      {isAdmin && (
+        userId?.username ? (
           <button
             onClick={() => navigate(`/profile/${userId.username}`)}
             className="cursor-pointer flex items-center gap-3 min-w-0 hover:opacity-75 transition-opacity"
@@ -159,16 +199,26 @@ export default function ContactCard({ contact, showRespond = true }) {
             <Avatar user={userId} />
             <p className="font-bold text-sm" style={{ color: "var(--text-muted)" }}>Unknown user</p>
           </div>
-        )}
+        )
+      )}
 
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex flex-wrap items-center gap-2 shrink-0">
           <span
             className="text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap"
             style={{ background: catStyle.bg, color: catStyle.color }}
           >
             {catStyle.label || category}
           </span>
-          <span className="text-xs" style={{ color: "var(--text-muted)" }}>{timeAgo(createdAt)}</span>
+          {(() => {
+            const t = formatTime(createdAt);
+            return (
+              <span className="text-xs flex flex-wrap items-center gap-1.5" style={{ color: "var(--text-muted)" }}>
+                <span className="whitespace-nowrap">{t.relative}</span>
+                <span className="opacity-50 hidden xsm:inline">·</span>
+                <span className="whitespace-nowrap">{t.exact}</span>
+              </span>
+            );
+          })()}
         </div>
       </div>
 
@@ -188,7 +238,7 @@ export default function ContactCard({ contact, showRespond = true }) {
 
       {/* Message */}
       <div>
-        <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+        <p className="text-sm leading-relaxed whitespace-pre-wrap" style={{ color: "var(--text-secondary)" }}>
           {isLong && !expanded ? `${message.slice(0, 140)}…` : message}
         </p>
         {isLong && (
@@ -209,24 +259,113 @@ export default function ContactCard({ contact, showRespond = true }) {
       {response && (
         <div
           className="rounded-xl p-3 text-sm"
-          style={{ background: "rgba(16,185,129,0.08)", border: "1px solid rgba(16,185,129,0.2)", color: "#6ee7b7" }}
+          style={{ background: "rgba(16,185,129,0.15)", border: "1px solid rgba(16,185,129,0.3)", color: "#059669" }}
         >
           <p className="text-xs font-semibold mb-1 uppercase tracking-wide opacity-70">Admin responded</p>
-          {response}
+          <span className="whitespace-pre-wrap">{response}</span>
         </div>
       )}
 
-      {/* Respond button (pending tab only) */}
-      {showRespond && !response && (
+      {/* Not responded yet message (user view only) */}
+      {!isAdmin && !response && (
+        <div
+          className="rounded-xl p-3 text-sm"
+          style={{ background: "rgba(245,158,11,0.15)", border: "1px solid rgba(245,158,11,0.3)", color: "#d97706" }}
+        >
+          <p className="text-xs font-semibold mb-1 uppercase tracking-wide opacity-70">Pending</p>
+          <span>Not responded yet — we're working on it!</span>
+        </div>
+      )}
+
+      {/* Reply Form (expands when Respond is clicked) — admin only */}
+      {isAdmin && showReplyForm && (
+        <div
+          className="flex flex-col gap-3 rounded-xl p-4 mt-1"
+          style={{
+            background: "var(--surface-card)",
+            border: "1px solid var(--border-light)",
+          }}
+        >
+          <div className="flex items-center justify-between">
+            <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
+              {hasResponse ? "Update your reply" : "Write your reply"}
+            </p>
+            <button
+              onClick={() => { setShowReplyForm(false); setReplyText(""); }}
+              className="cursor-pointer p-1 rounded-lg hover:bg-white/10 transition-colors"
+              style={{ color: "var(--text-muted)" }}
+            >
+              <X size={16} />
+            </button>
+          </div>
+
+          <textarea
+            value={replyText}
+            onChange={(e) => setReplyText(e.target.value)}
+            maxLength={RESPONSE_MAX_LENGTH + 50}
+            placeholder="Type your response to this message..."
+            rows={4}
+            className="w-full rounded-xl px-4 py-3 text-sm resize-none outline-none transition-all focus:ring-2"
+            style={{
+              backgroundColor: "var(--surface-input)",
+              border: `1px solid ${isOverLimit ? "#ef4444" : "var(--border-normal)"}`,
+              color: "var(--text-primary)",
+              focusRingColor: "var(--primary-500)",
+            }}
+          />
+
+          <div className="flex items-center justify-between">
+            <span
+              className="text-xs font-semibold tabular-nums"
+              style={{
+                color: isOverLimit
+                  ? "#ef4444"
+                  : charCount > RESPONSE_MAX_LENGTH * 0.9
+                    ? "#f59e0b"
+                    : "var(--text-muted)",
+              }}
+            >
+              {charCount} / {RESPONSE_MAX_LENGTH}
+            </span>
+
+            <button
+              onClick={handleSubmitReply}
+              disabled={isReplyEmpty || isOverLimit || submitting}
+              className="cursor-pointer flex items-center gap-2 text-sm font-semibold px-5 py-2 rounded-xl transition-all hover:opacity-85 disabled:opacity-40 disabled:cursor-not-allowed"
+              style={{
+                background: isReplyEmpty || isOverLimit ? "var(--text-muted)" : "var(--primary-500)",
+                color: "#fff",
+              }}
+            >
+              {submitting ? (
+                <>
+                  <Loader2 size={15} className="animate-spin" />
+                  Sending…
+                </>
+              ) : (
+                <>
+                  <Send size={15} />
+                  {hasResponse ? "Update Reply" : "Send Reply"}
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Respond / Update button (hidden when form is open) — admin only */}
+      {isAdmin && !showReplyForm && (
         <div className="flex justify-end">
           <button
+            onClick={() => { setReplyText(response || ""); setShowReplyForm(true); }}
             className="cursor-pointer text-sm font-semibold px-4 py-2 rounded-xl transition-opacity hover:opacity-80"
             style={{ background: "var(--primary-500)", color: "#fff" }}
           >
-            Respond →
+            {hasResponse ? "Update Response →" : "Respond →"}
           </button>
         </div>
       )}
     </div>
   );
 }
+

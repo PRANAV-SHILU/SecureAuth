@@ -1,3 +1,5 @@
+// NOTE: 2 contact routes for admin (GET "/" and PATCH "/:id/respond") are in admin.route
+
 import express from "express";
 import {
   upload,
@@ -14,10 +16,6 @@ import { verifyToken, isAdmin } from "../middlewares/auth.middleware.js";
 
 const contactRouter = express.Router();
 
-contactRouter.get("/", verifyToken, isAdmin, getAdminContactData);
-
-contactRouter.patch("/:id/respond", verifyToken, isAdmin, respondToContact);
-
 contactRouter.post(
   "/submit",
   verifyToken,
@@ -30,5 +28,9 @@ contactRouter.post(
   contactValidation,
   submitContactForm,
 );
+
+// Admin routes
+contactRouter.get("/", verifyToken, isAdmin, getAdminContactData);
+contactRouter.patch("/:id/respond", verifyToken, isAdmin, respondToContact);
 
 export default contactRouter;
