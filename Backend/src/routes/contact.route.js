@@ -9,12 +9,17 @@ import {
 import { contactValidation } from "../validators/contact.validator.js";
 import {
   submitContactForm,
+  getUserContacts,
   getAdminContactData,
   respondToContact,
 } from "../controllers/contact.controller.js";
 import { verifyToken, isAdmin } from "../middlewares/auth.middleware.js";
 
 const contactRouter = express.Router();
+
+
+// User routes
+contactRouter.get("/myContacts", verifyToken, getUserContacts);
 
 contactRouter.post(
   "/submit",
@@ -28,6 +33,7 @@ contactRouter.post(
   contactValidation,
   submitContactForm,
 );
+
 
 // Admin routes
 contactRouter.get("/", verifyToken, isAdmin, getAdminContactData);

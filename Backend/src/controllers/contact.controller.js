@@ -46,6 +46,27 @@ export const submitContactForm = async (req, res) => {
   });
 };
 
+export const getUserContacts = async (req, res) => {
+  const isResponded = req.query.isResponded;
+  const isRespondedBool = isResponded === "true" || isResponded === true;
+
+  const query = { userId: req.user.userId };
+  if (isRespondedBool) {
+    query.response = { $ne: "" };
+  } else {
+    query.response = { $eq: "" };
+  }
+
+  const contacts = await Contact.find(query)
+    .sort({ createdAt: -1 });
+
+  return res.status(200).json({
+    success: true,
+    message: "User contacts fetched successfully!",
+    data: { contacts },
+  });
+};
+
 export const getAdminContactData = async (req, res, next) => {
   const isResponded = req.query.isResponded;
 
