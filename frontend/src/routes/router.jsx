@@ -21,6 +21,7 @@ const About = lazy(() => import("../pages/About.jsx"));
 const Roadmap = lazy(() => import("../pages/Roadmap.jsx"));
 const ContactUs = lazy(() => import("../pages/ContactUs.jsx"));
 const AdminContact = lazy(() => import("../pages/AdminContact.jsx"));
+const MyInquiries = lazy(() => import("../pages/MyInquiries.jsx"));
 
 import FeedSkeleton from "../skeletons/FeedSkeleton.jsx";
 import ExploreSkeleton from "../skeletons/ExploreSkeleton.jsx";
@@ -43,6 +44,7 @@ import { editProfileLoader } from "../loaders/editProfileLoader.jsx";
 import { redirectIfAuthenticated } from "../loaders/redirectIfAuthenticated.jsx";
 import { dashboardLoader } from "../loaders/dashboardLoader.jsx";
 import { adminContactLoader } from "../loaders/adminContactLoader.jsx";
+import { myInquiriesLoader } from "../loaders/myInquiriesLoader.jsx";
 
 const router = createBrowserRouter([
   {
@@ -202,6 +204,15 @@ const router = createBrowserRouter([
           </Suspense>
         ),
         action: contactAction,
+      },
+      {
+        path: "my-inquiries",
+        element: (
+          <Suspense fallback={<div className="top-loading-bar" />}>
+            <MyInquiries />
+          </Suspense>
+        ),
+        loader: myInquiriesLoader,
       },
     ],
   },
