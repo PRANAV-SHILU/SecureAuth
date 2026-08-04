@@ -23,7 +23,7 @@ const HEADER = {
   },
 };
 
-function ContactList({ contacts, isResponded }) {
+function ContactList({ contacts }) {
   if (!contacts?.length) {
     return (
       <div
@@ -120,7 +120,7 @@ export default function AdminContact() {
                   {STAT_CARDS.map((card, i) => (
                     <div
                       key={i}
-                      className="flex-1 min-w-[120px] sm:min-w-[200px] p-3 sm:p-4 md:p-6 rounded-xl md:rounded-2xl relative overflow-hidden shadow-lg transition-transform duration-300 hover:-translate-y-1"
+                      className="flex-1 min-w-30 sm:min-w-50 p-3 sm:p-4 md:p-6 rounded-xl md:rounded-2xl relative overflow-hidden shadow-lg transition-transform duration-300 hover:-translate-y-1"
                       style={{ background: card.gradient, color: "#FFFFFF" }}
                     >
                       <div className="absolute -right-3 -bottom-3 sm:-right-5 sm:-bottom-5 opacity-15 text-white scale-[1.5] sm:scale-[2.5] pointer-events-none">

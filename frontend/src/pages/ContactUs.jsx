@@ -17,6 +17,10 @@ import {
   Video,
   X,
   Loader2,
+  Headset,
+  HelpCircle,
+  ClipboardList,
+  Search,
 } from "lucide-react";
 import useDocumentMetadata from "../hooks/useDocumentMetadata";
 import BackButton from "../shared-components/BackButton";
@@ -123,11 +127,11 @@ export default function ContactUs() {
         // ignore
       }
 
-      setFormData({ 
-        name: user?.username || "", 
-        email: user?.email || "", 
-        category: "general", 
-        message: "" 
+      setFormData({
+        name: user?.username || "",
+        email: user?.email || "",
+        category: "general",
+        message: "",
       });
       setImageFiles([]);
       setImagePreviews([]);
@@ -245,6 +249,53 @@ export default function ContactUs() {
             Have a question, suggestion, or need support? We'd love to hear from
             you. Fill out the form below and we'll get back to you.
           </p>
+          {/* All-in-one keyword badges */}
+          <div className="flex flex-wrap items-center justify-center gap-2.5 mt-5">
+            {[
+              {
+                label: "Contact",
+                icon: MessageSquare,
+                gradient: "linear-gradient(135deg, #3b82f6, #6366f1)",
+                shadow: "rgba(99, 102, 241, 0.3)",
+              },
+              {
+                label: "Support",
+                icon: Headset,
+                gradient: "linear-gradient(135deg, #10b981, #14b8a6)",
+                shadow: "rgba(16, 185, 129, 0.3)",
+              },
+              {
+                label: "Inquiry",
+                icon: Search,
+                gradient: "linear-gradient(135deg, #f59e0b, #f97316)",
+                shadow: "rgba(245, 158, 11, 0.3)",
+              },
+              {
+                label: "Help",
+                icon: HelpCircle,
+                gradient: "linear-gradient(135deg, #ec4899, #f43f5e)",
+                shadow: "rgba(236, 72, 153, 0.3)",
+              },
+              {
+                label: "Request",
+                icon: ClipboardList,
+                gradient: "linear-gradient(135deg, #8b5cf6, #a855f7)",
+                shadow: "rgba(139, 92, 246, 0.3)",
+              },
+            ].map(({ label, icon: Icon, gradient, shadow }) => (
+              <span
+                key={label}
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider rounded-full text-white cursor-default select-none hover:scale-105 transition-transform duration-200"
+                style={{
+                  background: gradient,
+                  boxShadow: `0 2px 8px ${shadow}`,
+                }}
+              >
+                <Icon size={13} strokeWidth={2.5} />
+                {label}
+              </span>
+            ))}
+          </div>
         </div>
 
         {/* Form */}
@@ -439,7 +490,9 @@ export default function ContactUs() {
               {/* Empty State: Big Dropzones */}
               {imagePreviews.length === 0 && !videoPreview && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <label className={`flex flex-col items-center justify-center gap-3 p-6 rounded-2xl border-2 border-dashed border-gray-300 dark:border-gray-600 transition-all text-center group ${isSubmitting ? 'cursor-not-allowed opacity-60' : 'cursor-pointer hover:bg-blue-500/5 hover:border-blue-500/50'}`}>
+                  <label
+                    className={`flex flex-col items-center justify-center gap-3 p-6 rounded-2xl border-2 border-dashed border-gray-300 dark:border-gray-600 transition-all text-center group ${isSubmitting ? "cursor-not-allowed opacity-60" : "cursor-pointer hover:bg-blue-500/5 hover:border-blue-500/50"}`}
+                  >
                     <div
                       className="w-12 h-12 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
                       style={{
@@ -476,7 +529,9 @@ export default function ContactUs() {
                     />
                   </label>
 
-                  <label className={`flex flex-col items-center justify-center gap-3 p-6 rounded-2xl border-2 border-dashed border-gray-300 dark:border-gray-600 transition-all text-center group ${isSubmitting ? 'cursor-not-allowed opacity-60' : 'cursor-pointer hover:bg-purple-500/5 hover:border-purple-500/50'}`}>
+                  <label
+                    className={`flex flex-col items-center justify-center gap-3 p-6 rounded-2xl border-2 border-dashed border-gray-300 dark:border-gray-600 transition-all text-center group ${isSubmitting ? "cursor-not-allowed opacity-60" : "cursor-pointer hover:bg-purple-500/5 hover:border-purple-500/50"}`}
+                  >
                     <div
                       className="w-12 h-12 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
                       style={{
@@ -573,7 +628,7 @@ export default function ContactUs() {
                   <div className="flex flex-col gap-2 shrink-0">
                     {imagePreviews.length < 5 && (
                       <label
-                        className={`flex items-center justify-center w-12 h-12 rounded-full border-2 border-dashed border-gray-300 dark:border-gray-600 transition-all group ${isSubmitting ? 'cursor-not-allowed opacity-60' : 'cursor-pointer hover:bg-blue-500/10 hover:border-blue-500/50'}`}
+                        className={`flex items-center justify-center w-12 h-12 rounded-full border-2 border-dashed border-gray-300 dark:border-gray-600 transition-all group ${isSubmitting ? "cursor-not-allowed opacity-60" : "cursor-pointer hover:bg-blue-500/10 hover:border-blue-500/50"}`}
                         title="Add more images"
                       >
                         <ImagePlus
@@ -592,7 +647,7 @@ export default function ContactUs() {
                     )}
                     {!videoPreview && (
                       <label
-                        className={`flex items-center justify-center w-12 h-12 rounded-full border-2 border-dashed border-gray-300 dark:border-gray-600 transition-all group ${isSubmitting ? 'cursor-not-allowed opacity-60' : 'cursor-pointer hover:bg-purple-500/10 hover:border-purple-500/50'}`}
+                        className={`flex items-center justify-center w-12 h-12 rounded-full border-2 border-dashed border-gray-300 dark:border-gray-600 transition-all group ${isSubmitting ? "cursor-not-allowed opacity-60" : "cursor-pointer hover:bg-purple-500/10 hover:border-purple-500/50"}`}
                         title="Add video"
                       >
                         <Video
