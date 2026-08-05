@@ -2,11 +2,25 @@
 
 export const WHATS_NEW_DATA = [
   {
-    id: "july-18-2026",
-    date: "18 July 2026",
-    title: "Feed Experience Overhaul",
-    description: "Major improvements to the Community Feed for a smoother, more polished scrolling and video playback experience.",
+    id: "aug-15-2026",
+    date: "15 August 2026",
+    title: "Contact Us & My Inquiries",
+    description: "A complete support system — submit inquiries with categories and media, track their status, and receive admin responses.",
     updates: [
+      {
+        tag: "Feature",
+        page: "Contact Us",
+        title: "Dynamic Contact Form",
+        description: "A fully categorized contact form with support for text messages, image uploads, and video attachments. Choose from General, Feedback, Suggestion, Issue, Security, or Business Inquiry categories.",
+        link: "/contact-us",
+      },
+      {
+        tag: "Feature",
+        page: "My Inquiries",
+        title: "My Inquiries Dashboard",
+        description: "Track all your submitted inquiries with a Pending/Responded toggler. View admin responses directly on your inquiry cards, or get a friendly 'Not responded yet' status for pending tickets.",
+        link: "/my-inquiries",
+      },
       {
         tag: "Enhancement",
         page: "Feed",

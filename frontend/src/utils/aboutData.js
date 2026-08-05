@@ -170,5 +170,11 @@ export const ABOUT_DEVELOPER = {
       href: "mailto:pranavshilu@zohomail.in",
       display: "pranavshilu@zohomail.in",
     },
+    {
+      label: "Contact",
+      href: "/contact-us",
+      display: "Contact Us",
+      internal: true,
+    },
   ],
 };

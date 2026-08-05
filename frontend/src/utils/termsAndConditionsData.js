@@ -1,4 +1,4 @@
-export const LAST_UPDATED = "June 28, 2026";
+export const LAST_UPDATED = "August 15, 2026";
 
 export const TNC_INTRO = {
   heading: "Terms and Conditions",
@@ -151,7 +151,7 @@ export const TNC_SECTIONS = [
       {
         id: "termination-2",
         content:
-          "Upon termination, your right to use LookSphere will immediately cease. If you wish to terminate your account, you may simply discontinue using the platform or request account deletion by contacting us.",
+          "Upon termination, your right to use LookSphere will immediately cease. If you wish to terminate your account, you may simply discontinue using the platform or request account deletion by submitting a request via our Account Termination form (/account-termination) from Settings. You will be notified via email.",
       },
     ],
   },
@@ -173,7 +173,7 @@ export const TNC_SECTIONS = [
       {
         id: "contact-1",
         content:
-          "If you have any questions about these Terms and Conditions or the LookSphere project, please feel free to reach out.",
+          "If you have any questions about these Terms and Conditions or the LookSphere project, please feel free to reach out. Responses to your Contact Us submissions will be delivered to your My Inquiries dashboard (/my-inquiries) and via email.",
         links: [
           {
             label: "Contact Us",
