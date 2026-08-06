@@ -1,4 +1,5 @@
-import { User, Quote, Mail } from "lucide-react";
+import { User, Quote, Mail, MessageSquare } from "lucide-react";
+import { Link } from "react-router-dom";
 import { CARD_HOVER_SUBTLE, GLASS_SHADOW } from "../../utils/styles";
 import {
   SectionHeading,
@@ -11,6 +12,7 @@ const SOCIAL_ICONS = {
   GitHub: GithubIcon,
   LinkedIn: LinkedinIcon,
   Email: Mail,
+  Contact: MessageSquare,
 };
 
 export default function AboutDeveloper() {
@@ -76,21 +78,16 @@ export default function AboutDeveloper() {
             <div className="flex flex-wrap justify-center gap-3 mt-2">
               {ABOUT_DEVELOPER.socials.map((social) => {
                 const Icon = SOCIAL_ICONS[social.label] || Mail;
-                const isExternal = !social.href.startsWith("mailto:");
-                return (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target={isExternal ? "_blank" : undefined}
-                    rel={isExternal ? "noopener noreferrer" : undefined}
-                    className="flex items-center gap-2 px-4 py-2.5 rounded-xl border transition-all duration-200 md:hover:-translate-y-0.5 md:hover:shadow-md group"
-                    style={{
-                      backgroundColor: "var(--surface-input)",
-                      borderColor: "var(--border-normal)",
-                      color: "var(--text-secondary)",
-                      textDecoration: "none",
-                    }}
-                  >
+                const isExternal = !social.internal && !social.href.startsWith("mailto:");
+                const sharedClassName = "flex items-center gap-2 px-4 py-2.5 rounded-xl border transition-all duration-200 md:hover:-translate-y-0.5 md:hover:shadow-md group";
+                const sharedStyle = {
+                  backgroundColor: "var(--surface-input)",
+                  borderColor: "var(--border-normal)",
+                  color: "var(--text-secondary)",
+                  textDecoration: "none",
+                };
+                const content = (
+                  <>
                     <Icon
                       size={16}
                       className="shrink-0 transition-colors duration-200 group-hover:text-(--primary-500)"
@@ -98,6 +95,28 @@ export default function AboutDeveloper() {
                     <span className="text-sm font-medium transition-colors duration-200 group-hover:text-(--primary-500)">
                       {social.display}
                     </span>
+                  </>
+                );
+
+                return social.internal ? (
+                  <Link
+                    key={social.label}
+                    to={social.href}
+                    className={sharedClassName}
+                    style={sharedStyle}
+                  >
+                    {content}
+                  </Link>
+                ) : (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target={isExternal ? "_blank" : undefined}
+                    rel={isExternal ? "noopener noreferrer" : undefined}
+                    className={sharedClassName}
+                    style={sharedStyle}
+                  >
+                    {content}
                   </a>
                 );
               })}

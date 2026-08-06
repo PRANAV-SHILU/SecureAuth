@@ -94,12 +94,20 @@ export default function Footer() {
                 </>
               )}
               {user && (
-                <NavLink
-                  to="/profile"
-                  className="text-(--text-secondary) hover:text-(--primary-500) transition-colors text-sm"
-                >
-                  Profile
-                </NavLink>
+                <>
+                  <NavLink
+                    to="/profile"
+                    className="text-(--text-secondary) hover:text-(--primary-500) transition-colors text-sm"
+                  >
+                    Profile
+                  </NavLink>
+                  <NavLink
+                    to="/my-inquiries"
+                    className="text-(--text-secondary) hover:text-(--primary-500) transition-colors text-sm"
+                  >
+                    My Inquiries
+                  </NavLink>
+                </>
               )}
             </div>
 
@@ -180,8 +188,9 @@ export default function Footer() {
               </NavLink>
               <NavLink
                 to="/contact-us"
-                className="text-(--text-secondary) hover:text-(--primary-500) transition-colors text-sm"
+                className="text-(--text-secondary) hover:text-(--primary-500) transition-colors text-sm flex items-center gap-2 w-fit"
               >
+                <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
                 Contact Us
               </NavLink>
             </div>

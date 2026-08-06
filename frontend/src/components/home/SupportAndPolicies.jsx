@@ -17,7 +17,7 @@ export default function SupportAndPolicies() {
         subtitle="Browse our helpful guides, user agreements, and data safety policies."
       />
 
-      <div className="grid grid-cols-1 mdlg:grid-cols-3 gap-4 xsm:gap-6 sm:gap-8 max-w-6xl 3xl:max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 mdlg:grid-cols-4 gap-4 xsm:gap-6 max-w-7xl 3xl:max-w-[1700px] mx-auto">
         {supportAndPoliciesData.map((card) => {
           const IconComponent = card.icon;
           return (

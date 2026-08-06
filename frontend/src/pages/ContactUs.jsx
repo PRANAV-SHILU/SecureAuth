@@ -1,6 +1,7 @@
 import { useRef, useContext, useEffect } from "react";
 import {
   Form,
+  Link,
   useNavigation,
   useSubmit,
   useActionData,
@@ -21,6 +22,10 @@ import {
   HelpCircle,
   ClipboardList,
   Search,
+  CheckCircle2,
+  ArrowRight,
+  Inbox,
+  Info,
 } from "lucide-react";
 import useDocumentMetadata from "../hooks/useDocumentMetadata";
 import BackButton from "../shared-components/BackButton";
@@ -282,21 +287,71 @@ export default function ContactUs() {
                 gradient: "linear-gradient(135deg, #8b5cf6, #a855f7)",
                 shadow: "rgba(139, 92, 246, 0.3)",
               },
-            ].map(({ label, icon: Icon, gradient, shadow }) => (
+            ].map((badge) => (
               <span
-                key={label}
+                key={badge.label}
                 className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider rounded-full text-white cursor-default select-none hover:scale-105 transition-transform duration-200"
                 style={{
-                  background: gradient,
-                  boxShadow: `0 2px 8px ${shadow}`,
+                  background: badge.gradient,
+                  boxShadow: `0 2px 8px ${badge.shadow}`,
                 }}
               >
-                <Icon size={13} strokeWidth={2.5} />
-                {label}
+                <badge.icon size={13} strokeWidth={2.5} />
+                {badge.label}
               </span>
             ))}
           </div>
         </div>
+
+        {/* Success Confirmation Card */}
+        {actionData?.success && (
+          <div
+            className="mb-8 p-5 sm:p-6 rounded-2xl border flex flex-col sm:flex-row items-start gap-4 transition-all animate-fadeIn shadow-sm"
+            style={{
+              backgroundColor: "var(--surface-card)",
+              borderColor: "rgba(16, 185, 129, 0.4)",
+            }}
+          >
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/20">
+              <CheckCircle2 size={22} />
+            </div>
+            <div className="flex-1">
+              <h2 className="text-base font-bold text-emerald-600 dark:text-emerald-400 mb-1">
+                Inquiry Submitted Successfully!
+              </h2>
+              <p
+                className="text-xs sm:text-sm leading-relaxed mb-3"
+                style={{ color: "var(--text-secondary)" }}
+              >
+                Your message has been received. You will receive all admin responses directly on the{" "}
+                <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+                  My Inquiries
+                </span>{" "}
+                page (
+                <code
+                  className="px-1.5 py-0.5 rounded font-mono text-xs"
+                  style={{
+                    backgroundColor: "var(--surface-input)",
+                    color: "var(--text-primary)",
+                    border: "1px solid var(--border-light)",
+                  }}
+                >
+                  /my-inquiries
+                </code>
+                ) and a notification email will also be sent to your inbox.
+              </p>
+              <Link
+                to="/my-inquiries"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white! hover:text-white! no-underline bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 transition-all shadow-md hover:shadow-emerald-500/20"
+                style={{ color: "#ffffff", textDecoration: "none" }}
+              >
+                <Inbox size={15} style={{ color: "#ffffff" }} />
+                <span>View in My Inquiries (/my-inquiries)</span>
+                <ArrowRight size={15} style={{ color: "#ffffff" }} />
+              </Link>
+            </div>
+          </div>
+        )}
 
         {/* Form */}
         <Form
@@ -673,8 +728,7 @@ export default function ContactUs() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-sm font-bold uppercase tracking-wider text-white border-none cursor-pointer transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none mt-2"
-            style={{ backgroundColor: "var(--primary-500)" }}
+            className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-sm font-bold uppercase tracking-wider text-white border-none cursor-pointer transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none mt-2 shadow-md bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
           >
             {isSubmitting ? (
               <>
@@ -688,6 +742,38 @@ export default function ContactUs() {
               </>
             )}
           </button>
+
+          {/* Response Delivery Notice */}
+          <div
+            className="flex items-start gap-2.5 p-3.5 rounded-xl border text-xs leading-relaxed mt-1"
+            style={{
+              backgroundColor: "var(--surface-input)",
+              borderColor: "var(--border-normal)",
+            }}
+          >
+            <Info size={16} className="text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+            <span style={{ color: "var(--text-secondary)" }}>
+              <strong style={{ color: "var(--text-primary)" }}>Where to track responses:</strong> Admin replies to your inquiries will be delivered directly to your{" "}
+              <Link
+                to="/my-inquiries"
+                className="font-semibold underline text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
+              >
+                My Inquiries
+              </Link>{" "}
+              page (
+              <code
+                className="px-1.5 py-0.5 rounded font-mono text-[11px] font-medium"
+                style={{
+                  backgroundColor: "var(--surface-card)",
+                  color: "var(--text-primary)",
+                  border: "1px solid var(--border-light)",
+                }}
+              >
+                /my-inquiries
+              </code>
+              ), and you will also receive an email notification upon resolution.
+            </span>
+          </div>
         </Form>
       </div>
     </div>
