@@ -1,4 +1,4 @@
-<div align="right">Last Modified: 2026-07-01</div>
+<div align="right">Last Modified: 15-Aug-2026</div>
 
 
 <div align="center">
@@ -80,6 +80,7 @@ Explore the detailed documentation for different parts of the project:
 - **Global Community:** Share passions, discover new interests, and explore a global feed of content.
 - **Robust Security:** Passwords hashed via `bcrypt` (12 salt rounds), JWT stateless sessions (JWT Auth Token + Auth Header for CSRF/cross-origin safety), and strict CORS policies.
 - **Rich Media Handling:** Upload images and videos directly. Media is optimized and stored efficiently using Multer and Cloudinary.
+- **Support & Inquiries Portal:** Comprehensive Contact Us desk (`/contact-us`) with categorized feedback and multi-media attachments. Users can track real-time admin responses in the My Inquiries page (`/my-inquiries`) and also receive updates via email.
 - **Advanced UI/UX:** Built with React 19, Tailwind CSS, and native CSS for smooth animations, with a focus on accessibility (alt texts).
 - **Data Integrity:** Strict server-side validation via `express-validator` and robust client-side form validation via `Yup` and `React Hook Form`.
 
