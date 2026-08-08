@@ -1,4 +1,4 @@
-<div align="right">Last Modified: 2026-07-01</div>
+<div align="right">Last Modified: 15-Aug-2026</div>
 
 
 <div align="center">
@@ -23,7 +23,7 @@
 
 </div>
 
-This is the backend server for **LookSphere**, a modern social media application. Built with **Node.js** and **Express**, it provides a robust REST API for user authentication, profile management, and media-rich post feeds.
+This is the backend server for **LookSphere**, a modern social media application. Built with **Node.js** and **Express**, it provides a robust REST API for user authentication, profile management, media-rich post feeds, and user contact/inquiry support.
 
 **🌐 Live Demo:** [LookSphere](http://localhost:5173/)  
 **🐱 GitHub Profile:** [@PRANAV-SHILU](https://github.com/PRANAV-SHILU)
@@ -34,6 +34,7 @@ This is the backend server for **LookSphere**, a modern social media application
 
 - **Seamless Media Uploads:** Handles both Images and Videos with auto-optimization and cloud storage via Cloudinary.
 - **Secure Authentication:** JWT-based authentication using localStorage with Authorization header transmission to avoid third-party cookie blocking issues.
+- **Contact & Inquiries System:** Full-featured inquiry submission supporting category routing, multi-image and video attachments, inquiry tracking via My Inquiries (`/my-inquiries`), email updates, and an administrative moderation desk.
 - **Platform Analytics:** Comprehensive metrics and statistics for admin dashboards.
 - **Engagement Tracking:** Dynamic counters for profile views and post views.
 - **Robust Validation:** Strict input validation to ensure data integrity before it reaches the database.
@@ -61,7 +62,7 @@ Security is a top priority for this API. The following protections are in place:
 - **XSS Mitigation:** JWT tokens are stored in localStorage. To mitigate XSS risks, implement strict Content Security Policy (CSP) and validate/sanitize all user inputs.
 - **Route Authorization:** Robust JWT middleware ensures protected routes are only accessible to authenticated users.
 - **Input Sanitization:** All incoming request bodies and parameters are validated and sanitized via `express-validator` to prevent bad data and NoSQL injection.
-- **Role Separation:** Dedicated admin middleware prevents standard users from accessing platform metrics.
+- **Role Separation:** Dedicated admin middleware prevents standard users from accessing platform metrics or contact moderation dashboards.
 
 ## 🏗️ Architecture & Key Design Decisions
 
@@ -72,10 +73,11 @@ Security is a top priority for this API. The following protections are in place:
 
 ## 🗄️ Database Schema Design
 
-The database utilizes MongoDB and is centered around two core entities:
+The database utilizes MongoDB and is centered around three core entities:
 
 - **User Model:** Stores credentials (securely hashed), profile data (avatar, bio, tagline), roles, and dynamic statistics (total post count, profile views).
 - **Post Model:** References the `User` object, stores Cloudinary media URLs, specifies media types (Image/Video), and tracks engagement (post view counts).
+- **Contact Model:** Stores user inquiries, category classifications (`general`, `feedback`, `suggestion`, `issue`, `security`, `inquiry`), Cloudinary attachment URLs (images and video), resolution status, and administrative responses.
 
 ## 📡 API Overview & Error Handling
 
@@ -84,7 +86,8 @@ Here's a quick summary of the available resources. For full details, view the [A
 - **Auth:** Register, login, and logout functionalities.
 - **Users:** Fetch user lists, manage profiles, and view user metrics.
 - **Posts:** Create, edit, fetch feeds, and increment view counts for media posts.
-- **Admin:** Fetch platform-wide analytics and metrics.
+- **Contact & Support:** Submit inquiries with attachments, deliver responses to the user's My Inquiries dashboard (`/my-inquiries`), send email updates, and manage/respond to inquiries via admin portal.
+- **Admin:** Fetch platform-wide analytics, user metrics, and contact statistics.
 
 ### Error Format
 

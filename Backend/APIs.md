@@ -1,9 +1,28 @@
-<div align="right">Last Modified: 2026-07-01</div>
+<div align="right">Last Modified: 15-Aug-2026</div>
 
 
 # LookSphere — API Documentation
 
 Base URL: `http://BASE_URL/api`
+
+---
+
+## System & Health Checks
+
+### GET /
+Welcome message / service check
+- **URL:** `/`
+- **Response:** `200` `"welcome to LookSphere backend"`
+
+### GET /ping
+Uptime heartbeat ping endpoint (used for keep-alive monitoring)
+- **URL:** `/ping`
+- **Response:** `200` `{ status: "ok", timestamp, message: "Server is alive" }`
+
+### GET /health
+System and database connection health check
+- **URL:** `/health`
+- **Response:** `200` `{ status: "healthy", timestamp, database: "connected", uptime }` | `503` `{ status: "unhealthy", ... }`
 
 ---
 
@@ -62,7 +81,7 @@ Fetch all posts for the feed sorted by newest first
 Upload and create a new media post
 - **Auth:** Required
 - **Content:** `multipart/form-data`
-- **Fields:** `media` (required), `mediaType`, `altText`, `caption`
+- **Fields:** `media` (required file), `mediaType`, `altText`, `caption`
 - **Response:** `201` `{ message, post }` | `400` | `401` | `500`
 
 ### PATCH /posts/:id/increment-view
@@ -77,19 +96,59 @@ Edit a post's caption or alt text
 
 ---
 
+## Contact & Support
+
+Provides endpoints for user inquiry submissions with media attachments, user ticket retrieval where users receive response messages in their **My Inquiries** page (`/my-inquiries`) and via email notifications, and administrative moderation.
+
+### POST /contact_support/submit
+Submit a new inquiry, bug report, feature request, or feedback with optional attachments via the **Contact Us** form (`/contact-us`). Users can track their inquiry status on the **My Inquiries** page (`/my-inquiries`) and will receive updates via email.
+- **Auth:** Required
+- **Content:** `multipart/form-data`
+- **Fields:**
+  - `name` (string, 3-30 chars, required)
+  - `email` (string, valid email, required)
+  - `category` (enum: `general` | `feedback` | `suggestion` | `issue` | `security` | `inquiry`, required)
+  - `message` (string, 10-1000 chars, required)
+  - `userId` (string / ObjectId, required)
+  - `images` (file[], max 5 images, optional)
+  - `video` (file, max 1 video, optional)
+- **Response:** `200` `{ success: true, message: "Your message has been sent successfully!" }` | `400` | `401` | `500`
+
+### GET /contact_support/myContacts
+Get all contact inquiries submitted by the logged-in user to render on their **My Inquiries** page (`/my-inquiries`) with response status filter
+- **Auth:** Required
+- **Query Params:**
+  - `isResponded` (`true` | `false`, optional) — filter by answered or pending inquiries
+- **Response:** `200` `{ success: true, message: "User contacts fetched successfully!", data: { contacts: [...] } }` | `401` | `500`
+
+### GET /contact_support/
+Get all inquiries across all users with summary stats (Admin only)
+- **Auth:** Required (Admin)
+- **Query Params:**
+  - `isResponded` (`true` | `false`, optional) — filter by answered or pending inquiries
+- **Response:** `200` `{ success: true, message: "Contact data fetched successfully!", data: { contacts: [...], stats: { total, pending, responded } } }` | `401` | `403` | `500`
+
+### PATCH /contact_support/:id/respond
+Submit or update an admin response to a specific inquiry (Admin only). The response message is delivered directly to the user's **My Inquiries** page (`/my-inquiries`) and sent to their email address.
+- **Auth:** Required (Admin)
+- **Body:** `{ response: "Response text..." }` (string, 1-1000 chars, required)
+- **Response:** `200` `{ success: true, message: "Response sent successfully!" }` | `400` | `401` | `403` | `404` | `500`
+
+---
+
 ## Admin
 
 ### GET /admin/matrics
-Get platform-wide analytics and user/post metrics
-- **Auth:** Required (admin)
+Get platform-wide analytics, user metrics, and post counters
+- **Auth:** Required (Admin)
 - **Response:** `200` `{ success, data }` | `401` | `403` | `500`
 
 ---
 
 ## Error Format
 
-**Validation:** `{ errors: [{ type, msg, path, location }] }`  
-**Other:** `{ message: string }`
+**Validation:** `{ errors: [{ type, msg, path, location }] }` or `{ success: false, message: string }`  
+**Other:** `{ message: string }` or `{ error: string }`
 
 ---
 
