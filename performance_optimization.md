@@ -1,4 +1,4 @@
-<div align="right">Last Modified: 2026-07-01</div>
+<div align="right">Last Modified: 15-Aug-2026</div>
 
 # Performance Optimization — LookSphere
 
@@ -17,6 +17,8 @@ A comprehensive record of every performance optimization applied to LookSphere, 
   - [2.2 Video Poster Thumbnails](#22-video-poster-thumbnails)
   - [2.3 Deferred Video DOM Rendering](#23-deferred-video-dom-rendering)
   - [2.4 Lazy Loading & Async Decoding](#24-lazy-loading--async-decoding)
+  - [2.5 Fixed-Height Media Containers & CLS Elimination](#25-fixed-height-media-containers--cls-elimination)
+  - [2.6 Single-Active Coordinated Video Autoplay](#26-single-active-coordinated-video-autoplay)
 - [3. CSS & Rendering Performance](#3-css--rendering-performance)
   - [3.1 GPU Hardware Acceleration](#31-gpu-hardware-acceleration)
   - [3.2 Content Visibility & Containment](#32-content-visibility--containment)
@@ -146,8 +148,8 @@ This is one of the most impactful optimizations. Previously, every video post re
 
 **Feed page (intersection-based with derived state):**
 ```jsx
-const isPlaying = isVideo && isIntersecting && !isParentModalOpen;
-// Video is only in the DOM when isPlaying is true
+const isPlaying = isVideo && activeVideoId === post._id && !isParentModalOpen;
+// Video is only mounted in the DOM when isPlaying is true
 ```
 
 **Impact:** On a page with 20 video posts, this reduces the active `<video>` elements from 20 to 1–2 at any given time. This saves hundreds of megabytes of browser memory and prevents GPU decoder exhaustion on mobile.
@@ -167,6 +169,33 @@ Every `<img>` tag in the application includes:
 ```
 
 **Impact:** Initial page load only downloads images visible in the viewport. Scrolling is smoother because image decoding doesn't block the rendering pipeline.
+
+---
+
+### 2.5 Fixed-Height Media Containers & CLS Elimination
+
+**Files:** [`frontend/src/pages/Feed.jsx`](./frontend/src/pages/Feed.jsx), [`frontend/src/skeletons/FeedSkeleton.jsx`](./frontend/src/skeletons/FeedSkeleton.jsx)
+
+Cumulative Layout Shift (CLS) degrades the user experience by causing content to jump as asynchronous media resources load. To ensure visual stability:
+- Both `FeedCard` and `FeedSkeleton` enforce a strict `520px` fixed container height on media areas.
+- Media elements scale seamlessly using CSS `object-contain` over a theme-aware background (`var(--bg-tertiary)`), preventing aspect-ratio layout reflows.
+- Skeleton headers, media viewports, and footers match actual component DOM heights pixel-for-pixel.
+
+**Impact:** Eliminates content jumping and layout shifts during initial load, revalidation, and infinite scroll pagination (Cumulative Layout Shift score = 0).
+
+---
+
+### 2.6 Single-Active Coordinated Video Autoplay
+
+**File:** [`frontend/src/pages/Feed.jsx`](./frontend/src/pages/Feed.jsx)
+
+Rather than having each video post manage its own standalone autoplay state (which can cause multiple videos to play concurrently during scroll), LookSphere uses a centralized playback coordinator:
+- An `activeVideoId` state is maintained at the parent `Feed` level.
+- Video cards report viewport intersection via `IntersectionObserver` callbacks (`onVideoIntersect`, `onVideoLeave`).
+- Only the single intersecting card matching `activeVideoId` is allowed to mount and stream the active `<video>` element with audio/unmute support.
+- As the user scrolls to a new video, the previous video unmounts back to a lightweight poster frame instantly.
+
+**Impact:** Prevents audio overlap, conserves device memory, avoids hardware decoder limits on mobile browsers, and delivers a synchronized, seamless feed experience.
 
 ---
 
@@ -221,8 +250,6 @@ Two powerful CSS containment strategies are applied:
 
 ---
 
----
-
 ## 4. React Architecture
 
 ### 4.1 Component Memoization
@@ -264,7 +291,7 @@ This was refactored to use **derived state** — a plain variable calculated dur
 
 ```javascript
 // ✅ After — zero extra renders, zero ESLint warnings
-const isPlaying = isVideo && isIntersecting && !isParentModalOpen;
+const isPlaying = isVideo && activeVideoId === post._id && !isParentModalOpen;
 ```
 
 **Impact:** Eliminates one full render cycle per video card per scroll event. Also resolved the ESLint `setState-synchronously-within-effect` error.
@@ -345,7 +372,8 @@ searchTimeoutRef.current = setTimeout(() => {
 | [`frontend/src/network/cacheInterceptor.js`](./frontend/src/network/cacheInterceptor.js) | In-memory GET cache with TTL |
 | [`frontend/src/network/apiClient.js`](./frontend/src/network/apiClient.js) | Cache interceptor activation |
 | [`frontend/src/pages/Explore.jsx`](./frontend/src/pages/Explore.jsx) | Deferred video DOM, React.memo, debounced search, IntersectionObserver |
-| [`frontend/src/pages/Feed.jsx`](./frontend/src/pages/Feed.jsx) | Derived state, deferred video DOM, React.memo, IntersectionObserver, poster fallback |
+| [`frontend/src/pages/Feed.jsx`](./frontend/src/pages/Feed.jsx) | Coordinated single-active video autoplay, derived state, deferred video DOM, fixed-height 520px media viewport (CLS = 0), React.memo, IntersectionObserver, native poster fallback |
+| [`frontend/src/skeletons/FeedSkeleton.jsx`](./frontend/src/skeletons/FeedSkeleton.jsx) | Matching 520px fixed-height media container for zero layout shift (CLS = 0) |
 | [`frontend/src/pages/Profile.jsx`](./frontend/src/pages/Profile.jsx) | ProfileVideoCard with poster-first pattern, React.memo |
 | [`frontend/src/components/dashboard/LatestPostsTab.jsx`](./frontend/src/components/dashboard/LatestPostsTab.jsx) | DashboardVideoCard with poster-first pattern |
 

@@ -95,11 +95,16 @@ export default function WhatsNew() {
                 >
                   <CardGlow />
                   
-                  <div className="flex items-start gap-4 mb-4 relative z-10">
+                  <div className="flex items-start gap-2 mb-4 relative z-10 flex-wrap">
                     <div className={`shrink-0 flex items-center gap-1.5 px-2.5 py-1 rounded-lg border ${getTagColor(update.tag)}`}>
                       {getTagIcon(update.tag)}
                       <span className="text-xs font-bold uppercase tracking-wider">{update.tag}</span>
                     </div>
+                    {update.page && (
+                      <div className="shrink-0 flex items-center gap-1.5 px-2.5 py-1 rounded-lg border bg-violet-500/10 text-violet-400 border-violet-500/20">
+                        <span className="text-xs font-bold uppercase tracking-wider">{update.page}</span>
+                      </div>
+                    )}
                   </div>
 
                   <div className="relative z-10 grow">

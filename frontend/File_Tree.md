@@ -1,4 +1,4 @@
-<div align="right">Last Modified: 2026-07-01</div>
+<div align="right">Last Modified: 15-Aug-2026</div>
 
 # File Tree: Frontend
 
@@ -10,7 +10,6 @@
 ├── 📝 Design.md
 ├── 📄 eslint.config.js
 ├── 📝 File_Tree.md
-├── 📝 improvement.md
 ├── 🌐 index.html
 ├── ⚙️ package-lock.json
 ├── ⚙️ package.json
@@ -19,42 +18,57 @@
 ├── 📝 README.md
 ├── 📁 src
 │   ├── 📁 actions
+│   │   ├── 📄 contactAction.jsx
 │   │   ├── 📄 editProfileAction.jsx
 │   │   ├── 📄 loginAction.jsx
 │   │   ├── 📄 logoutAction.jsx
 │   │   ├── 📄 registerAction.jsx
 │   │   └── 📄 uploadAction.jsx
 │   ├── 📁 components
+│   │   ├── 📁 about
+│   │   │   ├── 📄 AboutDeveloper.jsx
+│   │   │   ├── 📄 AboutFeatures.jsx
+│   │   │   ├── 📄 AboutHero.jsx
+│   │   │   ├── 📄 AboutJourney.jsx
+│   │   │   └── 📄 AboutTechStack.jsx
+│   │   ├── 📁 admin
+│   │   │   ├── 📄 AdminSidebar.jsx
+│   │   │   └── 📄 ContactCard.jsx
 │   │   ├── 📁 dashboard
 │   │   │   ├── 📄 LatestPostsTab.jsx
 │   │   │   ├── 📄 MetricsTab.jsx
 │   │   │   └── 📄 RecentActivityTab.jsx
 │   │   ├── 📄 ErrorBoundary.jsx
+│   │   ├── 📄 Footer.jsx
 │   │   ├── 📄 Header.jsx
 │   │   ├── 📁 home
 │   │   │   ├── 📄 ActivityFeed.jsx
 │   │   │   ├── 📄 AppShowcase.jsx
 │   │   │   ├── 📄 CTASection.jsx
-│   │   │   ├── 📄 FAQSection.jsx
 │   │   │   ├── 📄 HeroSection.jsx
 │   │   │   ├── 📄 HowItWorks.jsx
+│   │   │   ├── 📄 ReleasesAndVision.jsx
 │   │   │   ├── 📄 SecurityPrivacy.jsx
+│   │   │   ├── 📄 SupportAndPolicies.jsx
 │   │   │   ├── 📄 TechStack.jsx
-│   │   │   ├── 📄 ThankYouSection.jsx
 │   │   │   ├── 📄 ThemePreview.jsx
 │   │   │   ├── 📄 WhatYouCanDo.jsx
 │   │   │   └── 📄 WhyLookSphere.jsx
 │   │   └── 📄 PageNotFound.jsx
+│   ├── 📁 context
+│   │   └── 📄 ContactFormContext.jsx
 │   ├── 📁 hooks
 │   │   └── 📄 useDocumentMetadata.js
 │   ├── 📁 Layout
 │   │   └── 📄 AppLayout.jsx
 │   ├── 📁 loaders
+│   │   ├── 📄 adminContactLoader.jsx
 │   │   ├── 📄 authLoader.jsx
 │   │   ├── 📄 creatorsLoader.jsx
 │   │   ├── 📄 dashboardLoader.jsx
 │   │   ├── 📄 editProfileLoader.jsx
 │   │   ├── 📄 feedLoader.jsx
+│   │   ├── 📄 myInquiriesLoader.jsx
 │   │   ├── 📄 profileLoader.jsx
 │   │   └── 📄 redirectIfAuthenticated.jsx
 │   ├── 🎨 main.css
@@ -68,11 +82,14 @@
 │   │   ├── 📄 apiClient.js
 │   │   ├── 📄 authApi.js
 │   │   ├── 📄 cacheInterceptor.js
+│   │   ├── 📄 contactApi.js
 │   │   ├── 📄 endpoints.js
 │   │   ├── 📄 postApi.js
 │   │   └── 📄 userApi.js
 │   ├── 📁 pages
 │   │   ├── 📄 About.jsx
+│   │   ├── 📄 AdminContact.jsx
+│   │   ├── 📄 ContactUs.jsx
 │   │   ├── 📄 Creators.jsx
 │   │   ├── 📄 Dashboard.jsx
 │   │   ├── 📄 EditProfile.jsx
@@ -81,16 +98,17 @@
 │   │   ├── 📄 Feed.jsx
 │   │   ├── 📄 Home.jsx
 │   │   ├── 📄 Login.jsx
+│   │   ├── 📄 MyInquiries.jsx
 │   │   ├── 📄 PrivacyPolicy.jsx
 │   │   ├── 📄 Profile.jsx
 │   │   ├── 📄 Register.jsx
 │   │   ├── 📄 Roadmap.jsx
 │   │   ├── 📄 TermsAndConditions.jsx
 │   │   └── 📄 WhatsNew.jsx
-
 │   ├── 📁 routes
 │   │   └── 📄 router.jsx
 │   ├── 📁 schema
+│   │   ├── 📄 contactSchema.jsx
 │   │   ├── 📄 editProfileSchema.jsx
 │   │   ├── 📄 loginSchema.jsx
 │   │   ├── 📄 postSchema.jsx
@@ -98,11 +116,14 @@
 │   ├── 📁 services
 │   │   ├── 📄 adminService.js
 │   │   ├── 📄 authService.js
+│   │   ├── 📄 contactService.js
 │   │   ├── 📄 postService.js
 │   │   └── 📄 userService.js
 │   ├── 📁 shared-components
 │   │   ├── 📄 BackButton.jsx
-│   │   └── 📄 SharedHomeComponents.jsx
+│   │   ├── 📄 LegalDocument.jsx
+│   │   ├── 📄 SharedHomeComponents.jsx
+│   │   └── 📄 SvgIcons.jsx
 │   ├── 📁 skeletons
 │   │   ├── 📄 CreatorsSkeleton.jsx
 │   │   ├── 📄 DashboardSkeleton.jsx
@@ -112,7 +133,7 @@
 │   └── 📁 utils
 │       ├── 📄 aboutData.js
 │       ├── 📄 cloudinaryOptimizer.js
-│       ├── 📄 faqData.js
+│       ├── 📄 faqData.jsx
 │       ├── 📄 feedRefresher.js
 │       ├── 📄 privacyPolicyData.js
 │       ├── 📄 roadmapData.js
@@ -122,5 +143,4 @@
 │       └── 📄 whatsNewData.js
 ├── 📄 vercel.json
 └── 📄 vite.config.js
-
 ```

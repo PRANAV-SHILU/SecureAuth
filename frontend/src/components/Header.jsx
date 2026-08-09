@@ -15,6 +15,7 @@ import {
   X,
   ChevronDown,
   Sparkles,
+  MessageSquareText,
 } from "lucide-react";
 import ConfirmationModal from "../modals/ConfirmationModal.jsx";
 import { desktopNavLinkClass, mobileNavLinkClass } from "../utils/styles";
@@ -175,7 +176,7 @@ export default function Header() {
                 {/* Avatar button */}
                 <button
                   onClick={() => setDropdownOpen((prev) => !prev)}
-                  className="bg-transparent border-none cursor-pointer p-0 flex items-center rounded-full ring-2 ring-transparent transition-[box-shadow,transform] duration-300 hover:ring-(--primary-500) hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] hover:translate-y-[-2px] active:scale-95"
+                  className="bg-transparent border-none cursor-pointer p-0 flex items-center rounded-full ring-2 ring-transparent transition-[box-shadow,transform] duration-300 hover:ring-(--primary-500) hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] hover:-translate-y-0.5 active:scale-95"
                   aria-label="User menu"
                 >
                   {user.profileImage && !imgError ? (
@@ -194,51 +195,65 @@ export default function Header() {
                 {/* Dropdown */}
                 {dropdownOpen && (
                   <div
-                      style={{
-                        position: "absolute",
-                        top: "calc(100% + 0.5rem)",
-                        right: 0,
-                        minWidth: "10rem",
-                        background: "var(--surface-card)",
-                        border: "1px solid var(--border-color)",
-                        borderRadius: "var(--radius-md)",
-                        boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
-                        overflow: "hidden",
-                        zIndex: 100,
-                      }}
+                    style={{
+                      position: "absolute",
+                      top: "calc(100% + 0.5rem)",
+                      right: 0,
+                      minWidth: "10rem",
+                      background: "var(--surface-card)",
+                      border: "1px solid var(--border-color)",
+                      borderRadius: "var(--radius-md)",
+                      boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
+                      overflow: "hidden",
+                      zIndex: 100,
+                    }}
+                  >
+                    <NavLink
+                      to="/profile"
+                      onClick={() => setDropdownOpen(false)}
+                      className="block px-4 py-3 text-sm text-(--text-primary) no-underline bg-transparent cursor-pointer transition-all duration-300 hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/30 dark:hover:text-blue-400 hover:pl-5 group"
                     >
-                      <NavLink
-                        to="/profile"
-                        onClick={() => setDropdownOpen(false)}
-                        className="block px-4 py-3 text-sm text-(--text-primary) no-underline transition-all duration-300 hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/30 dark:hover:text-blue-400 hover:pl-5 group"
-                      >
-                        <div className="flex items-center gap-2">
-                          <User
-                            size={16}
-                            className="transition-transform duration-300 group-hover:scale-110 group-hover:-translate-x-1"
-                          />{" "}
-                          Profile
-                        </div>
-                      </NavLink>
+                      <div className="flex items-center gap-2">
+                        <User
+                          size={16}
+                          className="transition-transform duration-300 group-hover:scale-110 group-hover:-translate-x-1"
+                        />{" "}
+                        Profile
+                      </div>
+                    </NavLink>
 
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setDropdownOpen(false);
-                          setShowLogoutModal(true);
-                        }}
-                        className="block w-full text-left px-4 py-3 text-sm text-(--status-error) bg-transparent border-none border-t border-(--border-color) cursor-pointer transition-all duration-300 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/30 dark:hover:text-red-400 hover:pl-5 group"
-                      >
-                        <div className="flex items-center gap-2">
-                          <LogOut
-                            size={16}
-                            className="transition-transform duration-300 group-hover:scale-110 group-hover:-translate-x-1"
-                          />{" "}
-                          Logout
-                        </div>
-                      </button>
-                    </div>
-                  )}
+                    <NavLink
+                      to="/my-inquiries"
+                      onClick={() => setDropdownOpen(false)}
+                      className="block px-4 py-3 text-sm text-(--text-primary) no-underline bg-transparent cursor-pointer transition-all duration-300 hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/30 dark:hover:text-blue-400 hover:pl-5 group"
+                    >
+                      <div className="flex items-center gap-2">
+                        <MessageSquareText
+                          size={16}
+                          className="transition-transform duration-300 group-hover:scale-110 group-hover:-translate-x-1"
+                        />{" "}
+                        My Inquiries
+                      </div>
+                    </NavLink>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setDropdownOpen(false);
+                        setShowLogoutModal(true);
+                      }}
+                      className="block w-full text-left px-4 py-3 text-sm text-(--status-error) bg-transparent border-none border-t border-(--border-color) cursor-pointer transition-all duration-300 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/30 dark:hover:text-red-400 hover:pl-5 group"
+                    >
+                      <div className="flex items-center gap-2">
+                        <LogOut
+                          size={16}
+                          className="transition-transform duration-300 group-hover:scale-110 group-hover:-translate-x-1"
+                        />{" "}
+                        Logout
+                      </div>
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <div style={{ display: "flex", gap: "0.75rem" }}>
@@ -257,7 +272,6 @@ export default function Header() {
               </div>
             )}
           </nav>
-
         </header>
       </div>
 
@@ -269,161 +283,171 @@ export default function Header() {
             className="fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-md z-40"
             onClick={() => setMobileMenuOpen(false)}
           />
-          <div className="mobile-menu-container fixed top-0 right-0 bottom-0 w-2/3 max-w-[280px] bg-(--surface-normal) border-l border-(--border-normal) shadow-2xl z-50 flex flex-col overflow-y-auto liquid-glass">
-              <div className="flex flex-col p-4 pt-6 gap-2">
-                {/* Close Button */}
-                <div className="flex justify-end mb-2">
-                  <button
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="p-2 rounded-lg bg-transparent border-none cursor-pointer text-(--text-muted) hover:text-(--text-primary) hover:bg-(--surface-hover) transition-all duration-200"
-                    aria-label="Close menu"
-                  >
-                    <X size={28} />
-                  </button>
+          <div className="mobile-menu-container fixed top-0 right-0 bottom-0 w-2/3 max-w-70 bg-(--surface-normal) border-l border-(--border-normal) shadow-2xl z-50 flex flex-col overflow-y-auto liquid-glass">
+            <div className="flex flex-col p-4 pt-6 gap-2">
+              {/* Close Button */}
+              <div className="flex justify-end mb-2">
+                <button
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-2 rounded-lg bg-transparent border-none cursor-pointer text-(--text-muted) hover:text-(--text-primary) hover:bg-(--surface-hover) transition-all duration-200"
+                  aria-label="Close menu"
+                >
+                  <X size={28} />
+                </button>
+              </div>
+
+              {/* Nav Links */}
+              <NavLink
+                to="/"
+                onClick={() => setMobileMenuOpen(false)}
+                className={mobileNavLinkClass}
+              >
+                <Home size={20} className="text-inherit" /> Home
+              </NavLink>
+
+              {user?.role === "admin" && (
+                <NavLink
+                  to="/dashboard"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={mobileNavLinkClass}
+                >
+                  <LayoutDashboard size={20} className="text-inherit" />{" "}
+                  Dashboard
+                </NavLink>
+              )}
+              <NavLink
+                to="/feed"
+                onClick={() => setMobileMenuOpen(false)}
+                className={mobileNavLinkClass}
+              >
+                <ImageIcon size={20} className="text-inherit" /> Feed
+              </NavLink>
+              <NavLink
+                to="/explore"
+                onClick={() => setMobileMenuOpen(false)}
+                className={mobileNavLinkClass}
+              >
+                <Search size={20} className="text-inherit" /> Explore
+              </NavLink>
+              <NavLink
+                to="/creators"
+                onClick={() => setMobileMenuOpen(false)}
+                className={mobileNavLinkClass}
+              >
+                <Users size={20} className="text-inherit" /> Creators
+              </NavLink>
+              <NavLink
+                to="/whats-new"
+                onClick={() => setMobileMenuOpen(false)}
+                className={mobileNavLinkClass}
+              >
+                <Sparkles size={20} className="text-inherit" />
+                <div className="relative">
+                  What's New
+                  <span className="absolute -top-0.5 -right-2.5 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
                 </div>
+              </NavLink>
 
-                {/* Nav Links */}
-                <NavLink
-                  to="/"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={mobileNavLinkClass}
-                >
-                  <Home size={20} className="text-inherit" /> Home
-                </NavLink>
+              {/* Divider */}
+              <div className="h-px bg-(--border-color) my-1" />
 
-                {user?.role === "admin" && (
-                  <NavLink
-                    to="/dashboard"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={mobileNavLinkClass}
-                  >
-                    <LayoutDashboard size={20} className="text-inherit" />{" "}
-                    Dashboard
-                  </NavLink>
-                )}
-                <NavLink
-                  to="/feed"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={mobileNavLinkClass}
-                >
-                  <ImageIcon size={20} className="text-inherit" /> Feed
-                </NavLink>
-                <NavLink
-                  to="/explore"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={mobileNavLinkClass}
-                >
-                  <Search size={20} className="text-inherit" /> Explore
-                </NavLink>
-                <NavLink
-                  to="/creators"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={mobileNavLinkClass}
-                >
-                  <Users size={20} className="text-inherit" /> Creators
-                </NavLink>
-                <NavLink
-                  to="/whats-new"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={mobileNavLinkClass}
-                >
-                  <Sparkles size={20} className="text-inherit" />
-                  <div className="relative">
-                    What's New
-                    <span className="absolute -top-0.5 -right-2.5 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+              {/* Auth Section */}
+              {user ? (
+                <>
+                  {/* Profile Row */}
+                  <div className="flex items-center justify-between w-full hover:bg-(--surface-hover) rounded-lg transition-colors">
+                    <NavLink
+                      to="/profile"
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        setMobileProfileOpen(false);
+                      }}
+                      className="flex items-center gap-2 p-3 text-(--text-primary) no-underline flex-1"
+                    >
+                      {user.profileImage && !imgError ? (
+                        <img
+                          src={user.profileImage}
+                          alt={user.username}
+                          onError={() => setImgError(true)}
+                          className="w-6 h-6 rounded-full object-cover"
+                        />
+                      ) : (
+                        <UserCircle2
+                          size={24}
+                          className="text-(--text-muted)"
+                        />
+                      )}
+                      <span>{user.username}</span>
+                    </NavLink>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setMobileProfileOpen(!mobileProfileOpen);
+                      }}
+                      className="p-3 bg-transparent border-none cursor-pointer text-(--text-primary) flex items-center justify-center rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                      aria-label="Toggle profile menu"
+                    >
+                      <ChevronDown
+                        size={18}
+                        className={`transition-transform ${mobileProfileOpen ? "rotate-180" : ""}`}
+                      />
+                    </button>
                   </div>
-                </NavLink>
 
-                {/* Divider */}
-                <div className="h-px bg-(--border-color) my-1" />
-
-                {/* Auth Section */}
-                {user ? (
-                  <>
-                    {/* Profile Row */}
-                    <div className="flex items-center justify-between w-full hover:bg-(--surface-hover) rounded-lg transition-colors">
+                  {/* Profile Submenu */}
+                  {mobileProfileOpen && (
+                    <div className="overflow-hidden bg-(--surface-input) rounded-xl mt-2 ml-6 pl-1 border border-(--border-normal) flex flex-col gap-4">
                       <NavLink
                         to="/profile"
                         onClick={() => {
                           setMobileMenuOpen(false);
                           setMobileProfileOpen(false);
                         }}
-                        className="flex items-center gap-2 p-3 text-(--text-primary) no-underline flex-1"
+                        className="flex items-center gap-3 px-3 pt-3 text-(--text-primary) no-underline rounded-lg hover:bg-(--surface-hover) transition-colors"
                       >
-                        {user.profileImage && !imgError ? (
-                          <img
-                            src={user.profileImage}
-                            alt={user.username}
-                            onError={() => setImgError(true)}
-                            className="w-6 h-6 rounded-full object-cover"
-                          />
-                        ) : (
-                          <UserCircle2
-                            size={24}
-                            className="text-(--text-muted)"
-                          />
-                        )}
-                        <span>{user.username}</span>
+                        <User size={18} /> Profile
+                      </NavLink>
+                      <NavLink
+                        to="/my-inquiries"
+                        onClick={() => {
+                          setMobileMenuOpen(false);
+                          setMobileProfileOpen(false);
+                        }}
+                        className="flex items-center gap-3 px-3 text-(--text-primary) no-underline rounded-lg hover:bg-(--surface-hover) transition-colors"
+                      >
+                        <MessageSquareText size={18} /> My Inquiries
                       </NavLink>
                       <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setMobileProfileOpen(!mobileProfileOpen);
+                        onClick={() => {
+                          setMobileMenuOpen(false);
+                          setMobileProfileOpen(false);
+                          setShowLogoutModal(true);
                         }}
-                        className="p-3 bg-transparent border-none cursor-pointer text-(--text-primary) flex items-center justify-center rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
-                        aria-label="Toggle profile menu"
+                        className="flex items-center gap-3 px-3 pb-3 rounded-lg hover:bg-red-500/10 transition-colors bg-transparent border-none cursor-pointer text-(--status-error) text-left w-full"
                       >
-                        <ChevronDown
-                          size={18}
-                          className={`transition-transform ${mobileProfileOpen ? "rotate-180" : ""}`}
-                        />
+                        <LogOut size={18} /> Logout
                       </button>
                     </div>
-
-                    {/* Profile Submenu */}
-                    {mobileProfileOpen && (
-                      <div className="overflow-hidden bg-(--surface-input) rounded-xl mt-2 ml-6 pl-1 border border-(--border-normal) flex flex-col gap-4">
-                          <NavLink
-                            to="/profile"
-                            onClick={() => {
-                              setMobileMenuOpen(false);
-                              setMobileProfileOpen(false);
-                            }}
-                            className="flex items-center gap-3 px-3 pt-3 text-(--text-primary) no-underline rounded-lg hover:bg-(--surface-hover) transition-colors"
-                          >
-                            <User size={18} /> Profile
-                          </NavLink>
-                          <button
-                            onClick={() => {
-                              setMobileMenuOpen(false);
-                              setMobileProfileOpen(false);
-                              setShowLogoutModal(true);
-                            }}
-                            className="flex items-center gap-3 px-3 pb-3 rounded-lg hover:bg-red-500/10 transition-colors bg-transparent border-none cursor-pointer text-(--status-error) text-left w-full"
-                          >
-                            <LogOut size={18} /> Logout
-                          </button>
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <div className="flex flex-col gap-2">
-                    <NavLink
-                      to="/login"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="btn btn-primary text-center"
-                    >
-                      Login
-                    </NavLink>
-                    <NavLink
-                      to="/register"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="btn btn-secondary text-center"
-                    >
-                      Register
-                    </NavLink>
-                  </div>
-                )}
+                  )}
+                </>
+              ) : (
+                <div className="flex flex-col gap-2">
+                  <NavLink
+                    to="/login"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="btn btn-primary text-center"
+                  >
+                    Login
+                  </NavLink>
+                  <NavLink
+                    to="/register"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="btn btn-secondary text-center"
+                  >
+                    Register
+                  </NavLink>
+                </div>
+              )}
             </div>
           </div>
         </>

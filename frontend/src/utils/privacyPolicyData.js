@@ -1,6 +1,6 @@
 // frontend/src/utils/privacyPolicyData.js
 
-export const LAST_UPDATED = "June 28, 2026";
+export const LAST_UPDATED = "August 15, 2026";
 
 export const PRIVACY_INTRO = {
   heading: "Privacy Policy",
@@ -225,8 +225,6 @@ export const PRIVACY_SECTIONS = [
     ],
   },
 
-
-
   /*
   {
     id: "data-retention",
@@ -236,7 +234,7 @@ export const PRIVACY_SECTIONS = [
         id: "retention",
         subheading: null,
         content:
-          "User accounts and all associated posts are retained in our database until manually removed. Profile images and uploaded media remain on Cloudinary until manually deleted. There is currently no self-service account or post deletion feature — this is planned for a future release. If you would like your account or any data removed before that feature is available, please contact us directly using the details in the Contact section and we will handle it promptly.",
+           "User accounts and all associated posts are retained in our database until manually removed. Profile images and uploaded media remain on Cloudinary until manually deleted. There is currently no self-service account or post deletion feature — this is planned for a future release. If you would like your account or any data removed before that feature is available, please submit a request via our Contact Us form (/contact-us) or email us directly. You can track the status of your request in My Inquiries (/my-inquiries) and you will also be notified via email once it is processed.",
         table: null,
       },
     ],
@@ -264,7 +262,7 @@ export const PRIVACY_SECTIONS = [
         id: "contact-info",
         subheading: null,
         content:
-          "If you have any questions about this Privacy Policy or would like to request data deletion, you can reach Pranav Shilu through any of the following:",
+           "If you have any questions about this Privacy Policy or would like to request data deletion, you can reach Pranav Shilu through any of the following. Responses to your Contact Us submissions will be delivered to your My Inquiries dashboard (/my-inquiries) and via email.",
         table: null,
         links: [
           {

@@ -1,4 +1,4 @@
-<div align="right">Last Modified: 2026-07-01</div>
+<div align="right">Last Modified: 15-Aug-2026</div>
 
 
 <div align="center">
@@ -26,7 +26,7 @@
 
 LookSphere is a modern social media platform designed to help you look into your surrounding sphere. It is reliable, consistent, and privacy-first. We believe in protecting your privacy—your data is never shared or leaked. We support both light and dark themes, with a dark-theme-first approach.
 
-The frontend is crafted with React 19 and Vite for a lightning-fast development and production experience. Every screen — from the global feed to user profiles — is built with reusable, modular components and styled using Tailwind CSS for a sleek, dark-theme-first aesthetic. Forms are powered by React Hook Form and validated with Yup schemas on the client side before any data touches the network, keeping the experience smooth and secure. Lucide React provides a clean, consistent icon set, while React Toastify and React Spinners handle real-time feedback so users always know what's happening. The result is an interface that feels responsive, polished, and purpose-built for social interaction.
+The frontend is crafted with React 19 and Vite for a lightning-fast development and production experience. Every screen — from the global feed and user profiles to the contact desk and admin moderation panels — is built with reusable, modular components and styled using Tailwind CSS for a sleek, dark-theme-first aesthetic. Forms are powered by React Hook Form and validated with Yup schemas on the client side before any data touches the network, keeping the experience smooth and secure. Lucide React provides a clean, consistent icon set, while React Toastify and React Spinners handle real-time feedback so users always know what's happening. The result is an interface that feels responsive, polished, and purpose-built for social interaction.
 
 ## 🚀 Tech Stack & Libraries
 
@@ -46,6 +46,7 @@ The frontend is crafted with React 19 and Vite for a lightning-fast development 
 
 - **Global Community:** Join a diverse, vibrant community of creators, thinkers, and innovators across the globe.
 - **Share & Discover:** Share your passions and discover new interests through an intuitive content discovery engine.
+- **Support & Inquiries:** Dedicated Contact Us portal (`/contact-us`) with category routing, media attachments (images/video), real-time ticket tracking under My Inquiries (`/my-inquiries`), email notifications, and an admin moderation dashboard.
 - **Privacy First:** Your data belongs to you. Advanced security features keep your conversations and content safe.
 
 ## ⚙️ How It Works
@@ -53,11 +54,13 @@ The frontend is crafted with React 19 and Vite for a lightning-fast development 
 1. **Secure Signup:** Your password is encrypted with 12 salt rounds before hitting our database.
 2. **Upload Media:** Share images or videos with custom captions and alt-text for accessibility.
 3. **Discover & Engage:** Explore the Feed, search for specific users, and see your view counts grow.
+4. **Get Support:** Submit inquiries or feedback directly through the Contact Us desk (`/contact-us`). You will receive admin responses directly on your My Inquiries page (`/my-inquiries`) and get notified via email.
 
 ## 🎯 What You Can Do
 
 - **Post & Share:** Express yourself! Upload photos & media, write captions & stories, add alt text for accessibility, reach a global audience, and see real-time post view counts.
 - **Explore & Discover:** Never miss a thing. Browse a global post feed, use smart search & filters, discover new creators, and get curated recommendations.
+- **Support & Inquiries:** Reach out directly through the interactive Contact Us form (`/contact-us`), attach screenshots or video clips, track submitted requests under My Inquiries (`/my-inquiries`), receive official admin response messages, and receive email notifications.
 - **Secure Profile:** Keep your data protected. Manage your profile, enjoy JWT stateless sessions, bcrypt password hashing, and profile view tracking.
 
 ## 🛡️ Data Integrity & Security
@@ -78,7 +81,7 @@ The project has a well-organized, scalable architecture. For a detailed breakdow
 
 ## ⚖️ Copyright & License
 
-  <b>© 2026 LookSphere. All rights reserved.**
+  <b>© 2026 LookSphere. All rights reserved.</b>
 
 ---
 **📚 LookSphere Documentation Index:**

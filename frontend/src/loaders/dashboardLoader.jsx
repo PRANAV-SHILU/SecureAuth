@@ -14,7 +14,7 @@ export function dashboardLoader() {
   }
 
   const dashboardPromise = getAdminMetrics()
-    .then(res => res.data || res)
+    .then((res) => res.data || res)
     .catch((error) => {
       console.error("Dashboard loader error:", error);
       throw new Error(error.message || "Failed to load dashboard data");

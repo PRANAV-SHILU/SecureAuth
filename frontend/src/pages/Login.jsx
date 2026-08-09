@@ -1,32 +1,14 @@
-import { useEffect, useState } from "react";
-import { Form, useActionData, useNavigation, NavLink } from "react-router-dom";
+import { useState } from "react";
+import { Form, useNavigation, NavLink } from "react-router-dom";
 import useDocumentMetadata from "../hooks/useDocumentMetadata";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { toast } from "react-toastify";
-import { loginSchema } from "../schema/loginSchema";
+
 import { Eye, EyeOff } from "lucide-react";
 
 export default function Login() {
   useDocumentMetadata("Login");
-  const actionData = useActionData();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
   const [showPassword, setShowPassword] = useState(false);
-
-  useEffect(() => {
-    if (actionData?.error) {
-      toast.error(actionData.error);
-    }
-  }, [actionData]);
-
-  const {
-    register,
-    formState: { errors, isValid },
-  } = useForm({
-    resolver: yupResolver(loginSchema),
-    mode: "all",
-  });
 
   const handleKeyDown = (e) => {
     if (e.key === " ") {
@@ -43,9 +25,8 @@ export default function Login() {
       
       if (index > -1 && index < inputs.length - 1) {
         e.preventDefault();
-        // Only go to next input if current one has a value and no error
-        const fieldName = e.target.name;
-        if (e.target.value.trim() !== "" && !errors[fieldName]) {
+        // Only go to next input if current one has a value
+        if (e.target.value.trim() !== "") {
           inputs[index + 1].focus();
         }
       }
@@ -72,18 +53,9 @@ export default function Login() {
               placeholder="Enter your username"
               className="input-field text-sm xsm:text-base 4xl:text-xl 4xl:py-4 4xl:px-6 4xl:rounded-lg"
               autoComplete="username"
-              {...register("username")}
+              required
+              name="username"
             />
-            {errors.username && (
-              <p
-                className="text-xs 4xl:text-base mt-1.5"
-                style={{
-                  color: "var(--status-error)"
-                }}
-              >
-                {errors.username.message}
-              </p>
-            )}
           </div>
 
           <div className="input-group">
@@ -93,7 +65,8 @@ export default function Login() {
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter your password"
                 className="input-field text-sm xsm:text-base 4xl:text-xl 4xl:py-4 4xl:px-6 4xl:rounded-lg"
-                {...register("password")}
+                required
+                name="password"
                 style={{ paddingRight: "2.5rem" }}
               />
               <button
@@ -117,23 +90,13 @@ export default function Login() {
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
-            {errors.password && (
-              <p
-                className="text-xs 4xl:text-base mt-1.5"
-                style={{
-                  color: "var(--status-error)"
-                }}
-              >
-                {errors.password.message}
-              </p>
-            )}
           </div>
 
           <div className="input-group mt-2">
             <button
               type="submit"
               className="btn btn-primary w-full py-2 px-4 xsm:py-2.5 4xl:py-4.5 4xl:text-xl 4xl:rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-transform active:scale-95 hover:scale-[1.02]"
-              disabled={!isValid || isSubmitting}
+              disabled={isSubmitting}
             >
               {isSubmitting ? "Logging in…" : "Login"}
             </button>

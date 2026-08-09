@@ -7,7 +7,17 @@ export async function authLoader({ request }) {
     const url = new URL(request.url);
 
     // Define routes that guests are allowed to visit
-    const publicRoutes = ["/", "/login", "/register"];
+    const publicRoutes = [
+      "/",
+      "/login",
+      "/register",
+      "/privacy-policy",
+      "/terms-and-conditions",
+      "/faq",
+      "/about-us",
+      "/whats-new",
+      "/roadmap"
+    ];
 
     const path = url.pathname || "/";
 
@@ -17,7 +27,7 @@ export async function authLoader({ request }) {
 
     return user;
   } catch (err) {
-    // console.log("auth loader error:", err);
+    console.log("auth loader error:", err);
     throw new Error("Can't authenticate user, try again later");
   }
 }

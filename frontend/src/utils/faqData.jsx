@@ -9,7 +9,7 @@ import {
   Rocket,
 } from "lucide-react";
 
-export const LAST_UPDATED = "June 28, 2026";
+export const LAST_UPDATED = "August 15, 2026";
 
 export const FAQ_CATEGORIES = [
   {
@@ -38,15 +38,15 @@ export const FAQ_CATEGORIES = [
     questions: [
       {
         q: "How do I report bugs, security concerns, or inappropriate content?",
-        a: "If you encounter a bug, a visual layout issue, a security concern, or inappropriate user-generated content, you can report it directly by submitting the details on our internal /contact-us form, emailing us at pranavshilu@zohomail.in, or by sending a direct message on LinkedIn (linkedin.com/in/pranavshilu). All reports are reviewed promptly.",
+        a: "If you encounter a bug, a visual layout issue, a security concern, or inappropriate user-generated content, you can report it directly by submitting the details on our internal /contact-us form, emailing us at pranavshilu@zohomail.in, or by sending a direct message on LinkedIn (linkedin.com/in/pranavshilu). All reports are reviewed promptly.\n\nOnce submitted, you can track your inquiry and view admin responses anytime at /my-inquiries. You will also receive a mail notification when your inquiry is responded to.",
       },
       {
         q: "How can I contact the developer or submit feedback?",
-        a: "You can reach out through any of the following channels:\n\n1. Contact Form: Navigate to our internal /contact-us page.\n2. Email: Send an email directly to pranavshilu@zohomail.in.\n3. LinkedIn: Connect at linkedin.com/in/pranavshilu.",
+        a: "You can reach out through any of the following channels:\n\n1. Contact Form: Navigate to our internal /contact-us page.\n2. Email: Send an email directly to pranavshilu@zohomail.in.\n3. LinkedIn: Connect at linkedin.com/in/pranavshilu.\n\nAll responses to your contact form submissions will appear in your My Inquiries page (/my-inquiries), accessible from your profile menu. You will also be notified via email when a response is sent.",
       },
       {
         q: "How long does it typically take to receive a response?",
-        a: "We aim to respond to all your inquiries and contact form submissions within 24 to 48 hours. LinkedIn connection requests and messages are reviewed daily.",
+        a: "We aim to respond to all your inquiries and contact form submissions within 24 to 48 hours. You will receive the response directly in your My Inquiries dashboard (/my-inquiries), where you can toggle between Pending and Responded tickets, as well as via email. LinkedIn connection requests and messages are reviewed daily.",
       },
     ],
   },
@@ -176,7 +176,7 @@ export const FAQ_CATEGORIES = [
     questions: [
       {
         q: "What is the roadmap for Communication features on LookSphere?",
-        a: "We plan to implement the following features to improve platform communication:\n\n• Contact Us: A fully functional messaging system for direct messages.\n• Live Notifications: Real-time action logs and activity alerts.\n• Admin Notes: Support for customized notifications sent directly by administrators to specific user feeds.\n• Mail Services: Automated email flows for registration, security changes, and notifications.",
+        a: "We plan to implement the following features to improve platform communication:\n\n• Real-Time Chatting: Direct messaging between users with live chat powered by WebSockets.\n• Live Notifications: Real-time action logs and activity alerts.\n• Admin Notes: Support for customized notifications sent directly by administrators to specific user feeds.\n• Mail Services: Automated email flows for registration, security changes, and notifications.\n\n✅ Already shipped: Contact Us form with categorized submissions and My Inquiries dashboard to track responses at /my-inquiries.",
       },
       {
         q: "What security and authentication upgrades are planned?",

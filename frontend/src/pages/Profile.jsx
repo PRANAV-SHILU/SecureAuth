@@ -248,7 +248,7 @@ function ProfileContent({ data, username, submit }) {
         className="w-full mx-auto pt-8 pb-16 px-0 md:px-8"
       >
         {/* --- Profile Header --- */}
-        <section className="max-w-[600px] 4xl:max-w-[1000px] mx-auto flex flex-col items-start gap-3 sm:gap-6 justify-center">
+        <section className="max-w-150 4xl:max-w-250 mx-auto flex flex-col items-start gap-3 sm:gap-6 justify-center">
           <div className="flex w-full justify-between items-center sm:my-2">
             <h1 className="hidden sm:block text-2xl md:text-3xl 4xl:text-5xl font-bold tracking-wide">
               {user.username}
@@ -264,7 +264,7 @@ function ProfileContent({ data, username, submit }) {
           <div className="flex flex-row items-start sm:items-start w-full mb-2 4xl:mb-6">
             {/* Profile Image */}
             <div
-              className="flex items-center justify-center overflow-hidden border shadow-sm shrink-0 sm:w-[150px] sm:h-[150px] 4xl:w-[220px] 4xl:h-[220px] w-[90px] h-[90px] sm:mr-7 mr-4 4xl:mr-12"
+              className="flex items-center justify-center overflow-hidden border shadow-sm shrink-0 sm:w-37.5 sm:h-37.5 4xl:w-55 4xl:h-55 w-22.5 h-22.5 sm:mr-7 mr-4 4xl:mr-12"
               style={{
                 backgroundColor: "var(--bg-primary)",
                 borderColor: "var(--border-strong)",
@@ -339,7 +339,7 @@ function ProfileContent({ data, username, submit }) {
           {isOwnProfile && (
             <NavLink
               to="/edit-profile"
-              className="btn btn-secondary w-[50%] md:w-full mt-4 max-w-[250px]"
+              className="btn btn-secondary w-[50%] md:w-full mt-4 max-w-62.5"
               style={{ fontSize: "20px", fontWeight: 500, padding: "0" }}
             >
               Edit Profile

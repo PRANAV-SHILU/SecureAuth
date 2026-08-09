@@ -331,6 +331,14 @@ export const releasesAndVisionData = [
 
 export const supportAndPoliciesData = [
   {
+    title: "Contact Us",
+    description: "Get in touch with us for support, inquiries, feature suggestions, or direct feedback.",
+    link: "/contact-us",
+    icon: MessageSquare,
+    color: "#06b6d4",
+    badge: "Contact",
+  },
+  {
     title: "Help & FAQ",
     description: "Browse our frequently asked questions, security details, and get quick answers.",
     link: "/faq",

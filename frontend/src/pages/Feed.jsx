@@ -25,6 +25,10 @@ const FeedCard = React.memo(function FeedCard({
   currentUser,
   onPostClick,
   isParentModalOpen,
+  activeVideoId,
+  onVideoIntersect,
+  onVideoLeave,
+  userInteracted,
 }) {
   const cardRef = useRef(null);
   const videoRef = useRef(null);
@@ -32,7 +36,7 @@ const FeedCard = React.memo(function FeedCard({
   const isVideo = post.mediaType === "Video";
   const [isIntersecting, setIsIntersecting] = useState(false);
   const [isMaximizeHovered, setIsMaximizeHovered] = useState(false);
-  const isPlaying = isVideo && isIntersecting && !isParentModalOpen;
+  const isPlaying = isVideo && activeVideoId === post._id && !isParentModalOpen;
   const postDate = post.createdAt
     ? new Date(post.createdAt).toLocaleString(undefined, {
         month: "short",
@@ -44,7 +48,7 @@ const FeedCard = React.memo(function FeedCard({
       })
     : "";
 
-  // Track post view once
+  // Track post view and notify parent about video intersection
   useEffect(() => {
     const isOwnPost =
       currentUser && post.userId && currentUser._id === post.userId;
@@ -58,9 +62,18 @@ const FeedCard = React.memo(function FeedCard({
             trackPostView(post._id).catch(() => {});
             hasTrackedView.current = true;
           }
+          // Notify parent this video is now in view
+          if (isVideo && onVideoIntersect) {
+            onVideoIntersect(post._id);
+          }
+        } else {
+          // Notify parent this video left view
+          if (isVideo && onVideoLeave) {
+            onVideoLeave(post._id);
+          }
         }
       },
-      { threshold: 0.5 }, // Triggers when 50% of the post card enters/leaves viewport
+      { threshold: 0.6 },
     );
 
     if (cardRef.current) {
@@ -70,14 +83,31 @@ const FeedCard = React.memo(function FeedCard({
     return () => {
       observer.disconnect();
     };
-  }, [post._id, currentUser, post.userId]);
+  }, [
+    post._id,
+    currentUser,
+    post.userId,
+    isVideo,
+    onVideoIntersect,
+    onVideoLeave,
+  ]);
 
-  // Control video play when it mounts
+  // Play or pause video based on active state
   useEffect(() => {
-    if (isPlaying && videoRef.current) {
-      videoRef.current.play().catch(() => {});
+    if (!videoRef.current) return;
+    if (isPlaying) {
+      const vid = videoRef.current;
+      // If user has interacted, ensure unmuted
+      if (userInteracted) vid.muted = false;
+      vid.play().catch(() => {
+        // Browser blocked unmuted autoplay — fallback to muted
+        vid.muted = true;
+        vid.play().catch(() => {});
+      });
+    } else {
+      videoRef.current.pause();
     }
-  }, [isPlaying]);
+  }, [isPlaying, userInteracted]);
 
   return (
     <div
@@ -145,14 +175,18 @@ const FeedCard = React.memo(function FeedCard({
       </div>
 
       {/* Body: Media */}
-      <div className="relative bg-zinc-950 overflow-hidden flex items-center justify-center w-full">
+      <div
+        className="relative overflow-hidden flex items-center justify-center w-full"
+        style={{ height: "520px", backgroundColor: "var(--bg-tertiary)" }}
+      >
         {isVideo ? (
           isPlaying ? (
             <video
               ref={videoRef}
               src={post.mediaUrl}
+              poster={getVideoPosterUrl(post.mediaUrl, 600)}
               preload="metadata"
-              className="w-full h-auto max-h-[600px] object-contain"
+              className="w-full h-full object-contain"
               controls
               controlsList="nodownload"
               loop
@@ -160,13 +194,13 @@ const FeedCard = React.memo(function FeedCard({
             />
           ) : (
             <div
-              className="relative w-full flex items-center justify-center cursor-pointer"
+              className="relative w-full h-full flex items-center justify-center cursor-pointer"
               onClick={() => onPostClick(post)}
             >
               <img
                 src={getVideoPosterUrl(post.mediaUrl, 600)}
                 alt={post.altText || post.caption || "video thumbnail"}
-                className="w-full h-auto max-h-[600px] object-contain hover:opacity-95 transition-opacity"
+                className="w-full h-full object-contain hover:opacity-95 transition-opacity"
                 loading="lazy"
                 decoding="async"
               />
@@ -179,7 +213,7 @@ const FeedCard = React.memo(function FeedCard({
           <img
             src={post.mediaUrl}
             alt={post.altText || post.caption || "post"}
-            className="w-full h-auto max-h-[600px] object-contain cursor-pointer hover:opacity-95 transition-opacity"
+            className="w-full h-full object-contain cursor-pointer hover:opacity-95 transition-opacity"
             loading="lazy"
             decoding="async"
             onClick={() => onPostClick(post)}
@@ -221,7 +255,7 @@ const FeedCard = React.memo(function FeedCard({
           </button>
         </div>
 
-        {post.caption ? (
+        {post.caption && (
           <p
             className="text-sm leading-relaxed"
             style={{ color: "var(--text-secondary)" }}
@@ -232,10 +266,6 @@ const FeedCard = React.memo(function FeedCard({
               </strong>
             )}
             {post.caption}
-          </p>
-        ) : (
-          <p className="text-xs italic" style={{ color: "var(--text-muted)" }}>
-            No caption.
           </p>
         )}
       </div>
@@ -253,6 +283,33 @@ function FeedContent({ posts, currentUser, setSelectedPost, selectedPost }) {
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(posts.length === 10);
+  const [activeVideoId, setActiveVideoId] = useState(null);
+  const [userInteracted, setUserInteracted] = useState(
+    () => navigator.userActivation?.hasBeenActive ?? false,
+  );
+
+  // Fallback: listen for first user interaction to allow unmuted playback
+  // Browser policy: on fresh page load, audio requires a user gesture (click/tap/keypress)
+  useEffect(() => {
+    if (userInteracted) return;
+    const markInteracted = () => setUserInteracted(true);
+    document.addEventListener("click", markInteracted, { once: true });
+    document.addEventListener("touchstart", markInteracted, { once: true });
+    document.addEventListener("keydown", markInteracted, { once: true });
+    return () => {
+      document.removeEventListener("click", markInteracted);
+      document.removeEventListener("touchstart", markInteracted);
+      document.removeEventListener("keydown", markInteracted);
+    };
+  }, [userInteracted]);
+
+  const handleVideoIntersect = useCallback((postId) => {
+    setActiveVideoId(postId);
+  }, []);
+
+  const handleVideoLeave = useCallback((postId) => {
+    setActiveVideoId((prev) => (prev === postId ? null : prev));
+  }, []);
 
   if (posts !== prevPosts) {
     setPrevPosts(posts);
@@ -360,6 +417,10 @@ function FeedContent({ posts, currentUser, setSelectedPost, selectedPost }) {
               currentUser={currentUser}
               onPostClick={setSelectedPost}
               isParentModalOpen={!!selectedPost}
+              activeVideoId={activeVideoId}
+              onVideoIntersect={handleVideoIntersect}
+              onVideoLeave={handleVideoLeave}
+              userInteracted={userInteracted}
             />
           </div>
         );
@@ -452,7 +513,7 @@ export default function Feed() {
           <button
             onClick={() => revalidator.revalidate()}
             disabled={isRefreshing}
-            className="flex items-center justify-center p-2 rounded-lg transition-all hover:bg-zinc-800 disabled:opacity-50"
+            className="flex items-center justify-center cursor-pointer p-2 rounded-lg transition-all hover:bg-zinc-800 disabled:opacity-50"
             style={{
               backgroundColor: "var(--surface-input)",
               color: "var(--text-secondary)",

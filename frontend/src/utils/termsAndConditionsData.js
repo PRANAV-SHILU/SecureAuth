@@ -1,4 +1,4 @@
-export const LAST_UPDATED = "June 28, 2026";
+export const LAST_UPDATED = "August 15, 2026";
 
 export const TNC_INTRO = {
   heading: "Terms and Conditions",
@@ -19,7 +19,7 @@ export const TNC_SECTIONS = [
       {
         id: "acceptance-2",
         content:
-          "Please be advised that LookSphere is a personal portfolio project. As such, the platform is provided on an \"AS IS\" basis without any Service Level Agreements (SLAs).",
+          'Please be advised that LookSphere is a personal portfolio project. As such, the platform is provided on an "AS IS" basis without any Service Level Agreements (SLAs).',
       },
     ],
   },
@@ -48,7 +48,7 @@ export const TNC_SECTIONS = [
       {
         id: "ugc-1",
         content:
-          "LookSphere allows users to post, link, store, share and otherwise make available certain information, text, graphics, videos, or other material (\"Content\").",
+          'LookSphere allows users to post, link, store, share and otherwise make available certain information, text, graphics, videos, or other material ("Content").',
       },
       {
         id: "ugc-2",
@@ -69,19 +69,23 @@ export const TNC_SECTIONS = [
         list: [
           {
             label: "Illegal",
-            detail: "Content that violates any local, national, or international law, including copyright infringement.",
+            detail:
+              "Content that violates any local, national, or international law, including copyright infringement.",
           },
           {
             label: "Abusive",
-            detail: "Content that is harassing, threatening, bullying, or promotes hate speech against any group or individual.",
+            detail:
+              "Content that is harassing, threatening, bullying, or promotes hate speech against any group or individual.",
           },
           {
             label: "Explicit",
-            detail: "NSFW (Not Safe For Work), pornographic, or highly graphic material.",
+            detail:
+              "NSFW (Not Safe For Work), pornographic, or highly graphic material.",
           },
           {
             label: "Malicious",
-            detail: "Spam, phishing links, malware, or attempts to scrape or manipulate the platform.",
+            detail:
+              "Spam, phishing links, malware, or attempts to scrape or manipulate the platform.",
           },
         ],
       },
@@ -110,7 +114,7 @@ export const TNC_SECTIONS = [
       {
         id: "warranty-1",
         content:
-          "Your use of LookSphere is at your sole risk. The platform is provided on an \"AS IS\" and \"AS AVAILABLE\" basis. LookSphere is provided without warranties of any kind, whether express or implied, including, but not limited to, implied warranties of merchantability, fitness for a particular purpose, non-infringement or course of performance.",
+          'Your use of LookSphere is at your sole risk. The platform is provided on an "AS IS" and "AS AVAILABLE" basis. LookSphere is provided without warranties of any kind, whether express or implied, including, but not limited to, implied warranties of merchantability, fitness for a particular purpose, non-infringement or course of performance.',
       },
       {
         id: "warranty-2",
@@ -147,7 +151,7 @@ export const TNC_SECTIONS = [
       {
         id: "termination-2",
         content:
-          "Upon termination, your right to use LookSphere will immediately cease. If you wish to terminate your account, you may simply discontinue using the platform or request account deletion by contacting us.",
+          "Upon termination, your right to use LookSphere will immediately cease. If you wish to terminate your account, you may simply discontinue using the platform or request account deletion by submitting a request via our Account Termination form (/account-termination) from Settings. You will be notified via email.",
       },
     ],
   },
@@ -169,7 +173,7 @@ export const TNC_SECTIONS = [
       {
         id: "contact-1",
         content:
-          "If you have any questions about these Terms and Conditions or the LookSphere project, please feel free to reach out.",
+          "If you have any questions about these Terms and Conditions or the LookSphere project, please feel free to reach out. Responses to your Contact Us submissions will be delivered to your My Inquiries dashboard (/my-inquiries) and via email.",
         links: [
           {
             label: "Contact Us",

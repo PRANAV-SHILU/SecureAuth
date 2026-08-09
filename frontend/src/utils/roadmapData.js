@@ -72,12 +72,6 @@ export const ROADMAP_CATEGORIES = [
         description:
           "General mail sending functionality for updates, reports, and administrative alerts.",
       },
-      {
-        icon: MessageCircle,
-        title: "Dynamic Contact Forms",
-        description:
-          "New modal-based contact forms with categorized dropdowns (support, suggestions) synced to the admin panel.",
-      },
     ],
   },
   {
@@ -153,12 +147,6 @@ export const ROADMAP_CATEGORIES = [
         title: "Advanced SEO",
         description:
           "Dynamic meta tags and server-side optimizations to ensure LookSphere content is easily discoverable.",
-      },
-      {
-        icon: BarChart3,
-        title: "Admin Dashboard",
-        description:
-          "Comprehensive metrics, ticket management, and user analytics visualized with react-charts.",
       },
       {
         icon: Settings,
