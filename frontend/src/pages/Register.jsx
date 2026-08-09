@@ -1,25 +1,17 @@
 import { registerSchema } from "../schema/registerSchema";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Form, NavLink, useActionData, useNavigation } from "react-router-dom";
+import { Form, NavLink, useNavigation } from "react-router-dom";
 import useDocumentMetadata from "../hooks/useDocumentMetadata";
-import { toast } from "react-toastify";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
 export default function Register() {
   useDocumentMetadata("Register");
-  const actionData = useActionData();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-  useEffect(() => {
-    if (actionData?.error) {
-      toast.error(actionData.error);
-    }
-  }, [actionData]);
 
   const {
     register,
@@ -31,7 +23,12 @@ export default function Register() {
 
   const handleKeyDown = (e) => {
     if (e.key === " ") {
-      const noSpaceFields = ["username", "email", "password", "confirmPassword"];
+      const noSpaceFields = [
+        "username",
+        "email",
+        "password",
+        "confirmPassword",
+      ];
       if (noSpaceFields.includes(e.target.name)) {
         e.preventDefault();
       }
@@ -39,9 +36,11 @@ export default function Register() {
 
     if (e.key === "Enter" && e.target.tagName === "INPUT") {
       const form = e.currentTarget;
-      const inputs = Array.from(form.querySelectorAll("input:not([type='hidden'])"));
+      const inputs = Array.from(
+        form.querySelectorAll("input:not([type='hidden'])"),
+      );
       const index = inputs.indexOf(e.target);
-      
+
       if (index > -1 && index < inputs.length - 1) {
         e.preventDefault();
         // Only go to next input if current one has a value and no error
@@ -54,20 +53,25 @@ export default function Register() {
   };
 
   return (
-    <section
-      className="flex my-10 flex-col justify-center items-center px-4 w-full"
-    >
-      <div
-        className="card w-full max-w-md py-4 px-0 xsm:p-8 4xl:max-w-xl 4xl:p-14 4xl:rounded-2xl"
-      >
+    <section className="flex my-10 flex-col justify-center items-center px-4 w-full">
+      <div className="card w-full max-w-md py-4 px-0 xsm:p-8 4xl:max-w-xl 4xl:p-14 4xl:rounded-2xl">
         <Form method="post" onKeyDown={handleKeyDown}>
           <div className="text-center">
-            <h2 className="hero-text mx-auto text-2xl xsm:text-4xl 4xl:text-5xl font-extrabold mb-3 bg-linear-to-r from-(--primary-500) to-purple-500 bg-clip-text text-transparent">Create an account</h2>
-            <p className="mb-8  text-sm xsm:text-base 4xl:text-xl ">Join LookSphere today</p>
+            <h2 className="hero-text mx-auto text-2xl xsm:text-4xl 4xl:text-5xl font-extrabold mb-3 bg-linear-to-r from-(--primary-500) to-purple-500 bg-clip-text text-transparent">
+              Create an account
+            </h2>
+            <p className="mb-8  text-sm xsm:text-base 4xl:text-xl ">
+              Join LookSphere today
+            </p>
           </div>
 
           <div className="input-group">
-            <label htmlFor="username" className="input-label text-xs xsm:text-sm 4xl:text-lg">Username</label>
+            <label
+              htmlFor="username"
+              className="input-label text-xs xsm:text-sm 4xl:text-lg"
+            >
+              Username
+            </label>
             <input
               type="text"
               placeholder="Enter your username"
@@ -75,11 +79,23 @@ export default function Register() {
               autoComplete="username"
               {...register("username")}
             />
-            {errors.username && <p className="text-xs 4xl:text-base mt-1.5" style={{ color: "var(--status-error)" }}>{errors.username.message}</p>}
+            {errors.username && (
+              <p
+                className="text-xs 4xl:text-base mt-1.5"
+                style={{ color: "var(--status-error)" }}
+              >
+                {errors.username.message}
+              </p>
+            )}
           </div>
 
           <div className="input-group">
-            <label htmlFor="email" className="input-label text-xs xsm:text-sm 4xl:text-lg">Email</label>
+            <label
+              htmlFor="email"
+              className="input-label text-xs xsm:text-sm 4xl:text-lg"
+            >
+              Email
+            </label>
             <input
               type="email"
               placeholder="Enter your email"
@@ -87,11 +103,23 @@ export default function Register() {
               autoComplete="email"
               {...register("email")}
             />
-            {errors.email && <p className="text-xs 4xl:text-base mt-1.5" style={{ color: "var(--status-error)" }}>{errors.email.message}</p>}
+            {errors.email && (
+              <p
+                className="text-xs 4xl:text-base mt-1.5"
+                style={{ color: "var(--status-error)" }}
+              >
+                {errors.email.message}
+              </p>
+            )}
           </div>
 
           <div className="input-group">
-            <label htmlFor="password" className="input-label text-xs xsm:text-sm 4xl:text-lg">Password</label>
+            <label
+              htmlFor="password"
+              className="input-label text-xs xsm:text-sm 4xl:text-lg"
+            >
+              Password
+            </label>
             <div style={{ position: "relative" }}>
               <input
                 type={showPassword ? "text" : "password"}
@@ -115,17 +143,29 @@ export default function Register() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  padding: 0
+                  padding: 0,
                 }}
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
-            {errors.password && <p className="text-xs 4xl:text-base mt-1.5" style={{ color: "var(--status-error)" }}>{errors.password.message}</p>}
+            {errors.password && (
+              <p
+                className="text-xs 4xl:text-base mt-1.5"
+                style={{ color: "var(--status-error)" }}
+              >
+                {errors.password.message}
+              </p>
+            )}
           </div>
 
           <div className="input-group">
-            <label htmlFor="confirmPassword" className="input-label text-xs xsm:text-sm 4xl:text-lg">Confirm Password</label>
+            <label
+              htmlFor="confirmPassword"
+              className="input-label text-xs xsm:text-sm 4xl:text-lg"
+            >
+              Confirm Password
+            </label>
             <div style={{ position: "relative" }}>
               <input
                 type={showConfirmPassword ? "text" : "password"}
@@ -149,13 +189,20 @@ export default function Register() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  padding: 0
+                  padding: 0,
                 }}
               >
                 {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
-            {errors.confirmPassword && <p className="text-xs 4xl:text-base mt-1.5" style={{ color: "var(--status-error)" }}>{errors.confirmPassword.message}</p>}
+            {errors.confirmPassword && (
+              <p
+                className="text-xs 4xl:text-base mt-1.5"
+                style={{ color: "var(--status-error)" }}
+              >
+                {errors.confirmPassword.message}
+              </p>
+            )}
           </div>
 
           <div className="input-group mt-2">

@@ -760,18 +760,7 @@ export default function ContactUs() {
               >
                 My Inquiries
               </Link>{" "}
-              page (
-              <code
-                className="px-1.5 py-0.5 rounded font-mono text-[11px] font-medium"
-                style={{
-                  backgroundColor: "var(--surface-card)",
-                  color: "var(--text-primary)",
-                  border: "1px solid var(--border-light)",
-                }}
-              >
-                /my-inquiries
-              </code>
-              ), and you will also receive an email notification upon resolution.
+              page and you will also receive an email notification upon resolution.
             </span>
           </div>
         </Form>
