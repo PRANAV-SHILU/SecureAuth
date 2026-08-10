@@ -107,6 +107,12 @@ export default function Footer() {
                   >
                     My Inquiries
                   </NavLink>
+                  <NavLink
+                    to="/settings"
+                    className="text-(--text-secondary) hover:text-(--primary-500) transition-colors text-sm"
+                  >
+                    Settings
+                  </NavLink>
                 </>
               )}
             </div>

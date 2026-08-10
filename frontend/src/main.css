@@ -118,6 +118,18 @@ html.dark {
   /* margin: 0; */
 }
 
+/* Dropdown item hover — light uses color-mix, dark uses translucent blue */
+.dropdown-item-hover {
+  transition: background-color 0.3s, color 0.3s;
+}
+.dropdown-item-hover:hover {
+  background-color: color-mix(in oklab, oklch(0.71 0.12 269.87) 30%, transparent);
+}
+html.dark .dropdown-item-hover:hover {
+  background-color: rgba(30, 58, 138, 0.3);
+  color: #60a5fa;
+}
+
 /* Custom scrollbar styling (theme-aware) */
 ::-webkit-scrollbar,
 html::-webkit-scrollbar,

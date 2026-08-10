@@ -22,6 +22,7 @@ const Roadmap = lazy(() => import("../pages/Roadmap.jsx"));
 const ContactUs = lazy(() => import("../pages/ContactUs.jsx"));
 const AdminContact = lazy(() => import("../pages/AdminContact.jsx"));
 const MyInquiries = lazy(() => import("../pages/MyInquiries.jsx"));
+const Settings = lazy(() => import("../pages/Settings.jsx"));
 
 import FeedSkeleton from "../skeletons/FeedSkeleton.jsx";
 import ExploreSkeleton from "../skeletons/ExploreSkeleton.jsx";
@@ -213,6 +214,14 @@ const router = createBrowserRouter([
           </Suspense>
         ),
         loader: myInquiriesLoader,
+      },
+      {
+        path: "settings",
+        element: (
+          <Suspense fallback={<div className="top-loading-bar" />}>
+            <Settings />
+          </Suspense>
+        ),
       },
     ],
   },
