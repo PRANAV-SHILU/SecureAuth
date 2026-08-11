@@ -1,12 +1,20 @@
+import { useState } from "react";
 import { useRouteLoaderData, useNavigate } from "react-router-dom";
 import {
   Settings as SettingsIcon,
   User,
-  Bell,
   Shield,
   Palette,
   Lock,
+  Mail,
+  Trash2,
+  Download,
+  Eye,
+  Sun,
+  UserX,
+  Search,
   ChevronRight,
+  ChevronDown,
 } from "lucide-react";
 import useDocumentMetadata from "../hooks/useDocumentMetadata";
 import BackButton from "../shared-components/BackButton";
@@ -15,10 +23,24 @@ const SETTINGS_SECTIONS = [
   {
     key: "account",
     label: "Account",
-    description: "Manage your profile, username, and email",
+    description: "Manage your email, password, and account data",
     icon: User,
     color: "var(--primary-500)",
     bg: "var(--primary-50)",
+    subItems: [
+      {
+        key: "update-email",
+        label: "Update Email",
+        description: "Change the email linked to your account",
+        icon: Mail,
+      },
+      {
+        key: "change-password",
+        label: "Change Password",
+        description: "Update your current password",
+        icon: Lock,
+      },
+    ],
   },
   {
     key: "privacy",
@@ -27,14 +49,14 @@ const SETTINGS_SECTIONS = [
     icon: Shield,
     color: "#8b5cf6",
     bg: "#f5f3ff",
-  },
-  {
-    key: "notifications",
-    label: "Notifications",
-    description: "Choose what updates you want to receive",
-    icon: Bell,
-    color: "#f59e0b",
-    bg: "#fffbeb",
+    subItems: [
+      {
+        key: "profile-visibility",
+        label: "Profile Visibility",
+        description: "Set your profile to public or private",
+        icon: Eye,
+      },
+    ],
   },
   {
     key: "appearance",
@@ -43,14 +65,38 @@ const SETTINGS_SECTIONS = [
     icon: Palette,
     color: "#ec4899",
     bg: "#fdf2f8",
+    subItems: [
+      {
+        key: "theme-selection",
+        label: "Theme Selection",
+        description: "Switch between light and dark mode",
+        icon: Sun,
+      },
+    ],
   },
   {
-    key: "password",
-    label: "Change Password",
-    description: "Update your password and security settings",
-    icon: Lock,
-    color: "#10b981",
-    bg: "#ecfdf5",
+    key: "danger",
+    label: "Account Deactivation",
+    description: "Deactivate or permanently delete your account",
+    icon: Trash2,
+    color: "#ef4444",
+    bg: "#fef2f2",
+    subItems: [
+      {
+        key: "deactivate-account",
+        label: "Deactivate Account",
+        description: "Temporarily deactivate your account for a period of time",
+        icon: UserX,
+        isDestructive: true,
+      },
+      {
+        key: "delete-account",
+        label: "Delete Account",
+        description: "Permanently delete your account and all data",
+        icon: Trash2,
+        isDestructive: true,
+      },
+    ],
   },
 ];
 
@@ -58,11 +104,38 @@ export default function Settings() {
   useDocumentMetadata("Settings");
   const user = useRouteLoaderData("root");
   const navigate = useNavigate();
+  const [expandedSection, setExpandedSection] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   if (!user) {
     navigate("/login");
     return null;
   }
+
+  const toggleSection = (key) => {
+    setExpandedSection((prev) => (prev === key ? null : key));
+  };
+
+  const filteredSections = SETTINGS_SECTIONS.map((section) => {
+    const query = searchQuery.toLowerCase();
+    const matchesSection =
+      section.label.toLowerCase().includes(query) ||
+      section.description.toLowerCase().includes(query);
+
+    if (matchesSection) return section;
+
+    const matchedSubItems =
+      section.subItems?.filter(
+        (sub) =>
+          sub.label.toLowerCase().includes(query) ||
+          sub.description.toLowerCase().includes(query)
+      ) || [];
+
+    if (matchedSubItems.length > 0) {
+      return { ...section, subItems: matchedSubItems };
+    }
+    return null;
+  }).filter(Boolean);
 
   return (
     <div className="w-full flex justify-center">
@@ -98,54 +171,153 @@ export default function Settings() {
           >
             Manage your account preferences, privacy, and personalization.
           </p>
-        </div>
 
+          {/* Search Bar */}
+          <div className="w-full max-w-md mx-auto mt-8 relative">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <Search size={18} style={{ color: "var(--text-disabled)" }} />
+            </div>
+            <input
+              type="text"
+              placeholder="Search settings..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-11 pr-4 py-3 rounded-xl border text-sm transition-colors outline-none focus:border-(--primary-500) focus:ring-1 focus:ring-(--primary-500)"
+              style={{
+                backgroundColor: "var(--surface-card)",
+                borderColor: "var(--border-normal)",
+                color: "var(--text-primary)",
+              }}
+            />
+          </div>
+        </div>
 
         {/* Settings Sections */}
         <div className="flex flex-col gap-3">
-          {SETTINGS_SECTIONS.map((section) => {
-            const Icon = section.icon;
+          {filteredSections.length === 0 ? (
+            <div className="text-center py-10">
+              <p style={{ color: "var(--text-muted)" }}>No settings found matching "{searchQuery}"</p>
+            </div>
+          ) : (
+            filteredSections.map((section) => {
+              const Icon = section.icon;
+            const hasSubItems = section.subItems?.length > 0;
+            const isExpanded = searchQuery.trim() !== "" || expandedSection === section.key;
+
             return (
-              <button
-                key={section.key}
-                disabled
-                className="w-full flex items-center gap-4 p-4 sm:p-5 rounded-2xl border text-left transition-all duration-200 opacity-60 cursor-not-allowed"
-                style={{
-                  backgroundColor: "var(--surface-card)",
-                  borderColor: "var(--border-normal)",
-                }}
-              >
-                <div
-                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0"
+              <div key={section.key}>
+                <button
+                  onClick={hasSubItems ? () => toggleSection(section.key) : undefined}
+                  disabled={!hasSubItems}
+                  className={`w-full flex items-center gap-4 p-4 sm:p-5 rounded-2xl border text-left transition-all duration-300 bg-(--surface-card) hover:bg-(--surface-hover) ${
+                    hasSubItems
+                      ? "cursor-pointer hover:border-(--border-strong) hover:-translate-y-0.5 hover:shadow-md"
+                      : "opacity-60 cursor-not-allowed"
+                  } ${isExpanded ? "border-(--border-strong) shadow-sm" : ""}`}
                   style={{
-                    backgroundColor: section.bg,
-                    color: section.color,
+                    borderColor: isExpanded ? "var(--border-strong)" : "var(--border-normal)",
                   }}
                 >
-                  <Icon size={20} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p
-                    className="font-semibold text-sm sm:text-base"
-                    style={{ color: "var(--text-primary)" }}
+                  <div
+                    className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0"
+                    style={{
+                      backgroundColor: section.bg,
+                      color: section.color,
+                    }}
                   >
-                    {section.label}
-                  </p>
-                  <p
-                    className="text-xs sm:text-sm mt-0.5 truncate"
-                    style={{ color: "var(--text-muted)" }}
+                    <Icon size={20} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p
+                      className="font-semibold text-sm sm:text-base"
+                      style={{ color: "var(--text-primary)" }}
+                    >
+                      {section.label}
+                    </p>
+                    <p
+                      className="text-xs sm:text-sm mt-0.5 truncate"
+                      style={{ color: "var(--text-muted)" }}
+                    >
+                      {section.description}
+                    </p>
+                  </div>
+                  {hasSubItems ? (
+                    <ChevronDown
+                      size={18}
+                      className={`shrink-0 transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`}
+                      style={{ color: "var(--text-muted)" }}
+                    />
+                  ) : (
+                    <ChevronRight
+                      size={18}
+                      className="shrink-0"
+                      style={{ color: "var(--text-disabled)" }}
+                    />
+                  )}
+                </button>
+
+                {/* Sub-items — animated expand/collapse */}
+                {hasSubItems && (
+                  <div
+                    className="ml-6 sm:ml-8 pl-4 border-l-2 overflow-hidden"
+                    style={{
+                      borderColor: isExpanded ? section.color : "transparent",
+                      maxHeight: isExpanded ? `${section.subItems.length * 6}rem` : "0",
+                      opacity: isExpanded ? 1 : 0,
+                      marginTop: isExpanded ? "0.5rem" : "0",
+                      transition: "max-height 0.35s ease, opacity 0.3s ease, margin-top 0.3s ease, border-color 0.3s ease",
+                    }}
                   >
-                    {section.description}
-                  </p>
-                </div>
-                <ChevronRight
-                  size={18}
-                  className="shrink-0"
-                  style={{ color: "var(--text-disabled)" }}
-                />
-              </button>
+                    <div className="flex flex-col gap-2 py-1">
+                      {section.subItems.map((sub) => {
+                        const SubIcon = sub.icon;
+                        return (
+                          <button
+                            key={sub.key}
+                            className="w-full flex items-center gap-3 p-3 sm:p-4 rounded-xl border border-(--border-normal) text-left transition-all duration-300 cursor-pointer bg-(--surface-card) hover:bg-(--surface-hover) hover:border-(--border-strong) hover:-translate-y-px hover:shadow-sm"
+                          >
+                            <SubIcon
+                              size={18}
+                              className="shrink-0"
+                              style={{ color: section.color }}
+                            />
+                            <div className="flex-1 min-w-0">
+                              <p
+                                className="font-medium text-sm"
+                                style={{ 
+                                  color: sub.isDestructive ? section.color : "var(--text-primary)" 
+                                }}
+                              >
+                                {sub.label}
+                              </p>
+                              <p
+                                className="text-xs mt-0.5 truncate"
+                                style={{ 
+                                  color: sub.isDestructive ? section.color : "var(--text-muted)",
+                                  opacity: sub.isDestructive ? 0.8 : 1
+                                }}
+                              >
+                                {sub.description}
+                              </p>
+                            </div>
+                            <ChevronRight
+                              size={16}
+                              className="shrink-0"
+                              style={{ 
+                                color: sub.isDestructive ? section.color : "var(--text-disabled)",
+                                opacity: sub.isDestructive ? 0.5 : 1
+                              }}
+                            />
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
             );
-          })}
+            })
+          )}
         </div>
       </div>
     </div>

@@ -10,20 +10,20 @@ export default function Roadmap() {
   }, []);
 
   return (
-    <div className="relative min-h-screen pt-20 pb-16 xsm:pt-24 xsm:pb-20 md:pt-32 md:pb-24 overflow-hidden">
+    <div className="relative min-h-screen pt-8 pb-16 xsm:pt-10 xsm:pb-20 md:pt-12 md:pb-24 overflow-hidden">
       <HeroBackground />
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 xsm:px-6 lg:px-8">
         
-        {/* Back Button */}
-        <div className="mb-6 md:mb-10 w-full flex justify-start">
+        {/* Header Row */}
+        <div className="w-full max-w-5xl mx-auto flex items-center justify-between mb-6 md:mb-10">
           <BackButton />
+          <span className="text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full border border-blue-500/20 bg-blue-500/10 text-blue-600 dark:text-blue-400">
+            Roadmap
+          </span>
         </div>
 
-        {/* Header */}
+        {/* Title */}
         <div className="text-center mb-12 md:mb-20">
-          <div className="inline-block px-3 py-1 mb-4 xsm:mb-6 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 text-xs sm:text-sm font-semibold tracking-wide uppercase shadow-sm">
-            Roadmap
-          </div>
           <h1 className="text-3xl xsm:text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4 tracking-tight text-(--text-primary)">
             What's Coming <span className="hero-text drop-shadow-md">Next</span>
           </h1>
