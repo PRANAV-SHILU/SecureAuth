@@ -20,9 +20,11 @@ export default function Login() {
 
     if (e.key === "Enter" && e.target.tagName === "INPUT") {
       const form = e.currentTarget;
-      const inputs = Array.from(form.querySelectorAll("input:not([type='hidden'])"));
+      const inputs = Array.from(
+        form.querySelectorAll("input:not([type='hidden'])"),
+      );
       const index = inputs.indexOf(e.target);
-      
+
       if (index > -1 && index < inputs.length - 1) {
         e.preventDefault();
         // Only go to next input if current one has a value
@@ -34,20 +36,22 @@ export default function Login() {
   };
 
   return (
-    <section
-      className="flex flex-col mt-4 justify-center items-center px-4 w-full min-h-[calc(100vh-120px)]"
-    >
-      <div
-        className="card w-full max-w-md px-4! py-8! xsm:p-8! 4xl:max-w-xl 4xl:p-14! 4xl:rounded-2xl"
-      >
+    <section className="flex flex-col mt-4 justify-center items-center px-4 w-full min-h-[calc(100vh-120px)]">
+      <div className="card w-full max-w-md px-4! py-8! xsm:p-8! 4xl:max-w-xl 4xl:p-14! 4xl:rounded-2xl">
         <Form method="post" onKeyDown={handleKeyDown}>
           <div className="text-center">
-            <h2 className="hero-text text-3xl xsm:text-4xl 4xl:text-5xl font-extrabold mb-3 bg-linear-to-r from-(--primary-500) to-purple-500 bg-clip-text text-transparent">Welcome back</h2>
-            <p className="mb-6 xsm:mb-6 text-sm xsm:text-base 4xl:text-xl 4xl:mb-8">Sign in to your account</p>
+            <h2 className="hero-text text-3xl xsm:text-4xl 4xl:text-5xl font-extrabold mb-3 bg-linear-to-r from-(--primary-500) to-purple-500 bg-clip-text text-transparent">
+              Welcome back
+            </h2>
+            <p className="mb-6 xsm:mb-6 text-sm xsm:text-base 4xl:text-xl 4xl:mb-8">
+              Sign in to your account
+            </p>
           </div>
 
           <div className="input-group">
-            <label className="input-label text-xs xsm:text-sm 4xl:text-lg">Username</label>
+            <label className="input-label text-xs xsm:text-sm 4xl:text-lg">
+              Username
+            </label>
             <input
               type="text"
               placeholder="Enter your username"
@@ -59,7 +63,9 @@ export default function Login() {
           </div>
 
           <div className="input-group">
-            <label className="input-label text-xs xsm:text-sm 4xl:text-lg">Password</label>
+            <label className="input-label text-xs xsm:text-sm 4xl:text-lg">
+              Password
+            </label>
             <div style={{ position: "relative" }}>
               <input
                 type={showPassword ? "text" : "password"}
