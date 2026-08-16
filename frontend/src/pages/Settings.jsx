@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useRouteLoaderData, useNavigate } from "react-router-dom";
+import { useRouteLoaderData, useNavigate, Navigate } from "react-router-dom";
 import {
   Settings as SettingsIcon,
   User,
@@ -23,6 +23,7 @@ const SETTINGS_SECTIONS = [
   {
     key: "account",
     label: "Account",
+    showBadge: true,
     description: "Manage your email, password, and account data",
     icon: User,
     color: "var(--primary-500)",
@@ -37,6 +38,7 @@ const SETTINGS_SECTIONS = [
       {
         key: "change-password",
         label: "Change Password",
+        showBadge: true,
         description: "Update your current password",
         icon: Lock,
       },
@@ -108,8 +110,7 @@ export default function Settings() {
   const [searchQuery, setSearchQuery] = useState("");
 
   if (!user) {
-    navigate("/login");
-    return null;
+    return <Navigate to="/login" replace />;
   }
 
   const toggleSection = (key) => {
@@ -229,10 +230,11 @@ export default function Settings() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p
-                      className="font-semibold text-sm sm:text-base"
+                      className="font-semibold text-sm sm:text-base flex items-center gap-2"
                       style={{ color: "var(--text-primary)" }}
                     >
                       {section.label}
+                      {section.showBadge && <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse inline-block shrink-0"></span>}
                     </p>
                     <p
                       className="text-xs sm:text-sm mt-0.5 truncate"
@@ -286,12 +288,13 @@ export default function Settings() {
                             />
                             <div className="flex-1 min-w-0">
                               <p
-                                className="font-medium text-sm"
+                                className="font-medium text-sm flex items-center gap-2"
                                 style={{ 
                                   color: sub.isDestructive ? section.color : "var(--text-primary)" 
                                 }}
                               >
                                 {sub.label}
+                                {sub.showBadge && <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse inline-block shrink-0"></span>}
                               </p>
                               <p
                                 className="text-xs mt-0.5 truncate"

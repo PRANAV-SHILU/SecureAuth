@@ -9,6 +9,13 @@ export const WHATS_NEW_DATA = [
     updates: [
       {
         tag: "Feature",
+        page: "Settings",
+        title: "Change Password",
+        description: "You can now securely change your password directly from the account settings page, with complete session management to keep your account safe.",
+        link: "/settings",
+      },
+      {
+        tag: "Feature",
         page: "Contact Us",
         title: "Dynamic Contact Form",
         description: "A fully categorized contact form with support for text messages, image uploads, and video attachments. Choose from General, Feedback, Suggestion, Issue, Security, or Business Inquiry categories.",

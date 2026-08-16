@@ -61,7 +61,7 @@ The frontend is crafted with React 19 and Vite for a lightning-fast development 
 - **Post & Share:** Express yourself! Upload photos & media, write captions & stories, add alt text for accessibility, reach a global audience, and see real-time post view counts.
 - **Explore & Discover:** Never miss a thing. Browse a global post feed, use smart search & filters, discover new creators, and get curated recommendations.
 - **Support & Inquiries:** Reach out directly through the interactive Contact Us form (`/contact-us`), attach screenshots or video clips, track submitted requests under My Inquiries (`/my-inquiries`), receive official admin response messages, and receive email notifications.
-- **Secure Profile:** Keep your data protected. Manage your profile, enjoy JWT stateless sessions, bcrypt password hashing, and profile view tracking.
+- **Secure Profile:** Keep your data protected. Manage your profile, enjoy JWT stateless sessions, bcrypt password hashing, securely change and reset your password, and profile view tracking.
 
 ## 🛡️ Data Integrity & Security
 

@@ -30,6 +30,14 @@ export default function FAQ() {
     setOpenItem((prevKey) => (prevKey === key ? null : key));
   };
 
+  // Helper to extract text from React nodes (for searching)
+  const extractText = (node) => {
+    if (typeof node === 'string' || typeof node === 'number') return String(node);
+    if (Array.isArray(node)) return node.map(extractText).join(' ');
+    if (node && node.props && node.props.children) return extractText(node.props.children);
+    return '';
+  };
+
   // Filter logic based on search and selected tab category
   const filteredCategories = FAQ_CATEGORIES.map((category) => {
     // If we're filtering by category and this isn't it, skip questions
@@ -39,7 +47,7 @@ export default function FAQ() {
 
     const matchedQuestions = category.questions.filter((qData) => {
       const q = qData.q.toLowerCase();
-      const a = qData.a.toLowerCase();
+      const a = extractText(qData.a).toLowerCase();
       const query = searchQuery.toLowerCase();
       return q.includes(query) || a.includes(query);
     });

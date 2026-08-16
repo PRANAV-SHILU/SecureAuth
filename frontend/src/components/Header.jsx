@@ -137,9 +137,9 @@ export default function Header() {
             )}
             <NavLink to="/whats-new" className={desktopNavLinkClass}>
               <Sparkles className="w-4.5 h-4.5 3xl:w-5 3xl:h-5 4xl:w-5.5 4xl:h-5.5 transition-transform duration-300 group-hover:scale-110" />
-              <div className="relative">
+              <div className="relative inline-flex pr-3">
                 What's New
-                <span className="absolute -top-0.5 -right-2.5 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
               </div>
             </NavLink>
             <NavLink to="/feed" className={desktopNavLinkClass}>
@@ -226,28 +226,34 @@ export default function Header() {
                     <NavLink
                       to="/my-inquiries"
                       onClick={() => setDropdownOpen(false)}
-                      className="block px-4 py-3 text-sm text-(--text-primary) no-underline bg-transparent cursor-pointer dropdown-item-hover"
+                      className="block px-4 py-3 text-sm text-(--text-primary) no-underline bg-transparent cursor-pointer dropdown-item-hover relative"
                     >
                       <div className="flex items-center gap-2">
                         <MessageSquareText
                           size={16}
                           className="transition-colors duration-300"
                         />{" "}
-                        My Inquiries
+                        <span className="relative inline-flex pr-3">
+                          My Inquiries
+                          <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                        </span>
                       </div>
                     </NavLink>
 
                     <NavLink
                       to="/settings"
                       onClick={() => setDropdownOpen(false)}
-                      className="block px-4 py-3 text-sm text-(--text-primary) no-underline bg-transparent cursor-pointer dropdown-item-hover"
+                      className="block px-4 py-3 text-sm text-(--text-primary) no-underline bg-transparent cursor-pointer dropdown-item-hover relative"
                     >
                       <div className="flex items-center gap-2">
                         <Settings
                           size={16}
                           className="transition-colors duration-300"
                         />{" "}
-                        Settings
+                        <span className="relative inline-flex pr-3">
+                          Settings
+                          <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                        </span>
                       </div>
                     </NavLink>
 
@@ -357,9 +363,9 @@ export default function Header() {
                 className={mobileNavLinkClass}
               >
                 <Sparkles size={20} className="text-inherit" />
-                <div className="relative">
+                <div className="relative inline-flex pr-3">
                   What's New
-                  <span className="absolute -top-0.5 -right-2.5 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                  <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
                 </div>
               </NavLink>
 
@@ -428,9 +434,13 @@ export default function Header() {
                           setMobileMenuOpen(false);
                           setMobileProfileOpen(false);
                         }}
-                        className="flex items-center gap-3 px-3 text-(--text-primary) no-underline rounded-lg hover:bg-(--surface-hover) transition-colors"
+                        className="flex items-center gap-3 px-3 py-2 text-(--text-primary) no-underline rounded-lg hover:bg-(--surface-hover) transition-colors"
                       >
-                        <MessageSquareText size={18} /> My Inquiries
+                        <MessageSquareText size={18} />
+                        <span className="relative inline-flex pr-3">
+                          My Inquiries
+                          <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                        </span>
                       </NavLink>
                       <NavLink
                         to="/settings"
@@ -438,9 +448,13 @@ export default function Header() {
                           setMobileMenuOpen(false);
                           setMobileProfileOpen(false);
                         }}
-                        className="flex items-center gap-3 px-3 text-(--text-primary) no-underline rounded-lg hover:bg-(--surface-hover) transition-colors"
+                        className="flex items-center gap-3 px-3 py-2 text-(--text-primary) no-underline rounded-lg hover:bg-(--surface-hover) transition-colors"
                       >
-                        <Settings size={18} /> Settings
+                        <Settings size={18} />
+                        <span className="relative inline-flex pr-3">
+                          Settings
+                          <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                        </span>
                       </NavLink>
                       <button
                         onClick={() => {

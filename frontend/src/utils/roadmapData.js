@@ -1,4 +1,5 @@
 import {
+  CheckCircle,
   Shield,
   KeyRound,
   Fingerprint,
@@ -20,6 +21,33 @@ import {
   Globe,
   Settings,
 } from "lucide-react";
+
+export const COMPLETED_FEATURES = {
+  id: "completed",
+  title: "Completed & Achieved",
+  icon: CheckCircle,
+  color: "#6366F1", // Indigo
+  items: [
+    {
+      icon: Settings,
+      title: "Change Password",
+      description:
+        "Secure, authenticated flow for users to change their account password directly from Settings.",
+    },
+    {
+      icon: MessageSquare,
+      title: "Contact Us & Inquiries",
+      description:
+        "Interactive contact forms with a dedicated dashboard to track admin responses.",
+    },
+    {
+      icon: Sparkles,
+      title: "What's New Page",
+      description:
+        "Dynamic changelog page tracking recent features, updates, and platform releases.",
+    },
+  ],
+};
 
 export const ROADMAP_CATEGORIES = [
   {
