@@ -2,7 +2,7 @@ export default function ProfileSkeleton() {
   return (
     <div className="w-full mx-auto pt-8 pb-16 px-4 md:px-8">
       {/* Header */}
-      <section className="max-w-[600px] 4xl:max-w-[1000px] mx-auto flex flex-col items-start gap-3 sm:gap-6 justify-center">
+      <section className="max-w-150 4xl:max-w-250 mx-auto flex flex-col items-start gap-3 sm:gap-6 justify-center">
         <div className="flex w-full justify-between items-center sm:my-2">
           <div className="hidden sm:block h-8 md:h-9 4xl:h-12 w-40 md:w-48 4xl:w-64 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse" />
           <div className="h-10 4xl:h-12 w-24 4xl:w-32 bg-zinc-200 dark:bg-zinc-800 rounded-full animate-pulse ml-auto" />
@@ -10,7 +10,7 @@ export default function ProfileSkeleton() {
 
         <div className="flex flex-row items-start sm:items-start w-full mb-2 4xl:mb-6">
           {/* Avatar */}
-          <div className="shrink-0 sm:w-[150px] sm:h-[150px] 4xl:w-[220px] 4xl:h-[220px] w-[90px] h-[90px] sm:mr-7 mr-4 4xl:mr-12 rounded-full bg-zinc-200 dark:bg-zinc-800 animate-pulse" />
+          <div className="shrink-0 sm:w-37.5 sm:h-37.5 4xl:w-55 4xl:h-55 w-22.5 h-22.5 sm:mr-7 mr-4 4xl:mr-12 rounded-full bg-zinc-200 dark:bg-zinc-800 animate-pulse" />
 
           {/* Info */}
           <div className="flex flex-col items-start gap-2 mt-1.5 w-full max-w-sm 4xl:max-w-xl">

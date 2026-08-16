@@ -106,7 +106,7 @@ const router = createBrowserRouter([
         loader: feedLoader(10),
       },
       {
-        path: "dashboard",
+        path: "admin/dashboard",
         element: (
           <Suspense fallback={<PageLoader />}>
             <Dashboard />

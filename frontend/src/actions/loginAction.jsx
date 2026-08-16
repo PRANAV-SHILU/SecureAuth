@@ -17,7 +17,7 @@ export async function loginAction({ request }) {
     localStorage.setItem("jwtToken", token);
     toast.success("Login success, enjoyyyyy!");
     if (user.role === "admin") {
-      return redirect("/dashboard");
+      return redirect("/admin/dashboard");
     }
     return redirect("/feed");
   } catch (err) {

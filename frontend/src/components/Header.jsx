@@ -130,9 +130,13 @@ export default function Header() {
 
           <nav className="hidden lg:flex lg:gap-6 3xl:gap-8 4xl:gap-10 items-center">
             {user?.role === "admin" && (
-              <NavLink to="/dashboard" className={desktopNavLinkClass}>
+              <NavLink
+                to="/admin/dashboard"
+                className={desktopNavLinkClass}
+                style={{ color: "red" }}
+              >
                 <LayoutDashboard className="w-4.5 h-4.5 3xl:w-5 3xl:h-5 4xl:w-5.5 4xl:h-5.5 transition-transform duration-300 group-hover:scale-110" />{" "}
-                Dashboard
+                Admin
               </NavLink>
             )}
             <NavLink to="/whats-new" className={desktopNavLinkClass}>
@@ -328,12 +332,13 @@ export default function Header() {
 
               {user?.role === "admin" && (
                 <NavLink
-                  to="/dashboard"
+                  to="/admin/dashboard"
                   onClick={() => setMobileMenuOpen(false)}
                   className={mobileNavLinkClass}
+                  style={{ color: "red" }}
                 >
                   <LayoutDashboard size={20} className="text-inherit" />{" "}
-                  Dashboard
+                  Admin
                 </NavLink>
               )}
               <NavLink

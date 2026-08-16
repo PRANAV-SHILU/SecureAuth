@@ -12,7 +12,7 @@ export default function AppLayout() {
   const navigation = useNavigation();
   const isLoading = navigation.state === "loading";
 
-  const isNoPaddingPage = location.pathname === "/feed" || location.pathname === "/explore" || location.pathname.startsWith("/profile") || location.pathname === "/dashboard" || location.pathname === "/admin/contact";
+  const isNoPaddingPage = location.pathname === "/feed" || location.pathname === "/explore" || location.pathname.startsWith("/profile") || location.pathname === "/admin/dashboard" || location.pathname === "/admin/contact";
 
   return (
     <ContactFormProvider>

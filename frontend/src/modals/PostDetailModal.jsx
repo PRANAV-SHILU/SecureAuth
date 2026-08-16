@@ -604,7 +604,7 @@ export default function PostDetailModal({ isOpen, onClose, post, profileUser }) 
                         )}
                       </div>
                     )}
-                    {displayCaption && <p>{displayCaption}</p>}
+                    {displayCaption && <p className="whitespace-pre-wrap">{displayCaption}</p>}
                   </>
                 )}
               </div>

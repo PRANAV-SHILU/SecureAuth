@@ -4,6 +4,7 @@ import useDocumentMetadata from "../hooks/useDocumentMetadata";
 import AdminSidebar from "../components/admin/AdminSidebar";
 import ContactCard from "../components/admin/ContactCard";
 import { Mail, CheckCheck, Clock } from "lucide-react";
+import PageLoader from "../shared-components/PageLoader";
 
 const TABS = [
   { key: "false", label: "Pending",   icon: <Clock size={15} /> },
@@ -41,20 +42,6 @@ function ContactList({ contacts }) {
 
       {contacts.map((c) => (
         <ContactCard key={c._id} contact={c} />
-      ))}
-    </div>
-  );
-}
-
-function LoadingSkeleton() {
-  return (
-    <div className="flex flex-col gap-4">
-      {[1, 2, 3].map((i) => (
-        <div
-          key={i}
-          className="rounded-2xl p-5 border h-40 animate-pulse"
-          style={{ backgroundColor: "var(--surface-input)", borderColor: "var(--border-normal)" }}
-        />
       ))}
     </div>
   );
@@ -164,7 +151,7 @@ export default function AdminContact() {
         </div>
 
         {/* Content */}
-        <Suspense fallback={<LoadingSkeleton />}>
+        <Suspense fallback={<PageLoader />}>
           <Await
             resolve={contactData}
             errorElement={

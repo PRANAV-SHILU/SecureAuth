@@ -32,10 +32,12 @@ const FeedCard = React.memo(function FeedCard({
 }) {
   const cardRef = useRef(null);
   const videoRef = useRef(null);
+  const captionRef = useRef(null);
   const hasTrackedView = useRef(false);
   const isVideo = post.mediaType === "Video";
-  const [isIntersecting, setIsIntersecting] = useState(false);
   const [isMaximizeHovered, setIsMaximizeHovered] = useState(false);
+  const [isCaptionExpanded, setIsCaptionExpanded] = useState(false);
+  const [showViewMore, setShowViewMore] = useState(false);
   const isPlaying = isVideo && activeVideoId === post._id && !isParentModalOpen;
   const postDate = post.createdAt
     ? new Date(post.createdAt).toLocaleString(undefined, {
@@ -55,7 +57,6 @@ const FeedCard = React.memo(function FeedCard({
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsIntersecting(entry.isIntersecting);
         if (entry.isIntersecting) {
           // Increment view count exactly once
           if (!isOwnPost && post._id && !hasTrackedView.current) {
@@ -108,6 +109,22 @@ const FeedCard = React.memo(function FeedCard({
       videoRef.current.pause();
     }
   }, [isPlaying, userInteracted]);
+
+  // Check if caption overflows 3 lines
+  useEffect(() => {
+    if (captionRef.current && !isCaptionExpanded) {
+      const checkOverflow = () => {
+        if (captionRef.current) {
+          setShowViewMore(
+            captionRef.current.scrollHeight > captionRef.current.clientHeight
+          );
+        }
+      };
+      // small delay to ensure DOM layout is complete
+      const timer = setTimeout(checkOverflow, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [post.caption, isCaptionExpanded]);
 
   return (
     <div
@@ -256,17 +273,32 @@ const FeedCard = React.memo(function FeedCard({
         </div>
 
         {post.caption && (
-          <p
-            className="text-sm leading-relaxed"
-            style={{ color: "var(--text-secondary)" }}
-          >
-            {post.userId && (
-              <strong className="mr-2" style={{ color: "var(--text-primary)" }}>
-                {post.userId.username}
-              </strong>
+          <div className="flex flex-col">
+            <p
+              ref={captionRef}
+              className={`text-sm leading-relaxed whitespace-pre-wrap ${!isCaptionExpanded ? "line-clamp-3" : ""}`}
+              style={{ color: "var(--text-secondary)" }}
+            >
+              {post.userId && (
+                <strong className="mr-2" style={{ color: "var(--text-primary)" }}>
+                  {post.userId.username}
+                </strong>
+              )}
+              {post.caption}
+            </p>
+            {showViewMore && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsCaptionExpanded(!isCaptionExpanded);
+                }}
+                className="text-xs font-semibold mt-1 self-end hover:underline cursor-pointer bg-transparent border-none p-0"
+                style={{ color: "var(--primary-500)" }}
+              >
+                {isCaptionExpanded ? "view less" : "view more"}
+              </button>
             )}
-            {post.caption}
-          </p>
+          </div>
         )}
       </div>
     </div>

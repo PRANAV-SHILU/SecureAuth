@@ -1,11 +1,11 @@
 export default function ExploreSkeleton() {
   return (
-    <div className="grid grid-cols-3 md:grid-cols-4 gap-[2px] sm:gap-[4px]">
+    <div className="grid grid-cols-3 md:grid-cols-4 gap-0.5 sm:gap-1">
       {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => {
         return (
           <div
             key={i}
-            className="relative overflow-hidden bg-zinc-900 animate-pulse aspect-4/5 md:aspect-3/4 min-h-[220px] sm:min-h-[280px] md:min-h-[350px]"
+            className="relative overflow-hidden bg-zinc-900 animate-pulse aspect-4/5 md:aspect-3/4 min-h-55 sm:min-h-70 md:min-h-87.5"
           >
             {/* Base block simulating media */}
             <div className="w-full h-full bg-zinc-200 dark:bg-zinc-800 opacity-20" />
