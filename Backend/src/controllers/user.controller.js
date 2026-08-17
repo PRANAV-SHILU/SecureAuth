@@ -91,10 +91,10 @@ export const updateProfile = asyncHandler("updateProfile", async (req, res) => {
   const { username, email, tagline, bio } = req.body;
   const updateData = {};
 
-  console.log("req.body:", req.body);
-  console.log("req.file:", req.file);
-  console.log("req.cloudinaryUrl:", req.cloudinaryUrl);
-  console.log("req.user:", req.user);
+  // console.log("req.body:", req.body);
+  // console.log("req.file:", req.file);
+  // console.log("req.cloudinaryUrl:", req.cloudinaryUrl);
+  // console.log("req.user:", req.user);
 
   if (username) {
     const isUsernameExists = await User.findOne({ username });

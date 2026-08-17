@@ -505,8 +505,12 @@ export default function ContactUs() {
               rows={5}
               placeholder="Tell us what's on your mind..."
               value={formData.message}
-              onChange={(e) => updateField("message", e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border text-sm font-medium transition-all focus:outline-none focus:ring-2 resize-y min-h-30 disabled:cursor-not-allowed disabled:opacity-60"
+              onChange={(e) => {
+                updateField("message", e.target.value);
+                e.target.style.height = "auto";
+                e.target.style.height = `${e.target.scrollHeight}px`;
+              }}
+              className="w-full px-4 py-3 rounded-xl border text-sm font-medium transition-all focus:outline-none focus:ring-2 resize-none overflow-hidden min-h-30 disabled:cursor-not-allowed disabled:opacity-60"
               style={inputStyle}
               {...focusHandlers}
             />

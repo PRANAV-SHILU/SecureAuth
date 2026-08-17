@@ -75,17 +75,56 @@ const ProfileVideoCard = React.memo(function ProfileVideoCard({ post, onClick })
 });
 
 function Bio({ bio, className }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [showButton, setShowButton] = useState(false);
+  const textRef = React.useRef(null);
+
+  useEffect(() => {
+    const checkOverflow = () => {
+      if (textRef.current) {
+        const prev = textRef.current.style.WebkitLineClamp;
+        textRef.current.style.WebkitLineClamp = 3;
+        const isOverflowing = textRef.current.scrollHeight > textRef.current.clientHeight;
+        setShowButton(isOverflowing);
+        textRef.current.style.WebkitLineClamp = prev;
+      }
+    };
+    checkOverflow();
+    const timeoutId = setTimeout(checkOverflow, 50);
+    window.addEventListener('resize', checkOverflow);
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('resize', checkOverflow);
+    };
+  }, [bio]);
+
   if (!bio) return null;
+
   return (
-    <p
-      className={className}
-      style={{
-        color: "var(--text-secondary)",
-        whiteSpace: "pre-wrap",
-      }}
-    >
-      {bio}
-    </p>
+    <div className={className}>
+      <p
+        ref={textRef}
+        style={{
+          color: "var(--text-secondary)",
+          whiteSpace: "pre-wrap",
+          display: "-webkit-box",
+          WebkitLineClamp: isExpanded ? "unset" : 3,
+          WebkitBoxOrient: "vertical",
+          overflow: "hidden",
+          margin: 0,
+        }}
+      >
+        {bio}
+      </p>
+      {showButton && (
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="text-sm font-semibold mt-1 hover:opacity-80 transition-opacity cursor-pointer border-none bg-transparent p-0 text-blue-400"
+        >
+          {isExpanded ? "View less" : "View more"}
+        </button>
+      )}
+    </div>
   );
 }
 
@@ -318,7 +357,7 @@ function ProfileContent({ data, username, submit }) {
 
               <Bio
                 bio={user.bio}
-                className="hidden sm:flex whitespace-pre-wrap text-sm md:text-base 4xl:text-xl leading-relaxed 4xl:leading-loose"
+                className="hidden sm:flex flex-col items-start text-sm md:text-base 4xl:text-xl leading-relaxed 4xl:leading-loose"
               />
             </div>
           </div>
@@ -332,7 +371,7 @@ function ProfileContent({ data, username, submit }) {
 
           <Bio
             bio={user.bio}
-            className="block sm:hidden whitespace-pre-wrap text-sm md:text-base leading-relaxed"
+            className="block sm:hidden text-sm md:text-base leading-relaxed"
           />
 
           {/* Edit Profile Button */}

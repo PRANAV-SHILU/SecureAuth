@@ -66,7 +66,7 @@ const ExploreCard = React.memo(function ExploreCard({ post }) {
 
   return (
     <div
-      className="relative w-full h-full aspect-4/5 md:aspect-3/4 min-h-[220px] sm:min-h-[280px] md:min-h-[350px] overflow-hidden"
+      className="relative w-full h-full aspect-4/5 md:aspect-3/4 min-h-55 sm:min-h-70 md:min-h-87.5 overflow-hidden"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -348,7 +348,7 @@ function ExploreContent({ posts, total, setSelectedPost }) {
           No posts match &ldquo;{searchQuery}&rdquo;.
         </div>
       ) : (
-        <div className="grid grid-cols-3 md:grid-cols-4 gap-[2px] sm:gap-[4px] explore-grid">
+        <div className="grid grid-cols-3 md:grid-cols-4 gap-0.5 sm:gap-1 explore-grid">
           {allPosts.map((post, index) => {
             const isTriggerElement = index === allPosts.length - 9;
             return (
@@ -365,7 +365,7 @@ function ExploreContent({ posts, total, setSelectedPost }) {
           <Link
             to="/profile"
             onClick={() => window.scrollTo(0, 0)}
-            className="group aspect-4/5 md:aspect-3/4 min-h-[220px] sm:min-h-[280px] md:min-h-[350px] bg-zinc-900 border border-dashed overflow-hidden cursor-pointer relative flex flex-col items-center justify-center hover:bg-zinc-800 transition-colors"
+            className="group aspect-4/5 md:aspect-3/4 min-h-55 sm:min-h-70 md:min-h-87.5 bg-zinc-900 border border-dashed overflow-hidden cursor-pointer relative flex flex-col items-center justify-center hover:bg-zinc-800 transition-colors"
             style={{ borderColor: "var(--border-normal)" }}
           >
             <Plus

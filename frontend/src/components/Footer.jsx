@@ -69,14 +69,7 @@ export default function Footer() {
               >
                 Home
               </NavLink>
-              {user?.role === "admin" && (
-                <NavLink
-                  to="/admin/dashboard"
-                  className="text-(--text-secondary) hover:text-(--primary-500) transition-colors text-sm"
-                >
-                  Admin
-                </NavLink>
-              )}
+
               {!user && (
                 <>
                   <NavLink

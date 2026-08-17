@@ -301,11 +301,15 @@ export default function ContactCard({ contact, isAdmin = true }) {
 
           <textarea
             value={replyText}
-            onChange={(e) => setReplyText(e.target.value)}
+            onChange={(e) => {
+              setReplyText(e.target.value);
+              e.target.style.height = "auto";
+              e.target.style.height = `${e.target.scrollHeight}px`;
+            }}
             maxLength={RESPONSE_MAX_LENGTH + 50}
             placeholder="Type your response to this message..."
             rows={4}
-            className="w-full rounded-xl px-4 py-3 text-sm resize-none outline-none transition-all focus:ring-2"
+            className="w-full rounded-xl px-4 py-3 text-sm resize-none overflow-hidden outline-none transition-all focus:ring-2"
             style={{
               backgroundColor: "var(--surface-input)",
               border: `1px solid ${isOverLimit ? "#ef4444" : "var(--border-normal)"}`,

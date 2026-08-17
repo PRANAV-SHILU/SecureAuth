@@ -321,14 +321,7 @@ export default function Header() {
                 </button>
               </div>
 
-              {/* Nav Links */}
-              <NavLink
-                to="/"
-                onClick={() => setMobileMenuOpen(false)}
-                className={mobileNavLinkClass}
-              >
-                <Home size={20} className="text-inherit" /> Home
-              </NavLink>
+
 
               {user?.role === "admin" && (
                 <NavLink

@@ -21,6 +21,14 @@ export default function PostDetailModal({ isOpen, onClose, post, profileUser }) 
   const [altTextError, setAltTextError] = useState("");
   const overlayRef = useRef(null);
   const prevPostRef = useRef(null);
+  const textareaRef = useRef(null);
+
+  useEffect(() => {
+    if (isEditing && textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, [isEditing]);
 
   const storedUser = localStorage.getItem("user");
   const currentUser = storedUser ? JSON.parse(storedUser) : null;
@@ -385,6 +393,7 @@ export default function PostDetailModal({ isOpen, onClose, post, profileUser }) 
                         Caption
                       </label>
                       <textarea
+                        ref={textareaRef}
                         className="input-field"
                         rows={5}
                         cols={45}
@@ -393,6 +402,9 @@ export default function PostDetailModal({ isOpen, onClose, post, profileUser }) 
                         onChange={(e) => {
                           const val = e.target.value;
                           setEditCaption(val);
+                          e.target.style.height = "auto";
+                          e.target.style.height = `${e.target.scrollHeight}px`;
+                          
                           if (val.length > 500) {
                             setCaptionError(
                               "Caption cannot exceed 500 characters",
@@ -401,7 +413,7 @@ export default function PostDetailModal({ isOpen, onClose, post, profileUser }) 
                             setCaptionError("");
                           }
                         }}
-                        style={{ resize: "both" }}
+                        style={{ resize: "none", overflow: "hidden" }}
                       />
                       {captionError && (
                         <p

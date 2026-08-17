@@ -5,7 +5,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import useDocumentMetadata from "../hooks/useDocumentMetadata";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { editProfileSchema } from "../schema/editProfileSchema";
@@ -23,6 +23,8 @@ export default function EditProfile() {
   const isSubmitting = navigation.state === "submitting";
   const fileInputRef = useRef(null);
   const [previewImage, setPreviewImage] = useState(user?.profileImage || "");
+  const taglineTextareaRef = useRef(null);
+  const bioTextareaRef = useRef(null);
 
   const {
     register,
@@ -41,6 +43,23 @@ export default function EditProfile() {
 
   const taglineValue = useWatch({ control, name: "tagline" }) || "";
   const bioValue = useWatch({ control, name: "bio" }) || "";
+
+  const { ref: taglineFormRef, ...taglineRest } = register("tagline");
+  const { ref: bioFormRef, ...bioRest } = register("bio");
+
+  useEffect(() => {
+    if (taglineTextareaRef.current) {
+      taglineTextareaRef.current.style.height = "auto";
+      taglineTextareaRef.current.style.height = `${taglineTextareaRef.current.scrollHeight}px`;
+    }
+  }, [taglineValue]);
+
+  useEffect(() => {
+    if (bioTextareaRef.current) {
+      bioTextareaRef.current.style.height = "auto";
+      bioTextareaRef.current.style.height = `${bioTextareaRef.current.scrollHeight}px`;
+    }
+  }, [bioValue]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -94,7 +113,7 @@ export default function EditProfile() {
         )}
 
       <main
-        className="w-full max-w-[600px] mx-auto pt-8 pb-16 px-4 md:px-8"
+        className="w-full max-w-150 mx-auto pt-8 pb-16 px-4 md:px-8"
       >
         <div className="flex w-full justify-between items-center mb-8">
           <h1
@@ -203,8 +222,12 @@ export default function EditProfile() {
               className="input-field"
               rows={2}
               placeholder="A short line about you..."
-              style={{ resize: "vertical" }}
-              {...register("tagline")}
+              style={{ resize: "none", overflow: "hidden" }}
+              {...taglineRest}
+              ref={(e) => {
+                taglineFormRef(e);
+                taglineTextareaRef.current = e;
+              }}
             />
             {errors.tagline && (
               <p
@@ -240,8 +263,12 @@ export default function EditProfile() {
               className="input-field"
               rows={4}
               placeholder="Tell people about yourself..."
-              style={{ resize: "vertical" }}
-              {...register("bio")}
+              style={{ resize: "none", overflow: "hidden" }}
+              {...bioRest}
+              ref={(e) => {
+                bioFormRef(e);
+                bioTextareaRef.current = e;
+              }}
             />
             {errors.bio && (
               <p
