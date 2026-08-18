@@ -38,7 +38,7 @@ const getTagColor = (tag) => {
 };
 
 export default function WhatsNew() {
-  useDocumentMetadata("What's New");
+  useDocumentMetadata("What's New", "Check out the latest features, updates, and release notes for LookSphere. See what developer Pranav Shilu has recently added to improve your experience.");
 
   useEffect(() => {
     window.scrollTo(0, 0);

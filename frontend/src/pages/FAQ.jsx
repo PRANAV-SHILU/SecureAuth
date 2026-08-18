@@ -14,7 +14,7 @@ import { FAQ_CATEGORIES, LAST_UPDATED } from "../utils/faqData";
 import { GithubIcon, LinkedinIcon } from "../shared-components/SvgIcons";
 
 export default function FAQ() {
-  useDocumentMetadata("FAQ");
+  useDocumentMetadata("FAQ", "Got questions? Find answers about LookSphere features, account management, and security in our FAQ section, maintained by developer Pranav Shilu.");
 
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");

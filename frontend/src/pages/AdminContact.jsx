@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { useLoaderData, Await, useSearchParams, useNavigate } from "react-router-dom";
 import useDocumentMetadata from "../hooks/useDocumentMetadata";
 import AdminSidebar from "../components/admin/AdminSidebar";
@@ -48,10 +48,14 @@ function ContactList({ contacts }) {
 }
 
 export default function AdminContact() {
-  useDocumentMetadata("Admin Contact");
+  useDocumentMetadata("Admin Contact", "LookSphere admin contact portal. Efficiently manage, review, and respond to user inquiries and support tickets on the platform built by Pranav Shilu.");
   const { contactData } = useLoaderData();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const isResponded = searchParams.get("isResponded") ?? "false";
   const header = HEADER[isResponded] ?? HEADER["false"];

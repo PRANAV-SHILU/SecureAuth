@@ -53,6 +53,7 @@ const ProfileVideoCard = React.memo(function ProfileVideoCard({ post, onClick })
         <video
           ref={videoRef}
           src={`${post.mediaUrl}#t=1.0`}
+          aria-label={post.altText || post.caption || "Video post - LookSphere"}
           className="w-full h-full object-cover hover:opacity-90 transition-opacity"
           muted
           loop
@@ -63,7 +64,7 @@ const ProfileVideoCard = React.memo(function ProfileVideoCard({ post, onClick })
       ) : (
         <img
           src={getVideoPosterUrl(post.mediaUrl, 300)}
-          alt={post.caption || "video thumbnail"}
+          alt={post.caption || "video thumbnail - LookSphere"}
           loading="lazy"
           decoding="async"
           className="w-full h-full object-cover hover:opacity-90 transition-opacity"
@@ -321,7 +322,7 @@ function ProfileContent({ data, username, submit }) {
               {user.profileImage ? (
                 <img
                   src={user.profileImage}
-                  alt="Profile"
+                  alt={`Profile image: ${user.username}${user.tagline ? ' - ' + user.tagline : ''}`}
                   className="w-full"
                   draggable={false}
                   loading="lazy"
@@ -433,7 +434,7 @@ function ProfileContent({ data, username, submit }) {
                     >
                       <img
                         src={getOptimizedMediaUrl(post.mediaUrl, { width: 300 })}
-                        alt={post.altText || post.caption || "image"}
+                        alt={post.altText || post.caption || "image - LookSphere"}
                         loading="lazy"
                         decoding="async"
                         className="w-full h-full object-cover hover:opacity-90 transition-opacity"

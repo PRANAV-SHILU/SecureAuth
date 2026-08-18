@@ -13,7 +13,7 @@ const PASSWORD_RULES = [
 ];
 
 export default function ChangePassword() {
-  useDocumentMetadata("Change Password");
+  useDocumentMetadata("Change Password", "Securely update and change your LookSphere account password. We prioritize your security on this social media platform developed by Pranav Shilu.");
   const user = useRouteLoaderData("root");
   const navigate = useNavigate();
   const navigation = useNavigation();

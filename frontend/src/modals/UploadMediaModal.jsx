@@ -193,13 +193,14 @@ export default function UploadMediaModal({
                     (mediaType === "Image" ? (
                       <img
                         src={previewUrl}
-                        alt="Preview"
+                        alt="Preview image - LookSphere"
                         className="w-full h-full object-cover"
                         draggable={false}
                       />
                     ) : (
                       <video
                         src={previewUrl}
+                        aria-label="Preview video - LookSphere"
                         preload="metadata"
                         className="w-full h-full object-cover"
                         controls

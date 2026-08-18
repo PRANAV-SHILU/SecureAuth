@@ -346,6 +346,7 @@ export default function PostDetailModal({ isOpen, onClose, post, profileUser }) 
               {isVideo ? (
                 <video
                   src={post.mediaUrl}
+                  aria-label={post.altText || post.caption || "Video post - LookSphere"}
                   preload="metadata"
                   className="post-detail-media"
                   controls
@@ -359,7 +360,7 @@ export default function PostDetailModal({ isOpen, onClose, post, profileUser }) 
               ) : (
                 <img
                   src={post.mediaUrl}
-                  alt={editAltText || editCaption || "Post"}
+                  alt={editAltText || editCaption || "Post - LookSphere"}
                   className="post-detail-media"
                   draggable={false}
                   onLoad={handleImageLoad}

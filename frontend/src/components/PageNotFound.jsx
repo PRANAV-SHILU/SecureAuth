@@ -3,7 +3,7 @@ import useDocumentMetadata from "../hooks/useDocumentMetadata";
 
 
 export default function PageNotFound() {
-  useDocumentMetadata("Page Not Found");
+  useDocumentMetadata("Page Not Found", "Error 404 - The page you are looking for on LookSphere could not be found. Navigate back to the home page of the platform built by Pranav Shilu.");
   return (
     <>
       <section

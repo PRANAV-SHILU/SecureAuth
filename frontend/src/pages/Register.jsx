@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
 export default function Register() {
-  useDocumentMetadata("Register");
+  useDocumentMetadata("Register", "Join LookSphere today! Create your account to start sharing photos, videos, and connecting with a vibrant community. Built by Pranav Shilu.");
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
   const [showPassword, setShowPassword] = useState(false);

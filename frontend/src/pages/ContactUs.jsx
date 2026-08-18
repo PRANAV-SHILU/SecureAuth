@@ -43,13 +43,17 @@ const CATEGORY_OPTIONS = [
 ];
 
 export default function ContactUs() {
-  useDocumentMetadata("Contact Us");
+  useDocumentMetadata("Contact Us", "Get in touch with the LookSphere team. Send feedback, report issues, or inquire about business opportunities directly to developer Pranav Shilu.");
 
   const navigation = useNavigation();
   const submit = useSubmit();
   const actionData = useActionData();
   const navigate = useNavigate();
   const isSubmitting = navigation.state === "submitting";
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const {
     formData,
@@ -664,6 +668,7 @@ export default function ContactUs() {
                     >
                       <video
                         src={videoPreview}
+                        aria-label="Contact attachment LookSphere"
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         muted
                       />

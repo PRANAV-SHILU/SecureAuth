@@ -5,7 +5,7 @@ import useDocumentMetadata from "../hooks/useDocumentMetadata";
 import { Eye, EyeOff } from "lucide-react";
 
 export default function Login() {
-  useDocumentMetadata("Login");
+  useDocumentMetadata("Login", "Login to LookSphere to access your personalized feed, interact with creators, and stay connected. A secure social experience developed by Pranav Shilu.");
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
   const [showPassword, setShowPassword] = useState(false);

@@ -1,10 +1,12 @@
 import { useEffect } from "react";
+import useDocumentMetadata from "../hooks/useDocumentMetadata";
 import { ROADMAP_CATEGORIES, COMPLETED_FEATURES } from "../utils/roadmapData";
 import { GLASS_SHADOW } from "../utils/styles";
 import { HeroBackground, CardGlow } from "../shared-components/SharedHomeComponents";
 import BackButton from "../shared-components/BackButton";
 
 export default function Roadmap() {
+  useDocumentMetadata("Roadmap", "Explore the development roadmap for LookSphere. See upcoming features and the future vision for the platform being built by developer Pranav Shilu.");
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);

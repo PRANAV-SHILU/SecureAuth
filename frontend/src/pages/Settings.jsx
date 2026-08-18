@@ -103,7 +103,7 @@ const SETTINGS_SECTIONS = [
 ];
 
 export default function Settings() {
-  useDocumentMetadata("Settings");
+  useDocumentMetadata("Settings", "Manage your LookSphere account settings, privacy controls, and application preferences for a tailored social experience built by Pranav Shilu.");
   const user = useRouteLoaderData("root");
   const navigate = useNavigate();
   const [expandedSection, setExpandedSection] = useState(null);

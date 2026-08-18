@@ -76,6 +76,7 @@ const ExploreCard = React.memo(function ExploreCard({ post }) {
             <video
               ref={videoRef}
               src={`${post.mediaUrl}#t=1.0`}
+              aria-label={post.altText || post.caption || "Explore video post - LookSphere"}
               preload="auto"
               className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
               muted
@@ -86,7 +87,7 @@ const ExploreCard = React.memo(function ExploreCard({ post }) {
           ) : (
             <img
               src={optimizedPoster}
-              alt={post.altText || post.caption || "video thumbnail"}
+              alt={post.altText || post.caption || "video thumbnail - LookSphere"}
               loading="lazy"
               decoding="async"
               className="w-full h-full object-cover opacity-90 group-hover:opacity-100"
@@ -99,7 +100,7 @@ const ExploreCard = React.memo(function ExploreCard({ post }) {
       ) : (
         <img
           src={optimizedImage}
-          alt={post.altText || post.caption || "explore post"}
+          alt={post.altText || post.caption || "explore post - LookSphere"}
           loading="lazy"
           decoding="async"
           className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-[transform,opacity] duration-300 group-hover:scale-105"
@@ -395,7 +396,7 @@ function ExploreContent({ posts, total, setSelectedPost }) {
 export default function Explore() {
   const { feedData } = useLoaderData();
   const [selectedPost, setSelectedPost] = useState(null);
-  useDocumentMetadata("Explore");
+  useDocumentMetadata("Explore", "Explore trending content, viral videos, and discover new creators on LookSphere. Dive into the best of social media, brought to you by Pranav Shilu.");
 
   useEffect(() => {
     window.scrollTo(0, 0);

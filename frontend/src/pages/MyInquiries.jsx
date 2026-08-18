@@ -58,7 +58,7 @@ function LoadingSkeleton() {
 }
 
 export default function MyInquiries() {
-  useDocumentMetadata("My Inquiries");
+  useDocumentMetadata("My Inquiries", "Track the status of your support tickets and inquiries on LookSphere. Get fast, reliable assistance on the social platform developed by Pranav Shilu.");
   const { contactData, isAdmin } = useLoaderData();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();

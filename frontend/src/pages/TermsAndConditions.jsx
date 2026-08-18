@@ -1,5 +1,6 @@
 import { Scale } from "lucide-react";
 import LegalDocument from "../shared-components/LegalDocument";
+import useDocumentMetadata from "../hooks/useDocumentMetadata";
 import {
   LAST_UPDATED,
   TNC_INTRO,
@@ -7,6 +8,7 @@ import {
 } from "../utils/termsAndConditionsData";
 
 export default function TermsAndConditions() {
+  useDocumentMetadata("Terms and Conditions", "Review the Terms and Conditions for LookSphere. Understand the rules and guidelines for using the social platform created by full-stack developer Pranav Shilu.");
   return (
     <LegalDocument
       title="Terms and Conditions"

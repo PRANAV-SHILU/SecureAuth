@@ -9,7 +9,7 @@ import AboutTechStack from "../components/about/AboutTechStack";
 import AboutDeveloper from "../components/about/AboutDeveloper";
 
 export default function About() {
-  useDocumentMetadata("About Us");
+  useDocumentMetadata("About Us", "Learn about LookSphere and the story behind its creation. Discover the mission of this modern social media platform built from scratch by Pranav Shilu.");
 
   useEffect(() => {
     window.scrollTo(0, 0);

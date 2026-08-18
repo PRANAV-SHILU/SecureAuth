@@ -201,6 +201,7 @@ const FeedCard = React.memo(function FeedCard({
             <video
               ref={videoRef}
               src={post.mediaUrl}
+              aria-label={post.altText || post.caption || "Video post - LookSphere"}
               poster={getVideoPosterUrl(post.mediaUrl, 600)}
               preload="metadata"
               className="w-full h-full object-contain"
@@ -216,7 +217,7 @@ const FeedCard = React.memo(function FeedCard({
             >
               <img
                 src={getVideoPosterUrl(post.mediaUrl, 600)}
-                alt={post.altText || post.caption || "video thumbnail"}
+                alt={post.altText || post.caption || "video thumbnail - LookSphere"}
                 className="w-full h-full object-contain hover:opacity-95 transition-opacity"
                 loading="lazy"
                 decoding="async"
@@ -229,7 +230,7 @@ const FeedCard = React.memo(function FeedCard({
         ) : (
           <img
             src={post.mediaUrl}
-            alt={post.altText || post.caption || "post"}
+            alt={post.altText || post.caption || "post - LookSphere"}
             className="w-full h-full object-contain cursor-pointer hover:opacity-95 transition-opacity"
             loading="lazy"
             decoding="async"
@@ -499,7 +500,7 @@ export default function Feed() {
   const { feedData } = useLoaderData();
   const revalidator = useRevalidator();
   const isRefreshing = revalidator.state === "loading";
-  useDocumentMetadata("Feed");
+  useDocumentMetadata("Feed", "Browse your LookSphere feed for the latest updates, photos, and videos from people you follow. Enjoy a seamless social experience crafted by Pranav Shilu.");
 
   const storedUser = localStorage.getItem("user");
   const currentUser = storedUser ? JSON.parse(storedUser) : null;

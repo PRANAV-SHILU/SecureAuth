@@ -200,7 +200,7 @@ function CreatorsContent({ creatorsList }) {
 
 export default function Creators() {
   const { creatorsData } = useLoaderData();
-  useDocumentMetadata("Creators");
+  useDocumentMetadata("Creators", "Discover top creators, influencers, and trending profiles on LookSphere. Explore amazing content curated on the platform built by Pranav Shilu.");
 
   return (
     <div

@@ -202,7 +202,7 @@ export default function Footer() {
             Thank you for visiting! We hope you enjoy exploring LookSphere.
           </div>
           <p className="text-(--text-secondary) text-sm">
-            © {year} LookSphere. Made with{" "}
+            © {year} LookSphere. Built by Pranav Shilu. Made with{" "}
             <span className="text-red-500">❤️</span> in India.
           </p>
         </div>

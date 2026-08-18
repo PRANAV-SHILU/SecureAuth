@@ -229,7 +229,7 @@ function TableOfContents({ sections }) {
 
 // Main Shared Document Layout
 export default function LegalDocument({ title, icon: Icon, lastUpdated, intro, sections }) {
-  useDocumentMetadata(title);
+  useDocumentMetadata(title, `Read the ${title} for LookSphere. A secure social platform created by Pranav Shilu.`);
 
   useEffect(() => {
     window.scrollTo(0, 0);

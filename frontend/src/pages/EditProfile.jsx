@@ -16,7 +16,7 @@ import BackButton from "../shared-components/BackButton";
 
 export default function EditProfile() {
   const { data } = useLoaderData();
-  useDocumentMetadata("Edit Profile");
+  useDocumentMetadata("Edit Profile", "Customize your LookSphere profile. Update your avatar, bio, and personal details to stand out in the community created by developer Pranav Shilu.");
   const { user } = data || {};
   const navigate = useNavigate();
   const navigation = useNavigation();
@@ -145,7 +145,7 @@ export default function EditProfile() {
               {previewImage ? (
                 <img
                   src={previewImage}
-                  alt="Profile"
+                  alt={`Profile image: ${user?.username}${user?.tagline ? ' - ' + user?.tagline : ''}`}
                   className="w-full h-full object-cover"
                 />
               ) : (
