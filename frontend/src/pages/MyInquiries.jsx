@@ -58,7 +58,7 @@ function LoadingSkeleton() {
 }
 
 export default function MyInquiries() {
-  useDocumentMetadata("My Inquiries", "Track the status of your support tickets and inquiries on LookSphere. Get fast, reliable assistance on the social platform developed by Pranav Shilu.");
+  useDocumentMetadata("My Inquiries", "Track the status of your support tickets and inquiries on LookSphere. Get fast, reliable assistance on the social platform developed by Pranav Shilu.", true);
   const { contactData, isAdmin } = useLoaderData();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -95,7 +95,7 @@ export default function MyInquiries() {
             My Inquiries
           </h1>
           <p
-            className="text-xs sm:text-sm md:text-lg max-w-[280px] sm:max-w-xl mx-auto leading-relaxed"
+            className="text-xs sm:text-sm md:text-lg max-w-70 sm:max-w-xl mx-auto leading-relaxed"
             style={{ color: "var(--text-secondary)" }}
           >
             Track all your contact submissions and view responses from our team.

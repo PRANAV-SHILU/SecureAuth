@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { useRouteLoaderData, useNavigate, Form, useNavigation, useActionData } from "react-router-dom";
+import { useRouteLoaderData, useNavigate, Form, useNavigation } from "react-router-dom";
 import { Lock, Eye, EyeOff, Check, X, ShieldCheck, ArrowRight, Loader2 } from "lucide-react";
 import useDocumentMetadata from "../hooks/useDocumentMetadata";
 import BackButton from "../shared-components/BackButton";
@@ -13,11 +13,11 @@ const PASSWORD_RULES = [
 ];
 
 export default function ChangePassword() {
-  useDocumentMetadata("Change Password", "Securely update and change your LookSphere account password. We prioritize your security on this social media platform developed by Pranav Shilu.");
+  useDocumentMetadata("Change Password", "Securely update and change your LookSphere account password. We prioritize your security on this social media platform developed by Pranav Shilu.", true);
   const user = useRouteLoaderData("root");
   const navigate = useNavigate();
   const navigation = useNavigation();
-  const actionData = useActionData();
+
 
   const submitting = navigation.state === "submitting";
 
@@ -33,10 +33,7 @@ export default function ChangePassword() {
   });
   const [touched, setTouched] = useState({});
 
-  if (!user) {
-    navigate("/login");
-    return null;
-  }
+
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -63,6 +60,11 @@ export default function ChangePassword() {
     const passed = ruleResults.filter((r) => r.passed).length;
     return Math.round((passed / ruleResults.length) * 100);
   }, [ruleResults]);
+
+  if (!user) {
+    navigate("/login");
+    return null;
+  }
 
   const strengthColor =
     strengthPercent <= 20

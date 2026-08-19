@@ -48,7 +48,7 @@ function ContactList({ contacts }) {
 }
 
 export default function AdminContact() {
-  useDocumentMetadata("Admin Contact", "LookSphere admin contact portal. Efficiently manage, review, and respond to user inquiries and support tickets on the platform built by Pranav Shilu.");
+  useDocumentMetadata("Admin Contact", "LookSphere admin contact portal. Efficiently manage, review, and respond to user inquiries and support tickets on the platform built by Pranav Shilu.", true);
   const { contactData } = useLoaderData();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();

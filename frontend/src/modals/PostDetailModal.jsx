@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { X, Info, Eye, MoreVertical, User as UserIcon } from "lucide-react";
 import { modifyPost } from "../services/postService";
 import { toast } from "react-toastify";
@@ -32,10 +32,11 @@ export default function PostDetailModal({ isOpen, onClose, post, profileUser }) 
 
   const storedUser = localStorage.getItem("user");
   const currentUser = storedUser ? JSON.parse(storedUser) : null;
-  const postAuthor = 
-    (post?.userId && typeof post.userId === 'object' && post.userId.username) ? post.userId : 
+  const postAuthor = useMemo(() => {
+    return (post?.userId && typeof post.userId === 'object' && post.userId.username) ? post.userId : 
     profileUser ? profileUser : 
     (post?.userId ? { _id: post.userId, username: "Unknown User", profileImage: null } : null);
+  }, [post, profileUser]);
   const isOwner = post && currentUser && currentUser._id === (postAuthor?._id || post?.userId);
 
   const [displayCaption, setDisplayCaption] = useState("");
@@ -55,6 +56,39 @@ export default function PostDetailModal({ isOpen, onClose, post, profileUser }) 
       setMediaDimensions({ width: 0, height: 0 });
     }
   }
+
+  // Inject JSON-LD structured data for the post
+  useEffect(() => {
+    if (!post || !isOpen) return;
+
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.id = `json-ld-post-${post._id}`;
+    
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "SocialMediaPosting",
+      "headline": displayCaption?.substring(0, 50) || "Post on LookSphere",
+      "articleBody": displayCaption || "",
+      "author": {
+        "@type": "Person",
+        "name": postAuthor?.username || "Unknown"
+      },
+      "image": post.mediaType === "Image" ? post.mediaUrl : undefined,
+      "datePublished": post.createdAt,
+      "url": `https://looksphere.vercel.app/profile/${postAuthor?.username || ''}?post=${post._id}`
+    };
+
+    script.textContent = JSON.stringify(structuredData);
+    document.head.appendChild(script);
+
+    return () => {
+      const existingScript = document.getElementById(script.id);
+      if (existingScript) {
+        document.head.removeChild(existingScript);
+      }
+    };
+  }, [post, isOpen, displayCaption, postAuthor]);
 
   // Lock body scroll when modal is open
   useEffect(() => {

@@ -82,7 +82,7 @@ function DashboardContent({ data }) {
 
 export default function Dashboard() {
   const { dashboardData } = useLoaderData();
-  useDocumentMetadata("Dashboard", "Access your LookSphere admin dashboard to manage posts, track analytics, and oversee platform activity on the social network built by Pranav Shilu.");
+  useDocumentMetadata("Dashboard", "Access your LookSphere admin dashboard to manage posts, track analytics, and oversee platform activity on the social network built by Pranav Shilu.", true);
 
   return (
     <div className="pb-12 md:pb-16 flex flex-col md:flex-row gap-6 mt-6 w-full">

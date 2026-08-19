@@ -1,0 +1,16 @@
+{
+  "name": "LookSphere",
+  "short_name": "LookSphere",
+  "description": "LookSphere is a next-gen social media platform by Pranav Shilu. Share photos, videos, connect with creators, and explore trending content.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a1a",
+  "theme_color": "#3b82f6",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

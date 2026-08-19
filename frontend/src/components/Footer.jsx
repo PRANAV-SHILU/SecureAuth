@@ -57,7 +57,7 @@ export default function Footer() {
           </div>
 
           {/* Links Columns */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-4">
+          <nav aria-label="Footer navigation" className="grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-4">
             {/* Group 1: Navigation/Account */}
             <div className="flex flex-col gap-3">
               <h3 className="font-bold text-(--text-primary) text-lg mb-2">
@@ -193,7 +193,7 @@ export default function Footer() {
                 Contact Us
               </NavLink>
             </div>
-          </div>
+          </nav>
         </div>
 
         {/* Bottom Bar */}

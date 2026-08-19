@@ -16,7 +16,7 @@ import BackButton from "../shared-components/BackButton";
 
 export default function EditProfile() {
   const { data } = useLoaderData();
-  useDocumentMetadata("Edit Profile", "Customize your LookSphere profile. Update your avatar, bio, and personal details to stand out in the community created by developer Pranav Shilu.");
+  useDocumentMetadata("Edit Profile", "Customize your LookSphere profile. Update your avatar, bio, and personal details to stand out in the community created by developer Pranav Shilu.", true);
   const { user } = data || {};
   const navigate = useNavigate();
   const navigation = useNavigation();
