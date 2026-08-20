@@ -2,6 +2,13 @@ import User from "../models/users.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import Post from "../models/posts.model.js";
 
+export const getPostById = asyncHandler("getPostById", async(req,res)=>{
+  const {id} = req.params;
+  const post = await Post.findById(id).populate("userId", "username profileImage");
+  if(!post) return res.status(404).json({message: "Post not found"});
+  return res.status(200).json({message: "Post fetched successfully", data: post});
+})
+
 export const getFeed = asyncHandler("getFeed", async (req, res) => {
   const { page, limit, search } = req.query;
   const filter = {};

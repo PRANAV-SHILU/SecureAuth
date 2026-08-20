@@ -4,6 +4,7 @@ import {
   getFeed,
   increasePostView,
   editPost,
+  getPostById,
 } from "../controllers/post.controller.js";
 import { verifyToken } from "../middlewares/auth.middleware.js";
 import {
@@ -14,6 +15,12 @@ import {
 import { editPostValidation } from "../validators/post.validator.js";
 
 const postRoutes = express.Router();
+
+// get single post
+postRoutes.get("/:id", getPostById);
+
+// increase post view count
+postRoutes.patch("/:id/increment-view", increasePostView);
 
 // get all posts from all users - for feed
 postRoutes.get("/", getFeed);
@@ -28,8 +35,6 @@ postRoutes.post(
   createPost,
 );
 
-// increase post view count
-postRoutes.patch("/:id/increment-view", increasePostView);
 
 // edit post
 postRoutes.patch("/:id", verifyToken,editPostValidation, editPost);

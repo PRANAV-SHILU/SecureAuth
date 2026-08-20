@@ -12,6 +12,7 @@ export const ENDPOINTS = {
   POST: {
     POSTS: "/posts",
     CREATE_POST: "/posts",
+    GET_POST: (id) => `/posts/${id}`,
     INCREASE_POST_VIEW: (id) => `/posts/${id}/increment-view`,
     EDIT_POST: (id) => `/posts/${id}`,
   },
