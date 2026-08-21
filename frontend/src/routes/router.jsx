@@ -24,6 +24,7 @@ const AdminContact = lazy(() => import("../pages/AdminContact.jsx"));
 const MyInquiries = lazy(() => import("../pages/MyInquiries.jsx"));
 const Settings = lazy(() => import("../pages/Settings.jsx"));
 const ChangePassword = lazy(() => import("../pages/ChangePassword.jsx"));
+const PostDetail = lazy(() => import("../pages/PostDetail.jsx"));
 
 import FeedSkeleton from "../skeletons/FeedSkeleton.jsx";
 import ExploreSkeleton from "../skeletons/ExploreSkeleton.jsx";
@@ -49,6 +50,7 @@ import { redirectIfAuthenticated } from "../loaders/redirectIfAuthenticated.jsx"
 import { dashboardLoader } from "../loaders/dashboardLoader.jsx";
 import { adminContactLoader } from "../loaders/adminContactLoader.jsx";
 import { myInquiriesLoader } from "../loaders/myInquiriesLoader.jsx";
+import { postDetailLoader } from "../loaders/postDetailLoader.jsx";
 
 const router = createBrowserRouter([
   {
@@ -104,6 +106,15 @@ const router = createBrowserRouter([
           </Suspense>
         ),
         loader: feedLoader(10),
+      },
+      {
+        path: "posts/:id",
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <PostDetail />
+          </Suspense>
+        ),
+        loader: postDetailLoader,
       },
       {
         path: "admin/dashboard",

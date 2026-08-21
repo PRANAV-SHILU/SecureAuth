@@ -237,7 +237,7 @@ function ProfileContent({ data, username, submit }) {
   const { user, images = [], videos = [] } = profileDataObj;
 
   useDocumentMetadata(
-    user?.username ? `@${user.username} profile` : "Profile",
+    user?.username ? `@${user.username}'s profile` : "Profile",
     user?.username
       ? `View @${user.username}'s profile, posts, and media on LookSphere. Connect with friends and explore personal feeds on this social network developed by Pranav Shilu.`
       : "View user profiles, posts, and media on LookSphere. Connect with friends and explore personal feeds on this social network developed by Pranav Shilu.",

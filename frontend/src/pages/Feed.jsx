@@ -14,6 +14,8 @@ import {
   Info,
   ArrowUp,
   Maximize2,
+  Link2,
+  Check,
 } from "lucide-react";
 import BackButton from "../shared-components/BackButton";
 import { trackPostView } from "../services/postService";
@@ -36,6 +38,8 @@ const FeedCard = React.memo(function FeedCard({
   const hasTrackedView = useRef(false);
   const isVideo = post.mediaType === "Video";
   const [isMaximizeHovered, setIsMaximizeHovered] = useState(false);
+  const [isLinkHovered, setIsLinkHovered] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
   const [isCaptionExpanded, setIsCaptionExpanded] = useState(false);
   const [showViewMore, setShowViewMore] = useState(false);
   const isPlaying = isVideo && activeVideoId === post._id && !isParentModalOpen;
@@ -116,7 +120,7 @@ const FeedCard = React.memo(function FeedCard({
       const checkOverflow = () => {
         if (captionRef.current) {
           setShowViewMore(
-            captionRef.current.scrollHeight > captionRef.current.clientHeight
+            captionRef.current.scrollHeight > captionRef.current.clientHeight,
           );
         }
       };
@@ -201,7 +205,9 @@ const FeedCard = React.memo(function FeedCard({
             <video
               ref={videoRef}
               src={post.mediaUrl}
-              aria-label={post.altText || post.caption || "Video post - LookSphere"}
+              aria-label={
+                post.altText || post.caption || "Video post - LookSphere"
+              }
               poster={getVideoPosterUrl(post.mediaUrl, 600)}
               preload="metadata"
               className="w-full h-full object-contain"
@@ -217,7 +223,9 @@ const FeedCard = React.memo(function FeedCard({
             >
               <img
                 src={getVideoPosterUrl(post.mediaUrl, 600)}
-                alt={post.altText || post.caption || "video thumbnail - LookSphere"}
+                alt={
+                  post.altText || post.caption || "video thumbnail - LookSphere"
+                }
                 className="w-full h-full object-contain hover:opacity-95 transition-opacity"
                 loading="lazy"
                 decoding="async"
@@ -256,21 +264,46 @@ const FeedCard = React.memo(function FeedCard({
             <Eye size={13} />
             {post.postViewCount || 0} views
           </span>
-          <button
-            type="button"
-            onClick={() => onPostClick(post)}
-            className="flex items-center justify-center p-1.5 rounded-lg hover:bg-zinc-800/80 transition-all cursor-pointer border-none bg-transparent"
-            style={{
-              color: isMaximizeHovered
-                ? "var(--text-primary)"
-                : "var(--text-muted)",
-            }}
-            onMouseEnter={() => setIsMaximizeHovered(true)}
-            onMouseLeave={() => setIsMaximizeHovered(false)}
-            title="View in full screen"
-          >
-            <Maximize2 size={15} />
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => {
+                navigator.clipboard.writeText(
+                  `${window.location.origin}/posts/${post._id}`,
+                );
+                setIsCopied(true);
+                setTimeout(() => setIsCopied(false), 3000);
+              }}
+              className="flex items-center justify-center p-1.5 rounded-lg hover:bg-zinc-800/80 transition-all cursor-pointer border-none bg-transparent"
+              style={{
+                color: isCopied
+                  ? "#22c55e"
+                  : isLinkHovered
+                    ? "var(--text-primary)"
+                    : "var(--text-muted)",
+              }}
+              onMouseEnter={() => setIsLinkHovered(true)}
+              onMouseLeave={() => setIsLinkHovered(false)}
+              title="Copy link"
+            >
+              {isCopied ? <Check size={19} /> : <Link2 size={19} />}
+            </button>
+            <button
+              type="button"
+              onClick={() => onPostClick(post)}
+              className="flex items-center justify-center p-1.5 rounded-lg hover:bg-zinc-800/80 transition-all cursor-pointer border-none bg-transparent"
+              style={{
+                color: isMaximizeHovered
+                  ? "var(--text-primary)"
+                  : "var(--text-muted)",
+              }}
+              onMouseEnter={() => setIsMaximizeHovered(true)}
+              onMouseLeave={() => setIsMaximizeHovered(false)}
+              title="View in full screen"
+            >
+              <Maximize2 size={15} />
+            </button>
+          </div>
         </div>
 
         {post.caption && (
@@ -281,7 +314,10 @@ const FeedCard = React.memo(function FeedCard({
               style={{ color: "var(--text-secondary)" }}
             >
               {post.userId && (
-                <strong className="mr-2" style={{ color: "var(--text-primary)" }}>
+                <strong
+                  className="mr-2"
+                  style={{ color: "var(--text-primary)" }}
+                >
                   {post.userId.username}
                 </strong>
               )}
@@ -500,7 +536,10 @@ export default function Feed() {
   const { feedData } = useLoaderData();
   const revalidator = useRevalidator();
   const isRefreshing = revalidator.state === "loading";
-  useDocumentMetadata("Feed", "Browse your LookSphere feed for the latest updates, photos, and videos from people you follow. Enjoy a seamless social experience crafted by Pranav Shilu.");
+  useDocumentMetadata(
+    "Feed",
+    "Browse your LookSphere feed for the latest updates, photos, and videos from people you follow. Enjoy a seamless social experience crafted by Pranav Shilu.",
+  );
 
   const storedUser = localStorage.getItem("user");
   const currentUser = storedUser ? JSON.parse(storedUser) : null;
