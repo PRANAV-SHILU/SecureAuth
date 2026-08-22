@@ -462,7 +462,8 @@ a:hover {
   margin-top: 10px;
 }
 
-.post-detail-close-btn {
+.post-detail-close-btn,
+.post-detail-action-btn {
   position: absolute;
   top: -40px;
   right: -4px;
@@ -482,7 +483,12 @@ a:hover {
 }
 
 .post-detail-close-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: #ef4444; /* red-500 */
+  transform: scale(1.1);
+}
+
+.post-detail-action-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
   transform: scale(1.1);
 }
 
@@ -549,11 +555,11 @@ a:hover {
 
 .post-detail-alt-tooltip {
   position: absolute;
-  bottom: calc(100% + 2px);
+  bottom: calc(100% + 6px);
   left: 0;
-  min-width: 180px;
-  max-width: 280px;
-  padding: 10px 14px;
+  width: max-content;
+  max-width: min(280px, calc(100vw - 32px));
+  padding: 8px 12px;
   border-radius: var(--radius-sm);
   background: var(--surface-card);
   border: 1px solid var(--border-light);
@@ -563,18 +569,22 @@ a:hover {
   line-height: 1.45;
   white-space: normal;
   word-break: break-word;
-  pointer-events: auto;
+  pointer-events: none;
   user-select: text;
   -webkit-user-select: text;
   opacity: 0;
+  visibility: hidden;
   transform: translateY(4px);
   transition:
     opacity 0.2s ease,
-    transform 0.2s ease;
+    transform 0.2s ease,
+    visibility 0.2s ease;
 }
 
 .post-detail-alt-trigger:hover .post-detail-alt-tooltip {
   opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
   transform: translateY(0);
 }
 

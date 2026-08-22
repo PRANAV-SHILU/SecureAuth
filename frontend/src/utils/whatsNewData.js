@@ -2,6 +2,21 @@
 
 export const WHATS_NEW_DATA = [
   {
+    id: "aug-20-2026",
+    date: "20 August 2026",
+    title: "Dedicated Post View & URL Sharing",
+    description: "Introduced dedicated standalone post view pages, one-click share link copying, and interactive full-screen modal inspection.",
+    updates: [
+      {
+        tag: "Feature",
+        page: "Post Detail",
+        title: "Dedicated Post View & Share Links",
+        description: "Direct post URLs now load a focused post view with full description display, newline preservation, view count tracking, and instant full-screen modal expansion. You can copy post share links directly from the Feed card footer, the Post View footer, and the top-right header in the Post Detail modal.",
+        link: "/posts/6a7de833ff797865982e1be3",
+      },
+    ],
+  },
+  {
     id: "aug-15-2026",
     date: "15 August 2026",
     title: "Contact Us & My Inquiries",

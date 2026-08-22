@@ -230,34 +230,28 @@ export default function Header() {
                     <NavLink
                       to="/my-inquiries"
                       onClick={() => setDropdownOpen(false)}
-                      className="block px-4 py-3 text-sm text-(--text-primary) no-underline bg-transparent cursor-pointer dropdown-item-hover relative"
+                      className="block px-4 py-3 text-sm text-(--text-primary) no-underline bg-transparent cursor-pointer dropdown-item-hover"
                     >
                       <div className="flex items-center gap-2">
                         <MessageSquareText
                           size={16}
                           className="transition-colors duration-300"
                         />{" "}
-                        <span className="relative inline-flex pr-3">
-                          My Inquiries
-                          <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
-                        </span>
+                        My Inquiries
                       </div>
                     </NavLink>
 
                     <NavLink
                       to="/settings"
                       onClick={() => setDropdownOpen(false)}
-                      className="block px-4 py-3 text-sm text-(--text-primary) no-underline bg-transparent cursor-pointer dropdown-item-hover relative"
+                      className="block px-4 py-3 text-sm text-(--text-primary) no-underline bg-transparent cursor-pointer dropdown-item-hover"
                     >
                       <div className="flex items-center gap-2">
                         <Settings
                           size={16}
                           className="transition-colors duration-300"
                         />{" "}
-                        <span className="relative inline-flex pr-3">
-                          Settings
-                          <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
-                        </span>
+                        Settings
                       </div>
                     </NavLink>
 
@@ -435,10 +429,7 @@ export default function Header() {
                         className="flex items-center gap-3 px-3 py-2 text-(--text-primary) no-underline rounded-lg hover:bg-(--surface-hover) transition-colors"
                       >
                         <MessageSquareText size={18} />
-                        <span className="relative inline-flex pr-3">
-                          My Inquiries
-                          <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
-                        </span>
+                        My Inquiries
                       </NavLink>
                       <NavLink
                         to="/settings"
@@ -449,10 +440,7 @@ export default function Header() {
                         className="flex items-center gap-3 px-3 py-2 text-(--text-primary) no-underline rounded-lg hover:bg-(--surface-hover) transition-colors"
                       >
                         <Settings size={18} />
-                        <span className="relative inline-flex pr-3">
-                          Settings
-                          <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
-                        </span>
+                        Settings
                       </NavLink>
                       <button
                         onClick={() => {

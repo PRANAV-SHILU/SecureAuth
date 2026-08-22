@@ -9,7 +9,7 @@ export default function useDocumentMetadata(
     const originalTitle = document.title;
 
     // Title MUST NOT contain Pranav Shilu
-    const finalTitle = title ? `${title} | LookSphere` : "LookSphere";
+    const finalTitle = title ? `${title} · LookSphere` : "LookSphere";
     document.title = finalTitle;
 
     // Ensure description always ends with "LookSphere by Pranav Shilu"
