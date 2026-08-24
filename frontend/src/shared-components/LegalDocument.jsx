@@ -20,7 +20,7 @@ function DocumentTable({ table }) {
       className="overflow-x-auto mt-4 rounded-xl border"
       style={{ borderColor: "var(--border-normal)" }}
     >
-      <table className="w-full min-w-[600px] text-sm border-collapse">
+      <table className="w-full min-w-150 text-sm border-collapse">
         <thead>
           <tr style={{ backgroundColor: "var(--surface-input)" }}>
             {table.headers.map((header) => (

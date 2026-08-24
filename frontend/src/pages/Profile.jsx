@@ -14,6 +14,8 @@ import {
   Plus,
   Image as ImageIcon,
   Video as VideoIcon,
+  Link as LinkIcon,
+  Check,
 } from "lucide-react";
 import BackButton from "../shared-components/BackButton";
 import UploadMediaModal from "../modals/UploadMediaModal";
@@ -254,6 +256,7 @@ function ProfileContent({ data, username, submit }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isImageUploadHovered, setIsImageUploadHovered] = useState(false);
   const [isVideoUploadHovered, setIsVideoUploadHovered] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
@@ -427,6 +430,24 @@ function ProfileContent({ data, username, submit }) {
               Edit Profile
             </NavLink>
           )}
+          <button
+            onClick={() => {
+              const profileUrl = `${window.location.origin}/profile/${user.username}`;
+              navigator.clipboard.writeText(profileUrl).then(() => {
+                setLinkCopied(true);
+                setTimeout(() => setLinkCopied(false), 2000);
+              });
+            }}
+            className="shrink-0 flex items-center justify-center rounded-lg transition-opacity hover:opacity-80 cursor-pointer"
+            style={{
+              width: "40px",
+              height: "40px",
+              color: "var(--primary-500)",
+            }}
+            title="Copy profile link"
+          >
+            {linkCopied ? <Check size={20} /> : <LinkIcon size={20} />}
+          </button>
         </section>
 
         <hr className="mt-8" style={{ borderColor: "var(--border-normal)" }} />
