@@ -273,13 +273,19 @@ export default function Settings() {
                     <div className="flex flex-col gap-2 py-1">
                       {section.subItems.map((sub) => {
                         const SubIcon = sub.icon;
+                        const isImplemented = sub.key === "change-password";
                         return (
                           <button
                             key={sub.key}
                             onClick={() => {
-                              if (sub.key === "change-password") navigate("/settings/change-password");
+                              if (isImplemented) navigate("/settings/change-password");
                             }}
-                            className="w-full flex items-center gap-3 p-3 sm:p-4 rounded-xl border border-(--border-normal) text-left transition-all duration-300 cursor-pointer bg-(--surface-card) hover:bg-(--surface-hover) hover:border-(--border-strong) hover:-translate-y-px hover:shadow-sm"
+                            disabled={!isImplemented}
+                            className={`w-full flex items-center gap-3 p-3 sm:p-4 rounded-xl border border-(--border-normal) text-left transition-all duration-300 bg-(--surface-card) ${
+                              isImplemented
+                                ? "cursor-pointer hover:bg-(--surface-hover) hover:border-(--border-strong) hover:-translate-y-px hover:shadow-sm"
+                                : "opacity-60 cursor-not-allowed"
+                            }`}
                           >
                             <SubIcon
                               size={18}
