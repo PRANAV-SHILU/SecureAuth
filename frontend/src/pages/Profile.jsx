@@ -92,7 +92,7 @@ function Bio({ bio, className }) {
     const checkOverflow = () => {
       if (textRef.current) {
         const prev = textRef.current.style.WebkitLineClamp;
-        textRef.current.style.WebkitLineClamp = 3;
+        textRef.current.style.WebkitLineClamp = 4;
         const isOverflowing =
           textRef.current.scrollHeight > textRef.current.clientHeight;
         setShowButton(isOverflowing);
@@ -118,7 +118,7 @@ function Bio({ bio, className }) {
           color: "var(--text-secondary)",
           whiteSpace: "pre-wrap",
           display: "-webkit-box",
-          WebkitLineClamp: isExpanded ? "unset" : 3,
+          WebkitLineClamp: isExpanded ? "unset" : 4,
           WebkitBoxOrient: "vertical",
           overflow: "hidden",
           margin: 0,
@@ -335,9 +335,27 @@ function ProfileContent({ data, username, submit }) {
         {/* --- Profile Header --- */}
         <section className="max-w-150 4xl:max-w-250 mx-auto flex flex-col items-start gap-3 sm:gap-6 justify-center">
           <div className="flex w-full justify-between items-center sm:my-2">
-            <h1 className="hidden sm:block text-2xl md:text-3xl 4xl:text-5xl font-bold tracking-wide">
-              {user.username}
-            </h1>
+            <div className="hidden sm:flex items-center gap-2">
+              <h1 className="text-2xl md:text-3xl 4xl:text-5xl font-bold tracking-wide">
+                {user.username}
+              </h1>
+              <button
+                onClick={() => {
+                  const profileUrl = `${window.location.origin}/profile/${user.username}`;
+                  navigator.clipboard.writeText(profileUrl).then(() => {
+                    setLinkCopied(true);
+                    setTimeout(() => setLinkCopied(false), 2000);
+                  });
+                }}
+                className="shrink-0 flex items-center justify-center rounded-lg transition-all hover:opacity-80 cursor-pointer"
+                style={{
+                  color: linkCopied ? "var(--success, #22c55e)" : "var(--primary-500)",
+                }}
+                title={linkCopied ? "Copied!" : "Copy profile link"}
+              >
+                {linkCopied ? <Check size={18} /> : <LinkIcon size={18} />}
+              </button>
+            </div>
 
             {/* --- Back Button --- */}
 
@@ -385,9 +403,27 @@ function ProfileContent({ data, username, submit }) {
 
             {/* Profile Info */}
             <div className="flex flex-col items-start text-left gap-2 sm:gap-0 mt-1.5 sm:mt-2 4xl:mt-4 4xl:gap-2">
-              <h1 className="sm:hidden block text-xl font-bold tracking-wide">
-                {user.username}
-              </h1>
+              <div className="sm:hidden flex items-center gap-1.5">
+                <h1 className="text-xl font-bold tracking-wide">
+                  {user.username}
+                </h1>
+                <button
+                  onClick={() => {
+                    const profileUrl = `${window.location.origin}/profile/${user.username}`;
+                    navigator.clipboard.writeText(profileUrl).then(() => {
+                      setLinkCopied(true);
+                      setTimeout(() => setLinkCopied(false), 2000);
+                    });
+                  }}
+                  className="shrink-0 flex items-center justify-center rounded-lg transition-all hover:opacity-80 cursor-pointer"
+                  style={{
+                    color: linkCopied ? "var(--success, #22c55e)" : "var(--primary-500)",
+                  }}
+                  title={linkCopied ? "Copied!" : "Copy profile link"}
+                >
+                  {linkCopied ? <Check size={16} /> : <LinkIcon size={16} />}
+                </button>
+              </div>
               <h3
                 className="text-sm sm:text-base md:text-lg 4xl:text-2xl font-medium sm:font-bold"
                 style={{ color: "var(--text-primary)" }}
@@ -430,24 +466,6 @@ function ProfileContent({ data, username, submit }) {
               Edit Profile
             </NavLink>
           )}
-          <button
-            onClick={() => {
-              const profileUrl = `${window.location.origin}/profile/${user.username}`;
-              navigator.clipboard.writeText(profileUrl).then(() => {
-                setLinkCopied(true);
-                setTimeout(() => setLinkCopied(false), 2000);
-              });
-            }}
-            className="shrink-0 flex items-center justify-center rounded-lg transition-opacity hover:opacity-80 cursor-pointer"
-            style={{
-              width: "40px",
-              height: "40px",
-              color: "var(--primary-500)",
-            }}
-            title="Copy profile link"
-          >
-            {linkCopied ? <Check size={20} /> : <LinkIcon size={20} />}
-          </button>
         </section>
 
         <hr className="mt-8" style={{ borderColor: "var(--border-normal)" }} />

@@ -2,11 +2,18 @@
 
 export const WHATS_NEW_DATA = [
   {
-    id: "aug-20-2026",
-    date: "20 August 2026",
-    title: "Dedicated Post View & URL Sharing",
-    description: "Introduced dedicated standalone post view pages, one-click share link copying, and interactive full-screen modal inspection.",
+    id: "sep-1-2026",
+    date: "1 September 2026",
+    title: "Profile Link Sharing, Dedicated Post View & URL Sharing",
+    description: "Introduced instant profile link copying beside usernames, dedicated standalone post view pages, one-click post share link copying, and interactive full-screen modal inspection.",
     updates: [
+      {
+        tag: "Feature",
+        page: "Profile",
+        title: "Copy Profile Link",
+        description: "Easily share user profiles with a dedicated copy link button positioned right beside usernames on both desktop and mobile views, featuring instant clipboard copying and visual confirmation.",
+        link: "/profile",
+      },
       {
         tag: "Feature",
         page: "Post Detail",
@@ -19,7 +26,7 @@ export const WHATS_NEW_DATA = [
   {
     id: "aug-15-2026",
     date: "15 August 2026",
-    title: "Contact Us & My Inquiries",
+    title: "Support & Inquiries System, Password Management",
     description: "A complete support system — submit inquiries with categories and media, track their status, and receive admin responses.",
     updates: [
       {

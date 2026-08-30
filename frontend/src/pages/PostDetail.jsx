@@ -102,6 +102,7 @@ function PostCard({ post }) {
   const videoRef = useRef(null);
   const [isCopied, setIsCopied] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLinkHovered, setIsLinkHovered] = useState(false);
   const [isMaximizeHovered, setIsMaximizeHovered] = useState(false);
   const [viewCount, setViewCount] = useState(post?.postViewCount || 0);
   const hasTrackedView = useRef(false);
@@ -292,8 +293,16 @@ function PostCard({ post }) {
                 setIsCopied(true);
                 setTimeout(() => setIsCopied(false), 3000);
               }}
-              className="flex items-center justify-center p-1.5 rounded-lg hover:bg-zinc-800/80 transition-all cursor-pointer border-none bg-transparent"
-              style={{ color: isCopied ? "#22c55e" : "var(--text-muted)" }}
+              className="flex items-center justify-center p-1.5 rounded-lg hover:bg-(--surface-hover) transition-all cursor-pointer border-none bg-transparent"
+              style={{
+                color: isCopied
+                  ? "#22c55e"
+                  : isLinkHovered
+                    ? "var(--text-primary)"
+                    : "var(--text-muted)",
+              }}
+              onMouseEnter={() => setIsLinkHovered(true)}
+              onMouseLeave={() => setIsLinkHovered(false)}
               title="Copy link"
             >
               {isCopied ? <Check size={19} /> : <Link2 size={19} />}
@@ -301,7 +310,7 @@ function PostCard({ post }) {
             <button
               type="button"
               onClick={() => setIsModalOpen(true)}
-              className="flex items-center justify-center p-1.5 rounded-lg hover:bg-zinc-800/80 transition-all cursor-pointer border-none bg-transparent"
+              className="flex items-center justify-center p-1.5 rounded-lg hover:bg-(--surface-hover) transition-all cursor-pointer border-none bg-transparent"
               style={{
                 color: isMaximizeHovered
                   ? "var(--text-primary)"

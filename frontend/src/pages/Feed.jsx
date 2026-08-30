@@ -274,7 +274,7 @@ const FeedCard = React.memo(function FeedCard({
                 setIsCopied(true);
                 setTimeout(() => setIsCopied(false), 3000);
               }}
-              className="flex items-center justify-center p-1.5 rounded-lg hover:bg-zinc-800/80 transition-all cursor-pointer border-none bg-transparent"
+              className="flex items-center justify-center p-1.5 rounded-lg hover:bg-(--surface-hover) transition-all cursor-pointer border-none bg-transparent"
               style={{
                 color: isCopied
                   ? "#22c55e"
@@ -291,7 +291,7 @@ const FeedCard = React.memo(function FeedCard({
             <button
               type="button"
               onClick={() => onPostClick(post)}
-              className="flex items-center justify-center p-1.5 rounded-lg hover:bg-zinc-800/80 transition-all cursor-pointer border-none bg-transparent"
+              className="flex items-center justify-center p-1.5 rounded-lg hover:bg-(--surface-hover) transition-all cursor-pointer border-none bg-transparent"
               style={{
                 color: isMaximizeHovered
                   ? "var(--text-primary)"
@@ -506,7 +506,7 @@ function FeedContent({ posts, currentUser, setSelectedPost, selectedPost }) {
         <Link
           to="/profile"
           onClick={() => window.scrollTo(0, 0)}
-          className="flex flex-col items-center justify-center py-8 rounded-2xl border border-dashed hover:bg-zinc-800/40 transition-colors"
+          className="flex flex-col items-center justify-center py-8 rounded-2xl border border-dashed hover:bg-(--surface-hover) transition-colors"
           style={{
             borderColor: "var(--border-normal)",
             backgroundColor: "var(--surface-card)",
@@ -585,7 +585,7 @@ export default function Feed() {
           <button
             onClick={() => revalidator.revalidate()}
             disabled={isRefreshing}
-            className="flex items-center justify-center cursor-pointer p-2 rounded-lg transition-all hover:bg-zinc-800 disabled:opacity-50"
+            className="flex items-center justify-center cursor-pointer p-2 rounded-lg transition-all hover:bg-(--surface-hover) disabled:opacity-50"
             style={{
               backgroundColor: "var(--surface-input)",
               color: "var(--text-secondary)",
