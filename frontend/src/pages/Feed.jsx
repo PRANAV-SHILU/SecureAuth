@@ -14,6 +14,8 @@ import {
   Info,
   ArrowUp,
   Maximize2,
+  Link2,
+  Check,
 } from "lucide-react";
 import BackButton from "../shared-components/BackButton";
 import { trackPostView } from "../services/postService";
@@ -32,10 +34,14 @@ const FeedCard = React.memo(function FeedCard({
 }) {
   const cardRef = useRef(null);
   const videoRef = useRef(null);
+  const captionRef = useRef(null);
   const hasTrackedView = useRef(false);
   const isVideo = post.mediaType === "Video";
-  const [isIntersecting, setIsIntersecting] = useState(false);
   const [isMaximizeHovered, setIsMaximizeHovered] = useState(false);
+  const [isLinkHovered, setIsLinkHovered] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+  const [isCaptionExpanded, setIsCaptionExpanded] = useState(false);
+  const [showViewMore, setShowViewMore] = useState(false);
   const isPlaying = isVideo && activeVideoId === post._id && !isParentModalOpen;
   const postDate = post.createdAt
     ? new Date(post.createdAt).toLocaleString(undefined, {
@@ -55,7 +61,6 @@ const FeedCard = React.memo(function FeedCard({
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsIntersecting(entry.isIntersecting);
         if (entry.isIntersecting) {
           // Increment view count exactly once
           if (!isOwnPost && post._id && !hasTrackedView.current) {
@@ -108,6 +113,22 @@ const FeedCard = React.memo(function FeedCard({
       videoRef.current.pause();
     }
   }, [isPlaying, userInteracted]);
+
+  // Check if caption overflows 3 lines
+  useEffect(() => {
+    if (captionRef.current && !isCaptionExpanded) {
+      const checkOverflow = () => {
+        if (captionRef.current) {
+          setShowViewMore(
+            captionRef.current.scrollHeight > captionRef.current.clientHeight,
+          );
+        }
+      };
+      // small delay to ensure DOM layout is complete
+      const timer = setTimeout(checkOverflow, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [post.caption, isCaptionExpanded]);
 
   return (
     <div
@@ -184,6 +205,9 @@ const FeedCard = React.memo(function FeedCard({
             <video
               ref={videoRef}
               src={post.mediaUrl}
+              aria-label={
+                post.altText || post.caption || "Video post - LookSphere"
+              }
               poster={getVideoPosterUrl(post.mediaUrl, 600)}
               preload="metadata"
               className="w-full h-full object-contain"
@@ -199,7 +223,9 @@ const FeedCard = React.memo(function FeedCard({
             >
               <img
                 src={getVideoPosterUrl(post.mediaUrl, 600)}
-                alt={post.altText || post.caption || "video thumbnail"}
+                alt={
+                  post.altText || post.caption || "video thumbnail - LookSphere"
+                }
                 className="w-full h-full object-contain hover:opacity-95 transition-opacity"
                 loading="lazy"
                 decoding="async"
@@ -212,7 +238,7 @@ const FeedCard = React.memo(function FeedCard({
         ) : (
           <img
             src={post.mediaUrl}
-            alt={post.altText || post.caption || "post"}
+            alt={post.altText || post.caption || "post - LookSphere"}
             className="w-full h-full object-contain cursor-pointer hover:opacity-95 transition-opacity"
             loading="lazy"
             decoding="async"
@@ -238,35 +264,78 @@ const FeedCard = React.memo(function FeedCard({
             <Eye size={13} />
             {post.postViewCount || 0} views
           </span>
-          <button
-            type="button"
-            onClick={() => onPostClick(post)}
-            className="flex items-center justify-center p-1.5 rounded-lg hover:bg-zinc-800/80 transition-all cursor-pointer border-none bg-transparent"
-            style={{
-              color: isMaximizeHovered
-                ? "var(--text-primary)"
-                : "var(--text-muted)",
-            }}
-            onMouseEnter={() => setIsMaximizeHovered(true)}
-            onMouseLeave={() => setIsMaximizeHovered(false)}
-            title="View in full screen"
-          >
-            <Maximize2 size={15} />
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => {
+                navigator.clipboard.writeText(
+                  `${window.location.origin}/posts/${post._id}`,
+                );
+                setIsCopied(true);
+                setTimeout(() => setIsCopied(false), 3000);
+              }}
+              className="flex items-center justify-center p-1.5 rounded-lg hover:bg-(--surface-hover) transition-all cursor-pointer border-none bg-transparent"
+              style={{
+                color: isCopied
+                  ? "#22c55e"
+                  : isLinkHovered
+                    ? "var(--text-primary)"
+                    : "var(--text-muted)",
+              }}
+              onMouseEnter={() => setIsLinkHovered(true)}
+              onMouseLeave={() => setIsLinkHovered(false)}
+              title="Copy link"
+            >
+              {isCopied ? <Check size={19} /> : <Link2 size={19} />}
+            </button>
+            <button
+              type="button"
+              onClick={() => onPostClick(post)}
+              className="flex items-center justify-center p-1.5 rounded-lg hover:bg-(--surface-hover) transition-all cursor-pointer border-none bg-transparent"
+              style={{
+                color: isMaximizeHovered
+                  ? "var(--text-primary)"
+                  : "var(--text-muted)",
+              }}
+              onMouseEnter={() => setIsMaximizeHovered(true)}
+              onMouseLeave={() => setIsMaximizeHovered(false)}
+              title="View in full screen"
+            >
+              <Maximize2 size={15} />
+            </button>
+          </div>
         </div>
 
         {post.caption && (
-          <p
-            className="text-sm leading-relaxed"
-            style={{ color: "var(--text-secondary)" }}
-          >
-            {post.userId && (
-              <strong className="mr-2" style={{ color: "var(--text-primary)" }}>
-                {post.userId.username}
-              </strong>
+          <div className="flex flex-col">
+            <p
+              ref={captionRef}
+              className={`text-sm leading-relaxed whitespace-pre-wrap ${!isCaptionExpanded ? "line-clamp-3" : ""}`}
+              style={{ color: "var(--text-secondary)" }}
+            >
+              {post.userId && (
+                <strong
+                  className="mr-2"
+                  style={{ color: "var(--text-primary)" }}
+                >
+                  {post.userId.username}
+                </strong>
+              )}
+              {post.caption}
+            </p>
+            {showViewMore && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsCaptionExpanded(!isCaptionExpanded);
+                }}
+                className="text-xs font-semibold mt-1 self-end hover:underline cursor-pointer bg-transparent border-none p-0"
+                style={{ color: "var(--primary-500)" }}
+              >
+                {isCaptionExpanded ? "view less" : "view more"}
+              </button>
             )}
-            {post.caption}
-          </p>
+          </div>
         )}
       </div>
     </div>
@@ -437,7 +506,7 @@ function FeedContent({ posts, currentUser, setSelectedPost, selectedPost }) {
         <Link
           to="/profile"
           onClick={() => window.scrollTo(0, 0)}
-          className="flex flex-col items-center justify-center py-8 rounded-2xl border border-dashed hover:bg-zinc-800/40 transition-colors"
+          className="flex flex-col items-center justify-center py-8 rounded-2xl border border-dashed hover:bg-(--surface-hover) transition-colors"
           style={{
             borderColor: "var(--border-normal)",
             backgroundColor: "var(--surface-card)",
@@ -467,7 +536,10 @@ export default function Feed() {
   const { feedData } = useLoaderData();
   const revalidator = useRevalidator();
   const isRefreshing = revalidator.state === "loading";
-  useDocumentMetadata("Feed");
+  useDocumentMetadata(
+    "Feed",
+    "Browse your LookSphere feed for the latest updates, photos, and videos from people you follow. Enjoy a seamless social experience crafted by Pranav Shilu.",
+  );
 
   const storedUser = localStorage.getItem("user");
   const currentUser = storedUser ? JSON.parse(storedUser) : null;
@@ -513,7 +585,7 @@ export default function Feed() {
           <button
             onClick={() => revalidator.revalidate()}
             disabled={isRefreshing}
-            className="flex items-center justify-center cursor-pointer p-2 rounded-lg transition-all hover:bg-zinc-800 disabled:opacity-50"
+            className="flex items-center justify-center cursor-pointer p-2 rounded-lg transition-all hover:bg-(--surface-hover) disabled:opacity-50"
             style={{
               backgroundColor: "var(--surface-input)",
               color: "var(--text-secondary)",

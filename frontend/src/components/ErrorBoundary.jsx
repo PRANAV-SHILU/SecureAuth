@@ -1,8 +1,10 @@
 import { useRouteError, isRouteErrorResponse, NavLink } from "react-router-dom";
+import useDocumentMetadata from "../hooks/useDocumentMetadata";
 
 import Header from "./Header";
 
 export default function ErrorBoundary() {
+  useDocumentMetadata("Error", "An unexpected error occurred on LookSphere. Navigate safely back to the social platform developed by Pranav Shilu.");
   const error = useRouteError();
 
   const content = isRouteErrorResponse(error) ? (

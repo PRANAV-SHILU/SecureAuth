@@ -22,12 +22,16 @@ const Roadmap = lazy(() => import("../pages/Roadmap.jsx"));
 const ContactUs = lazy(() => import("../pages/ContactUs.jsx"));
 const AdminContact = lazy(() => import("../pages/AdminContact.jsx"));
 const MyInquiries = lazy(() => import("../pages/MyInquiries.jsx"));
+const Settings = lazy(() => import("../pages/Settings.jsx"));
+const ChangePassword = lazy(() => import("../pages/ChangePassword.jsx"));
+const PostDetail = lazy(() => import("../pages/PostDetail.jsx"));
 
 import FeedSkeleton from "../skeletons/FeedSkeleton.jsx";
 import ExploreSkeleton from "../skeletons/ExploreSkeleton.jsx";
 import ProfileSkeleton from "../skeletons/ProfileSkeleton.jsx";
-import DashboardSkeleton from "../skeletons/DashboardSkeleton.jsx";
 import CreatorsSkeleton from "../skeletons/CreatorsSkeleton.jsx";
+import MyInquiriesSkeleton from "../skeletons/MyInquiriesSkeleton.jsx";
+import PageLoader from "../shared-components/PageLoader.jsx";
 
 import { registerAction } from "../actions/registerAction";
 import { loginAction } from "../actions/loginAction";
@@ -35,6 +39,7 @@ import { logoutAction } from "../actions/logoutAction.jsx";
 import { editProfileAction } from "../actions/editProfileAction.jsx";
 import { uploadAction } from "../actions/uploadAction.jsx";
 import { contactAction } from "../actions/contactAction.jsx";
+import { changePasswordAction } from "../actions/changePasswordAction.jsx";
 
 import { authLoader } from "../loaders/authLoader.jsx";
 import { profileLoader } from "../loaders/profileLoader.jsx";
@@ -45,6 +50,7 @@ import { redirectIfAuthenticated } from "../loaders/redirectIfAuthenticated.jsx"
 import { dashboardLoader } from "../loaders/dashboardLoader.jsx";
 import { adminContactLoader } from "../loaders/adminContactLoader.jsx";
 import { myInquiriesLoader } from "../loaders/myInquiriesLoader.jsx";
+import { postDetailLoader } from "../loaders/postDetailLoader.jsx";
 
 const router = createBrowserRouter([
   {
@@ -57,7 +63,7 @@ const router = createBrowserRouter([
       {
         index: true,
         element: (
-          <Suspense fallback={<div className="top-loading-bar" />}>
+          <Suspense fallback={<PageLoader />}>
             <Home />
           </Suspense>
         ),
@@ -65,7 +71,7 @@ const router = createBrowserRouter([
       {
         path: "register",
         element: (
-          <Suspense fallback={<div className="top-loading-bar" />}>
+          <Suspense fallback={<PageLoader />}>
             <Register />
           </Suspense>
         ),
@@ -75,7 +81,7 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: (
-          <Suspense fallback={<div className="top-loading-bar" />}>
+          <Suspense fallback={<PageLoader />}>
             <Login />
           </Suspense>
         ),
@@ -102,9 +108,18 @@ const router = createBrowserRouter([
         loader: feedLoader(10),
       },
       {
-        path: "dashboard",
+        path: "posts/:id",
         element: (
-          <Suspense fallback={<DashboardSkeleton />}>
+          <Suspense fallback={<PageLoader />}>
+            <PostDetail />
+          </Suspense>
+        ),
+        loader: postDetailLoader,
+      },
+      {
+        path: "admin/dashboard",
+        element: (
+          <Suspense fallback={<PageLoader />}>
             <Dashboard />
           </Suspense>
         ),
@@ -113,7 +128,7 @@ const router = createBrowserRouter([
       {
         path: "admin/contact",
         element: (
-          <Suspense fallback={<div className="top-loading-bar" />}>
+          <Suspense fallback={<PageLoader />}>
             <AdminContact />
           </Suspense>
         ),
@@ -141,7 +156,7 @@ const router = createBrowserRouter([
       {
         path: "edit-profile",
         element: (
-          <Suspense fallback={<div className="top-loading-bar" />}>
+          <Suspense fallback={<PageLoader />}>
             <EditProfile />
           </Suspense>
         ),
@@ -151,7 +166,7 @@ const router = createBrowserRouter([
       {
         path: "privacy-policy",
         element: (
-          <Suspense fallback={<div className="top-loading-bar" />}>
+          <Suspense fallback={<PageLoader />}>
             <PrivacyPolicy />
           </Suspense>
         ),
@@ -159,7 +174,7 @@ const router = createBrowserRouter([
       {
         path: "terms-and-conditions",
         element: (
-          <Suspense fallback={<div className="top-loading-bar" />}>
+          <Suspense fallback={<PageLoader />}>
             <TermsAndConditions />
           </Suspense>
         ),
@@ -167,7 +182,7 @@ const router = createBrowserRouter([
       {
         path: "faq",
         element: (
-          <Suspense fallback={<div className="top-loading-bar" />}>
+          <Suspense fallback={<PageLoader />}>
             <FAQ />
           </Suspense>
         ),
@@ -175,7 +190,7 @@ const router = createBrowserRouter([
       {
         path: "about-us",
         element: (
-          <Suspense fallback={<div className="top-loading-bar" />}>
+          <Suspense fallback={<PageLoader />}>
             <About />
           </Suspense>
         ),
@@ -183,7 +198,7 @@ const router = createBrowserRouter([
       {
         path: "whats-new",
         element: (
-          <Suspense fallback={<div className="top-loading-bar" />}>
+          <Suspense fallback={<PageLoader />}>
             <WhatsNew />
           </Suspense>
         ),
@@ -191,7 +206,7 @@ const router = createBrowserRouter([
       {
         path: "roadmap",
         element: (
-          <Suspense fallback={<div className="top-loading-bar" />}>
+          <Suspense fallback={<PageLoader />}>
             <Roadmap />
           </Suspense>
         ),
@@ -199,7 +214,7 @@ const router = createBrowserRouter([
       {
         path: "contact-us",
         element: (
-          <Suspense fallback={<div className="top-loading-bar" />}>
+          <Suspense fallback={<PageLoader />}>
             <ContactUs />
           </Suspense>
         ),
@@ -208,11 +223,28 @@ const router = createBrowserRouter([
       {
         path: "my-inquiries",
         element: (
-          <Suspense fallback={<div className="top-loading-bar" />}>
+          <Suspense fallback={<MyInquiriesSkeleton />}>
             <MyInquiries />
           </Suspense>
         ),
         loader: myInquiriesLoader,
+      },
+      {
+        path: "settings",
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <Settings />
+          </Suspense>
+        ),
+      },
+      {
+        path: "settings/change-password",
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <ChangePassword />
+          </Suspense>
+        ),
+        action: changePasswordAction,
       },
     ],
   },

@@ -1,9 +1,10 @@
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { useLoaderData, Await, useSearchParams, useNavigate } from "react-router-dom";
 import useDocumentMetadata from "../hooks/useDocumentMetadata";
 import AdminSidebar from "../components/admin/AdminSidebar";
 import ContactCard from "../components/admin/ContactCard";
 import { Mail, CheckCheck, Clock } from "lucide-react";
+import PageLoader from "../shared-components/PageLoader";
 
 const TABS = [
   { key: "false", label: "Pending",   icon: <Clock size={15} /> },
@@ -46,25 +47,15 @@ function ContactList({ contacts }) {
   );
 }
 
-function LoadingSkeleton() {
-  return (
-    <div className="flex flex-col gap-4">
-      {[1, 2, 3].map((i) => (
-        <div
-          key={i}
-          className="rounded-2xl p-5 border h-40 animate-pulse"
-          style={{ backgroundColor: "var(--surface-input)", borderColor: "var(--border-normal)" }}
-        />
-      ))}
-    </div>
-  );
-}
-
 export default function AdminContact() {
-  useDocumentMetadata("Admin Contact");
+  useDocumentMetadata("Admin Contact", "LookSphere admin contact portal. Efficiently manage, review, and respond to user inquiries and support tickets on the platform built by Pranav Shilu.", true);
   const { contactData } = useLoaderData();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const isResponded = searchParams.get("isResponded") ?? "false";
   const header = HEADER[isResponded] ?? HEADER["false"];
@@ -164,7 +155,7 @@ export default function AdminContact() {
         </div>
 
         {/* Content */}
-        <Suspense fallback={<LoadingSkeleton />}>
+        <Suspense fallback={<PageLoader />}>
           <Await
             resolve={contactData}
             errorElement={

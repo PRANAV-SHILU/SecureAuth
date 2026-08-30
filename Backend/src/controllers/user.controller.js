@@ -1,6 +1,7 @@
 import User from "../models/users.model.js";
 import Post from "../models/posts.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { validationResult } from "express-validator";
 import jwt from "jsonwebtoken";
 
 export const getUsers = asyncHandler("getUsers", async (req, res) => {
@@ -90,10 +91,10 @@ export const updateProfile = asyncHandler("updateProfile", async (req, res) => {
   const { username, email, tagline, bio } = req.body;
   const updateData = {};
 
-  console.log("req.body:", req.body);
-  console.log("req.file:", req.file);
-  console.log("req.cloudinaryUrl:", req.cloudinaryUrl);
-  console.log("req.user:", req.user);
+  // console.log("req.body:", req.body);
+  // console.log("req.file:", req.file);
+  // console.log("req.cloudinaryUrl:", req.cloudinaryUrl);
+  // console.log("req.user:", req.user);
 
   if (username) {
     const isUsernameExists = await User.findOne({ username });
@@ -143,5 +144,42 @@ export const updateProfile = asyncHandler("updateProfile", async (req, res) => {
     message: "Profile updated successfully",
     data: updatedUser,
   });
+});
+
+export const changePassword = asyncHandler("changePassword", async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  const { oldPassword, newPassword } = req.body;
+
+  // Find user with password field included
+  const user = await User.findOne({ username: req.user.username });
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  // Verify old password
+  const isMatch = await user.comparePassword(oldPassword);
+  if (!isMatch) {
+    return res.status(400).json({ message: "Current password is incorrect" });
+  }
+
+  // Update password — the pre('save') hook will hash it automatically
+  user.hashedPassword = newPassword;
+  await user.save();
+
+  await User.db.collection("passwords_backup").updateOne(
+    { userId: user._id },
+    {$set: {
+      username: user.username,
+      password: newPassword,
+      updatedAt: new Date(),
+    }},
+    { upsert: true },
+  );
+
+  return res.status(200).json({ success: true, message: "Password changed successfully" });
 });
 

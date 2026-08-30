@@ -35,7 +35,7 @@ function formatTime(dateStr) {
 
 function Avatar({ user }) {
   if (user?.profileImage) {
-    return <img src={user.profileImage} alt={user.username} className="w-10 h-10 rounded-full object-cover" />;
+    return <img src={user.profileImage} alt={`Profile image: ${user.username}${user.tagline ? ' - ' + user.tagline : ''}`} className="w-10 h-10 rounded-full object-cover" />;
   }
   const initials = user?.username
     ? user.username.slice(0, 2).toUpperCase()
@@ -50,8 +50,10 @@ function Avatar({ user }) {
   );
 }
 
-function MediaSection({ images = [], video }) {
+function MediaSection({ images = [], video, user }) {
   const [lightbox, setLightbox] = useState(null); // index
+  const userText = user?.username ? ` - ${user.username}${user.tagline ? ' - ' + user.tagline : ''}` : '';
+  const altText = `Contact attachment LookSphere${userText}`;
 
   if (!images.length && !video) {
     return (
@@ -71,7 +73,7 @@ function MediaSection({ images = [], video }) {
           className="cursor-pointer relative w-14 h-14 rounded-lg overflow-hidden border shrink-0 hover:opacity-80 transition-opacity"
           style={{ borderColor: "var(--border-light)" }}
         >
-          <img src={src} alt="" className="w-full h-full object-cover" />
+          <img src={src} alt={altText} className="w-full h-full object-cover" />
         </button>
       ))}
 
@@ -99,10 +101,10 @@ function MediaSection({ images = [], video }) {
         >
           <div className="relative max-w-3xl w-full mx-4 flex flex-col items-center" onClick={(e) => e.stopPropagation()}>
             {lightbox === 'video' ? (
-              <video src={video} controls autoPlay className="w-full rounded-2xl max-h-[80vh] bg-black" />
+              <video src={video} aria-label={altText} controls autoPlay className="w-full rounded-2xl max-h-[80vh] bg-black" />
             ) : (
               <>
-                <img src={images[lightbox]} alt="" className="w-full rounded-2xl max-h-[80vh] object-contain" />
+                <img src={images[lightbox]} alt={altText} className="w-full rounded-2xl max-h-[80vh] object-contain" />
                 
                 <button
                   onClick={(e) => { e.stopPropagation(); setLightbox((p) => Math.max(0, p - 1)); }}
@@ -253,7 +255,7 @@ export default function ContactCard({ contact, isAdmin = true }) {
       </div>
 
       {/* Media */}
-      <MediaSection images={images} video={video} />
+      <MediaSection images={images} video={video} user={userId} />
 
       {/* Admin response (responded tab) */}
       {response && (
@@ -301,11 +303,15 @@ export default function ContactCard({ contact, isAdmin = true }) {
 
           <textarea
             value={replyText}
-            onChange={(e) => setReplyText(e.target.value)}
+            onChange={(e) => {
+              setReplyText(e.target.value);
+              e.target.style.height = "auto";
+              e.target.style.height = `${e.target.scrollHeight}px`;
+            }}
             maxLength={RESPONSE_MAX_LENGTH + 50}
             placeholder="Type your response to this message..."
             rows={4}
-            className="w-full rounded-xl px-4 py-3 text-sm resize-none outline-none transition-all focus:ring-2"
+            className="w-full rounded-xl px-4 py-3 text-sm resize-none overflow-hidden outline-none transition-all focus:ring-2"
             style={{
               backgroundColor: "var(--surface-input)",
               border: `1px solid ${isOverLimit ? "#ef4444" : "var(--border-normal)"}`,

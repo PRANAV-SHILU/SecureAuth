@@ -7,10 +7,12 @@ export const ENDPOINTS = {
   USER: {
     USERS: "/users",
     PROFILE: (username) => username ? `/users/profile/${username}` : "/users/profile",
+    CHANGE_PASSWORD: "/users/change-password",
   },
   POST: {
     POSTS: "/posts",
     CREATE_POST: "/posts",
+    GET_POST: (id) => `/posts/${id}`,
     INCREASE_POST_VIEW: (id) => `/posts/${id}/increment-view`,
     EDIT_POST: (id) => `/posts/${id}`,
   },

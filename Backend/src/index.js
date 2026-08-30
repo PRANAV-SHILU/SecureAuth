@@ -37,7 +37,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/", (req, res, next) => {
   if (req.url !== "/health" && req.url !== "/ping") {
-    console.log(req.method, req.url, req.body);
+    console.log(req.method, req.url);
+    // console.log("Body:",req.body);
   }
   next();
 });

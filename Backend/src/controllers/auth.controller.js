@@ -56,7 +56,7 @@ export const login = asyncHandler("login", async (req, res) => {
     process.env.JWT_SECRET,
     { expiresIn: "1y" },
   );
-  console.log("JWT Token", token);
+  // console.log("JWT Token", token);
 
   const { hashedPassword, ...userData } = user.toObject();
   res.status(200).json({ success: true, data: userData, token });

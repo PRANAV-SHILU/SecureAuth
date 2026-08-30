@@ -5,7 +5,7 @@ export default function AdminSidebar() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const isDashboard = location.pathname.includes("/dashboard");
+  const isDashboard = location.pathname.includes("/admin/dashboard");
   const isContact = location.pathname.includes("/admin/contact");
 
   return (
@@ -16,14 +16,14 @@ export default function AdminSidebar() {
 
       {/* Dashboard Link */}
       <button
-        onClick={() => navigate("/dashboard")}
+        onClick={() => navigate("/admin/dashboard")}
         className={`flex items-center gap-3 px-3 py-2 rounded-xl transition-colors font-semibold text-sm ${
           isDashboard
             ? "bg-(--primary-500) text-white"
             : "text-(--text-secondary) hover:bg-(--surface-hover) hover:text-(--text-primary)"
         }`}
       >
-        <LayoutDashboard size={18} /> Dashboard
+        <LayoutDashboard size={18} /> Admin Dashboard
       </button>
 
       {/* Contact Link */}

@@ -2,11 +2,40 @@
 
 export const WHATS_NEW_DATA = [
   {
+    id: "sep-1-2026",
+    date: "1 September 2026",
+    title: "Profile Link Sharing, Dedicated Post View & URL Sharing",
+    description: "Introduced instant profile link copying beside usernames, dedicated standalone post view pages, one-click post share link copying, and interactive full-screen modal inspection.",
+    updates: [
+      {
+        tag: "Feature",
+        page: "Profile",
+        title: "Copy Profile Link",
+        description: "Easily share user profiles with a dedicated copy link button positioned right beside usernames on both desktop and mobile views, featuring instant clipboard copying and visual confirmation.",
+        link: "/profile",
+      },
+      {
+        tag: "Feature",
+        page: "Post Detail",
+        title: "Dedicated Post View & Share Links",
+        description: "Direct post URLs now load a focused post view with full description display, newline preservation, view count tracking, and instant full-screen modal expansion. You can copy post share links directly from the Feed card footer, the Post View footer, and the top-right header in the Post Detail modal.",
+        link: "/posts/6a7de833ff797865982e1be3",
+      },
+    ],
+  },
+  {
     id: "aug-15-2026",
     date: "15 August 2026",
-    title: "Contact Us & My Inquiries",
+    title: "Support & Inquiries System, Password Management",
     description: "A complete support system — submit inquiries with categories and media, track their status, and receive admin responses.",
     updates: [
+      {
+        tag: "Feature",
+        page: "Settings",
+        title: "Change Password",
+        description: "You can now securely change your password directly from the account settings page, with complete session management to keep your account safe.",
+        link: "/settings",
+      },
       {
         tag: "Feature",
         page: "Contact Us",

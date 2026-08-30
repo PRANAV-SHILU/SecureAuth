@@ -66,7 +66,7 @@ const ExploreCard = React.memo(function ExploreCard({ post }) {
 
   return (
     <div
-      className="relative w-full h-full aspect-4/5 md:aspect-3/4 min-h-[220px] sm:min-h-[280px] md:min-h-[350px] overflow-hidden"
+      className="relative w-full h-full aspect-4/5 md:aspect-3/4 min-h-55 sm:min-h-70 md:min-h-87.5 overflow-hidden"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -76,6 +76,11 @@ const ExploreCard = React.memo(function ExploreCard({ post }) {
             <video
               ref={videoRef}
               src={`${post.mediaUrl}#t=1.0`}
+              aria-label={
+                post.altText ||
+                post.caption ||
+                "Explore video post - LookSphere"
+              }
               preload="auto"
               className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
               muted
@@ -86,7 +91,9 @@ const ExploreCard = React.memo(function ExploreCard({ post }) {
           ) : (
             <img
               src={optimizedPoster}
-              alt={post.altText || post.caption || "video thumbnail"}
+              alt={
+                post.altText || post.caption || "video thumbnail - LookSphere"
+              }
               loading="lazy"
               decoding="async"
               className="w-full h-full object-cover opacity-90 group-hover:opacity-100"
@@ -99,7 +106,7 @@ const ExploreCard = React.memo(function ExploreCard({ post }) {
       ) : (
         <img
           src={optimizedImage}
-          alt={post.altText || post.caption || "explore post"}
+          alt={post.altText || post.caption || "explore post - LookSphere"}
           loading="lazy"
           decoding="async"
           className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-[transform,opacity] duration-300 group-hover:scale-105"
@@ -271,7 +278,7 @@ function ExploreContent({ posts, total, setSelectedPost }) {
         {searchQuery && (
           <button
             onClick={() => setSearchQuery("")}
-            className="transition-colors p-0.5 rounded-full hover:bg-zinc-800/80"
+            className="transition-colors p-0.5 rounded-full hover:bg-(--surface-hover)"
             style={{
               color: isClearHovered
                 ? "var(--text-primary)"
@@ -296,7 +303,7 @@ function ExploreContent({ posts, total, setSelectedPost }) {
             revalidator.revalidate();
           }}
           disabled={isRefreshing}
-          className="flex items-center cursor-pointer gap-2 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all hover:bg-zinc-800 disabled:opacity-50"
+          className="flex items-center cursor-pointer gap-2 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all hover:bg-(--surface-hover) disabled:opacity-50"
           style={{
             backgroundColor: "var(--surface-input)",
             color: "var(--text-secondary)",
@@ -348,7 +355,7 @@ function ExploreContent({ posts, total, setSelectedPost }) {
           No posts match &ldquo;{searchQuery}&rdquo;.
         </div>
       ) : (
-        <div className="grid grid-cols-3 md:grid-cols-4 gap-[2px] sm:gap-[4px] explore-grid">
+        <div className="grid grid-cols-3 md:grid-cols-4 gap-0.5 sm:gap-1 explore-grid">
           {allPosts.map((post, index) => {
             const isTriggerElement = index === allPosts.length - 9;
             return (
@@ -365,7 +372,7 @@ function ExploreContent({ posts, total, setSelectedPost }) {
           <Link
             to="/profile"
             onClick={() => window.scrollTo(0, 0)}
-            className="group aspect-4/5 md:aspect-3/4 min-h-[220px] sm:min-h-[280px] md:min-h-[350px] bg-zinc-900 border border-dashed overflow-hidden cursor-pointer relative flex flex-col items-center justify-center hover:bg-zinc-800 transition-colors"
+            className="group aspect-4/5 md:aspect-3/4 min-h-55 sm:min-h-70 md:min-h-87.5 bg-(--surface-card) border border-dashed overflow-hidden cursor-pointer relative flex flex-col items-center justify-center hover:bg-(--surface-hover) transition-colors"
             style={{ borderColor: "var(--border-normal)" }}
           >
             <Plus
@@ -395,7 +402,10 @@ function ExploreContent({ posts, total, setSelectedPost }) {
 export default function Explore() {
   const { feedData } = useLoaderData();
   const [selectedPost, setSelectedPost] = useState(null);
-  useDocumentMetadata("Explore");
+  useDocumentMetadata(
+    "Explore",
+    "Explore trending content, viral videos, and discover new creators on LookSphere. Dive into the best of social media, brought to you by Pranav Shilu.",
+  );
 
   useEffect(() => {
     window.scrollTo(0, 0);

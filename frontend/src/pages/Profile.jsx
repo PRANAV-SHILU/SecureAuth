@@ -14,14 +14,22 @@ import {
   Plus,
   Image as ImageIcon,
   Video as VideoIcon,
+  Link as LinkIcon,
+  Check,
 } from "lucide-react";
 import BackButton from "../shared-components/BackButton";
 import UploadMediaModal from "../modals/UploadMediaModal";
 import PostDetailModal from "../modals/PostDetailModal";
 import { trackPostView } from "../services/postService";
-import { getOptimizedMediaUrl, getVideoPosterUrl } from "../utils/cloudinaryOptimizer";
+import {
+  getOptimizedMediaUrl,
+  getVideoPosterUrl,
+} from "../utils/cloudinaryOptimizer";
 
-const ProfileVideoCard = React.memo(function ProfileVideoCard({ post, onClick }) {
+const ProfileVideoCard = React.memo(function ProfileVideoCard({
+  post,
+  onClick,
+}) {
   const videoRef = React.useRef(null);
   const [isPlaying, setIsPlaying] = React.useState(false);
 
@@ -53,6 +61,7 @@ const ProfileVideoCard = React.memo(function ProfileVideoCard({ post, onClick })
         <video
           ref={videoRef}
           src={`${post.mediaUrl}#t=1.0`}
+          aria-label={post.altText || post.caption || "Video post - LookSphere"}
           className="w-full h-full object-cover hover:opacity-90 transition-opacity"
           muted
           loop
@@ -63,7 +72,7 @@ const ProfileVideoCard = React.memo(function ProfileVideoCard({ post, onClick })
       ) : (
         <img
           src={getVideoPosterUrl(post.mediaUrl, 300)}
-          alt={post.caption || "video thumbnail"}
+          alt={post.caption || "video thumbnail - LookSphere"}
           loading="lazy"
           decoding="async"
           className="w-full h-full object-cover hover:opacity-90 transition-opacity"
@@ -75,17 +84,57 @@ const ProfileVideoCard = React.memo(function ProfileVideoCard({ post, onClick })
 });
 
 function Bio({ bio, className }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [showButton, setShowButton] = useState(false);
+  const textRef = React.useRef(null);
+
+  useEffect(() => {
+    const checkOverflow = () => {
+      if (textRef.current) {
+        const prev = textRef.current.style.WebkitLineClamp;
+        textRef.current.style.WebkitLineClamp = 4;
+        const isOverflowing =
+          textRef.current.scrollHeight > textRef.current.clientHeight;
+        setShowButton(isOverflowing);
+        textRef.current.style.WebkitLineClamp = prev;
+      }
+    };
+    checkOverflow();
+    const timeoutId = setTimeout(checkOverflow, 50);
+    window.addEventListener("resize", checkOverflow);
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener("resize", checkOverflow);
+    };
+  }, [bio]);
+
   if (!bio) return null;
+
   return (
-    <p
-      className={className}
-      style={{
-        color: "var(--text-secondary)",
-        whiteSpace: "pre-wrap",
-      }}
-    >
-      {bio}
-    </p>
+    <div className={className}>
+      <p
+        ref={textRef}
+        style={{
+          color: "var(--text-secondary)",
+          whiteSpace: "pre-wrap",
+          display: "-webkit-box",
+          WebkitLineClamp: isExpanded ? "unset" : 4,
+          WebkitBoxOrient: "vertical",
+          overflow: "hidden",
+          margin: 0,
+        }}
+      >
+        {bio}
+      </p>
+      {showButton && (
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="text-sm font-semibold mt-1 hover:opacity-80 transition-opacity cursor-pointer border-none bg-transparent p-0 text-blue-400"
+        >
+          {isExpanded ? "View less" : "View more"}
+        </button>
+      )}
+    </div>
   );
 }
 
@@ -97,25 +146,52 @@ const ProfileStats = React.memo(function ProfileStats({
 }) {
   if (isMobile) {
     return (
-      <div className="sm:hidden w-full flex justify-center mb-1" style={{ color: "var(--text-primary)" }}>
+      <div
+        className="sm:hidden w-full flex justify-center mb-1"
+        style={{ color: "var(--text-primary)" }}
+      >
         <div className="flex flex-col items-center flex-1">
-          <strong className="font-bold text-base sm:text-lg">{postCount || 0}</strong>
-          <span className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>posts</span>
+          <strong className="font-bold text-base sm:text-lg">
+            {postCount || 0}
+          </strong>
+          <span
+            className="text-xs mt-0.5"
+            style={{ color: "var(--text-muted)" }}
+          >
+            posts
+          </span>
         </div>
         <div className="flex flex-col items-center flex-1">
-          <strong className="font-bold text-base sm:text-lg">{profileViewCount || 0}</strong>
-          <span className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>profile views</span>
+          <strong className="font-bold text-base sm:text-lg">
+            {profileViewCount || 0}
+          </strong>
+          <span
+            className="text-xs mt-0.5"
+            style={{ color: "var(--text-muted)" }}
+          >
+            profile views
+          </span>
         </div>
         <div className="flex flex-col items-center flex-1">
-          <strong className="font-bold text-base sm:text-lg">{totalPostViews || 0}</strong>
-          <span className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>post views</span>
+          <strong className="font-bold text-base sm:text-lg">
+            {totalPostViews || 0}
+          </strong>
+          <span
+            className="text-xs mt-0.5"
+            style={{ color: "var(--text-muted)" }}
+          >
+            post views
+          </span>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="hidden sm:flex my-4 4xl:my-6 text-sm md:text-base 4xl:text-xl gap-4 md:gap-6 4xl:gap-10" style={{ color: "var(--text-primary)" }}>
+    <div
+      className="hidden sm:flex my-4 4xl:my-6 text-sm md:text-base 4xl:text-xl gap-4 md:gap-6 4xl:gap-10"
+      style={{ color: "var(--text-primary)" }}
+    >
       <span>
         <strong className="font-semibold">{postCount || 0}</strong> posts
       </span>
@@ -131,8 +207,11 @@ const ProfileStats = React.memo(function ProfileStats({
   );
 });
 
-
-const ProfileEmptyState = React.memo(function ProfileEmptyState({ icon, title, description }) {
+const ProfileEmptyState = React.memo(function ProfileEmptyState({
+  icon,
+  title,
+  description,
+}) {
   const IconComponent = icon;
   return (
     <div className="col-span-2 md:col-span-3 flex flex-col items-center justify-center pt-6 pb-16 text-center mx-auto w-[70%]">
@@ -160,7 +239,10 @@ function ProfileContent({ data, username, submit }) {
   const { user, images = [], videos = [] } = profileDataObj;
 
   useDocumentMetadata(
-    user?.username ? `@${user.username} profile` : "Profile"
+    user?.username ? `@${user.username}'s profile` : "Profile",
+    user?.username
+      ? `View @${user.username}'s profile, posts, and media on LookSphere. Connect with friends and explore personal feeds on this social network developed by Pranav Shilu.`
+      : "View user profiles, posts, and media on LookSphere. Connect with friends and explore personal feeds on this social network developed by Pranav Shilu.",
   );
 
   const storedUser = localStorage.getItem("user");
@@ -174,6 +256,7 @@ function ProfileContent({ data, username, submit }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isImageUploadHovered, setIsImageUploadHovered] = useState(false);
   const [isVideoUploadHovered, setIsVideoUploadHovered] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
@@ -202,57 +285,77 @@ function ProfileContent({ data, username, submit }) {
     }
   };
 
-  if (!data) return <h2 className="text-center text-muted mt-10">Loading user data...</h2>;
-  if (!user) return <h2 className="text-center text-muted mt-10">User not found.</h2>;
+  if (!data)
+    return (
+      <h2 className="text-center text-muted mt-10">Loading user data...</h2>
+    );
+  if (!user)
+    return <h2 className="text-center text-muted mt-10">User not found.</h2>;
 
   return (
     <>
-        {isSubmitting && (
+      {isSubmitting && (
+        <div
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center backdrop-blur-sm"
+          style={{ backgroundColor: "rgba(0,0,0,0.55)" }}
+        >
           <div
-            className="fixed inset-0 z-50 flex flex-col items-center justify-center backdrop-blur-sm"
-            style={{ backgroundColor: "rgba(0,0,0,0.55)" }}
+            className="flex flex-col items-center gap-4 border p-8 max-w-sm w-full mx-4 text-center"
+            style={{
+              backgroundColor: "var(--surface-card)",
+              borderColor: "var(--border-normal)",
+              borderRadius: "var(--radius-lg)",
+              boxShadow: "var(--shadow-card)",
+            }}
           >
+            {/* Spinner animation */}
             <div
-              className="flex flex-col items-center gap-4 border p-8 max-w-sm w-full mx-4 text-center"
+              className="w-12 h-12 rounded-full border-4 animate-spin"
               style={{
-                backgroundColor: "var(--surface-card)",
-                borderColor: "var(--border-normal)",
-                borderRadius: "var(--radius-lg)",
-                boxShadow: "var(--shadow-card)",
+                borderColor: "var(--border-light)",
+                borderTopColor: "var(--primary-500)",
               }}
-            >
-              {/* Spinner animation */}
-              <div
-                className="w-12 h-12 rounded-full border-4 animate-spin"
-                style={{
-                  borderColor: "var(--border-light)",
-                  borderTopColor: "var(--primary-500)",
-                }}
-              />
-              <div>
-                <h3
-                  className="text-lg font-bold mb-1"
-                  style={{ color: "var(--text-primary)" }}
-                >
-                  Uploading Post
-                </h3>
-                <p className="text-sm" style={{ color: "var(--text-muted)" }}>
-                  Please wait, your post is being uploaded and processed.
-                </p>
-              </div>
+            />
+            <div>
+              <h3
+                className="text-lg font-bold mb-1"
+                style={{ color: "var(--text-primary)" }}
+              >
+                Uploading Post
+              </h3>
+              <p className="text-sm" style={{ color: "var(--text-muted)" }}>
+                Please wait, your post is being uploaded and processed.
+              </p>
             </div>
           </div>
-        )}
+        </div>
+      )}
 
-      <main
-        className="w-full mx-auto pt-8 pb-16 px-0 md:px-8"
-      >
+      <main className="w-full mx-auto pt-8 pb-16 px-0 md:px-8">
         {/* --- Profile Header --- */}
         <section className="max-w-150 4xl:max-w-250 mx-auto flex flex-col items-start gap-3 sm:gap-6 justify-center">
           <div className="flex w-full justify-between items-center sm:my-2">
-            <h1 className="hidden sm:block text-2xl md:text-3xl 4xl:text-5xl font-bold tracking-wide">
-              {user.username}
-            </h1>
+            <div className="hidden sm:flex items-center gap-2">
+              <h1 className="text-2xl md:text-3xl 4xl:text-5xl font-bold tracking-wide">
+                {user.username}
+              </h1>
+              <button
+                onClick={() => {
+                  const profileUrl = `${window.location.origin}/profile/${user.username}`;
+                  navigator.clipboard.writeText(profileUrl).then(() => {
+                    setLinkCopied(true);
+                    setTimeout(() => setLinkCopied(false), 2000);
+                  });
+                }}
+                className="shrink-0 flex items-center justify-center rounded-lg transition-all hover:opacity-80 cursor-pointer"
+                style={{
+                  color: linkCopied ? "var(--success, #22c55e)" : "var(--primary-500)",
+                }}
+                title={linkCopied ? "Copied!" : "Copy profile link"}
+              >
+                {linkCopied ? <Check size={18} /> : <LinkIcon size={18} />}
+              </button>
+            </div>
 
             {/* --- Back Button --- */}
 
@@ -282,7 +385,7 @@ function ProfileContent({ data, username, submit }) {
               {user.profileImage ? (
                 <img
                   src={user.profileImage}
-                  alt="Profile"
+                  alt={`Profile image: ${user.username}${user.tagline ? " - " + user.tagline : ""}`}
                   className="w-full"
                   draggable={false}
                   loading="lazy"
@@ -300,9 +403,27 @@ function ProfileContent({ data, username, submit }) {
 
             {/* Profile Info */}
             <div className="flex flex-col items-start text-left gap-2 sm:gap-0 mt-1.5 sm:mt-2 4xl:mt-4 4xl:gap-2">
-              <h1 className="sm:hidden block text-xl font-bold tracking-wide">
-                {user.username}
-              </h1>
+              <div className="sm:hidden flex items-center gap-1.5">
+                <h1 className="text-xl font-bold tracking-wide">
+                  {user.username}
+                </h1>
+                <button
+                  onClick={() => {
+                    const profileUrl = `${window.location.origin}/profile/${user.username}`;
+                    navigator.clipboard.writeText(profileUrl).then(() => {
+                      setLinkCopied(true);
+                      setTimeout(() => setLinkCopied(false), 2000);
+                    });
+                  }}
+                  className="shrink-0 flex items-center justify-center rounded-lg transition-all hover:opacity-80 cursor-pointer"
+                  style={{
+                    color: linkCopied ? "var(--success, #22c55e)" : "var(--primary-500)",
+                  }}
+                  title={linkCopied ? "Copied!" : "Copy profile link"}
+                >
+                  {linkCopied ? <Check size={16} /> : <LinkIcon size={16} />}
+                </button>
+              </div>
               <h3
                 className="text-sm sm:text-base md:text-lg 4xl:text-2xl font-medium sm:font-bold"
                 style={{ color: "var(--text-primary)" }}
@@ -318,7 +439,7 @@ function ProfileContent({ data, username, submit }) {
 
               <Bio
                 bio={user.bio}
-                className="hidden sm:flex whitespace-pre-wrap text-sm md:text-base 4xl:text-xl leading-relaxed 4xl:leading-loose"
+                className="hidden sm:flex flex-col items-start text-sm md:text-base 4xl:text-xl leading-relaxed 4xl:leading-loose"
               />
             </div>
           </div>
@@ -332,7 +453,7 @@ function ProfileContent({ data, username, submit }) {
 
           <Bio
             bio={user.bio}
-            className="block sm:hidden whitespace-pre-wrap text-sm md:text-base leading-relaxed"
+            className="block sm:hidden text-sm md:text-base leading-relaxed"
           />
 
           {/* Edit Profile Button */}
@@ -393,8 +514,12 @@ function ProfileContent({ data, username, submit }) {
                       onClick={() => handlePostClick(post)}
                     >
                       <img
-                        src={getOptimizedMediaUrl(post.mediaUrl, { width: 300 })}
-                        alt={post.altText || post.caption || "image"}
+                        src={getOptimizedMediaUrl(post.mediaUrl, {
+                          width: 300,
+                        })}
+                        alt={
+                          post.altText || post.caption || "image - LookSphere"
+                        }
                         loading="lazy"
                         decoding="async"
                         className="w-full h-full object-cover hover:opacity-90 transition-opacity"
@@ -407,22 +532,36 @@ function ProfileContent({ data, username, submit }) {
                 <div
                   className="col-span-2 md:col-span-3 flex flex-col items-center justify-center py-16 px-4 border-2 border-dashed cursor-pointer transition-colors duration-200 w-full"
                   style={{
-                    borderColor: isImageUploadHovered ? "var(--primary-500)" : "var(--border-strong)",
+                    borderColor: isImageUploadHovered
+                      ? "var(--primary-500)"
+                      : "var(--border-strong)",
                     borderRadius: "var(--radius-lg)",
-                    backgroundColor: isImageUploadHovered ? "var(--surface-hover)" : "var(--surface-input)"
+                    backgroundColor: isImageUploadHovered
+                      ? "var(--surface-hover)"
+                      : "var(--surface-input)",
                   }}
                   onMouseEnter={() => setIsImageUploadHovered(true)}
                   onMouseLeave={() => setIsImageUploadHovered(false)}
                   onClick={() => handleTriggerUpload("Image")}
                 >
-                  <div className="w-12 h-12 rounded-full flex items-center justify-center shadow-sm mb-3" style={{ backgroundColor: "var(--bg-primary)" }}>
+                  <div
+                    className="w-12 h-12 rounded-full flex items-center justify-center shadow-sm mb-3"
+                    style={{ backgroundColor: "var(--bg-primary)" }}
+                  >
                     <Plus size={24} style={{ color: "var(--primary-500)" }} />
                   </div>
-                  <h3 className="text-lg font-bold mb-1" style={{ color: "var(--text-primary)" }}>
+                  <h3
+                    className="text-lg font-bold mb-1"
+                    style={{ color: "var(--text-primary)" }}
+                  >
                     Share Images
                   </h3>
-                  <p className="text-xs text-center" style={{ color: "var(--text-muted)" }}>
-                    You haven't uploaded any images yet. Click here to share your first image!
+                  <p
+                    className="text-xs text-center"
+                    style={{ color: "var(--text-muted)" }}
+                  >
+                    You haven't uploaded any images yet. Click here to share
+                    your first image!
                   </p>
                 </div>
               ) : (
@@ -465,22 +604,36 @@ function ProfileContent({ data, username, submit }) {
                 <div
                   className="col-span-2 md:col-span-3 flex flex-col items-center justify-center py-16 px-4 border-2 border-dashed cursor-pointer transition-colors duration-200 w-full"
                   style={{
-                    borderColor: isVideoUploadHovered ? "var(--primary-500)" : "var(--border-strong)",
+                    borderColor: isVideoUploadHovered
+                      ? "var(--primary-500)"
+                      : "var(--border-strong)",
                     borderRadius: "var(--radius-lg)",
-                    backgroundColor: isVideoUploadHovered ? "var(--surface-hover)" : "var(--surface-input)"
+                    backgroundColor: isVideoUploadHovered
+                      ? "var(--surface-hover)"
+                      : "var(--surface-input)",
                   }}
                   onMouseEnter={() => setIsVideoUploadHovered(true)}
                   onMouseLeave={() => setIsVideoUploadHovered(false)}
                   onClick={() => handleTriggerUpload("Video")}
                 >
-                  <div className="w-12 h-12 rounded-full flex items-center justify-center shadow-sm mb-3" style={{ backgroundColor: "var(--bg-primary)" }}>
+                  <div
+                    className="w-12 h-12 rounded-full flex items-center justify-center shadow-sm mb-3"
+                    style={{ backgroundColor: "var(--bg-primary)" }}
+                  >
                     <Plus size={24} style={{ color: "var(--primary-500)" }} />
                   </div>
-                  <h3 className="text-lg font-bold mb-1" style={{ color: "var(--text-primary)" }}>
+                  <h3
+                    className="text-lg font-bold mb-1"
+                    style={{ color: "var(--text-primary)" }}
+                  >
                     Share Videos
                   </h3>
-                  <p className="text-xs text-center" style={{ color: "var(--text-muted)" }}>
-                    You haven't uploaded any videos yet. Click here to share your first video!
+                  <p
+                    className="text-xs text-center"
+                    style={{ color: "var(--text-muted)" }}
+                  >
+                    You haven't uploaded any videos yet. Click here to share
+                    your first video!
                   </p>
                 </div>
               ) : (
@@ -525,8 +678,17 @@ export default function Profile() {
 
   return (
     <Suspense fallback={<ProfileSkeleton />}>
-      <Await resolve={profileData} errorElement={<div className="text-center py-10 mt-10">Error loading profile data.</div>}>
-        {(data) => <ProfileContent data={data} username={username} submit={submit} />}
+      <Await
+        resolve={profileData}
+        errorElement={
+          <div className="text-center py-10 mt-10">
+            Error loading profile data.
+          </div>
+        }
+      >
+        {(data) => (
+          <ProfileContent data={data} username={username} submit={submit} />
+        )}
       </Await>
     </Suspense>
   );

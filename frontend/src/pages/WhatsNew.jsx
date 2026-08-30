@@ -38,14 +38,14 @@ const getTagColor = (tag) => {
 };
 
 export default function WhatsNew() {
-  useDocumentMetadata("What's New");
+  useDocumentMetadata("What's New", "Check out the latest features, updates, and release notes for LookSphere. See what developer Pranav Shilu has recently added to improve your experience.");
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   return (
-    <div className="w-full min-h-screen py-16 md:py-24 animate-in fade-in duration-500 px-4 sm:px-6 lg:px-8 max-w-[1200px] mx-auto">
+    <div className="w-full min-h-screen py-16 md:py-24 animate-in fade-in duration-500 px-4 sm:px-6 lg:px-8 max-w-300 mx-auto">
       {/* Back Button */}
       <div className="mb-6 md:mb-10 w-full flex justify-start">
         <BackButton />
@@ -68,7 +68,7 @@ export default function WhatsNew() {
         {WHATS_NEW_DATA.map((release) => (
           <div key={release.id} className="relative pl-5 md:pl-12">
             {/* Timeline Dot */}
-            <div className="absolute left-[-11px] top-0 w-5 h-5 rounded-full bg-(--primary-500) border-4 border-(--background) shadow-[0_0_10px_rgba(59,130,246,0.5)] z-10" />
+            <div className="absolute -left-2.75 top-0 w-5 h-5 rounded-full bg-(--primary-500) border-4 border-(--background) shadow-[0_0_10px_rgba(59,130,246,0.5)] z-10" />
 
             {/* Release Header */}
             <div className="mb-8">
@@ -76,7 +76,7 @@ export default function WhatsNew() {
                 {release.title}
               </h2>
               <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                <span className="inline-flex justify-center items-center shrink-0 min-w-[115px] text-sm font-semibold text-(--primary-400) bg-(--primary-500)/10 px-3 py-1 rounded-full border border-(--primary-500)/20">
+                <span className="inline-flex justify-center items-center shrink-0 min-w-28.75 text-sm font-semibold text-(--primary-400) bg-(--primary-500)/10 px-3 py-1 rounded-full border border-(--primary-500)/20">
                   {release.date}
                 </span>
                 <span className="text-sm text-(--text-muted)">

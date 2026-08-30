@@ -1,11 +1,24 @@
-import { useState, useEffect, useRef } from "react";
-import { X, Info, Eye, MoreVertical, User as UserIcon } from "lucide-react";
+import { useState, useEffect, useRef, useMemo } from "react";
+import {
+  X,
+  Info,
+  Eye,
+  MoreVertical,
+  User as UserIcon,
+  Link2,
+  Check,
+} from "lucide-react";
 import { modifyPost } from "../services/postService";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { postSchema } from "../schema/postSchema";
 
-export default function PostDetailModal({ isOpen, onClose, post, profileUser }) {
+export default function PostDetailModal({
+  isOpen,
+  onClose,
+  post,
+  profileUser,
+}) {
   const navigate = useNavigate();
   const [mediaDimensions, setMediaDimensions] = useState({
     width: 0,
@@ -14,6 +27,7 @@ export default function PostDetailModal({ isOpen, onClose, post, profileUser }) 
   const [isLoaded, setIsLoaded] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
   const [editCaption, setEditCaption] = useState("");
   const [editAltText, setEditAltText] = useState("");
   const [isSaving, setIsSaving] = useState(false);
@@ -21,14 +35,32 @@ export default function PostDetailModal({ isOpen, onClose, post, profileUser }) 
   const [altTextError, setAltTextError] = useState("");
   const overlayRef = useRef(null);
   const prevPostRef = useRef(null);
+  const textareaRef = useRef(null);
+
+  useEffect(() => {
+    if (isEditing && textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, [isEditing]);
 
   const storedUser = localStorage.getItem("user");
   const currentUser = storedUser ? JSON.parse(storedUser) : null;
-  const postAuthor = 
-    (post?.userId && typeof post.userId === 'object' && post.userId.username) ? post.userId : 
-    profileUser ? profileUser : 
-    (post?.userId ? { _id: post.userId, username: "Unknown User", profileImage: null } : null);
-  const isOwner = post && currentUser && currentUser._id === (postAuthor?._id || post?.userId);
+  const postAuthor = useMemo(() => {
+    return post?.userId &&
+      typeof post.userId === "object" &&
+      post.userId.username
+      ? post.userId
+      : profileUser
+        ? profileUser
+        : post?.userId
+          ? { _id: post.userId, username: "Unknown User", profileImage: null }
+          : null;
+  }, [post, profileUser]);
+  const isOwner =
+    post &&
+    currentUser &&
+    currentUser._id === (postAuthor?._id || post?.userId);
 
   const [displayCaption, setDisplayCaption] = useState("");
   const [displayAltText, setDisplayAltText] = useState("");
@@ -47,6 +79,47 @@ export default function PostDetailModal({ isOpen, onClose, post, profileUser }) 
       setMediaDimensions({ width: 0, height: 0 });
     }
   }
+
+  // Inject JSON-LD structured data for the post
+  useEffect(() => {
+    if (!post || !isOpen) return;
+
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.id = `json-ld-post-${post._id}`;
+
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "SocialMediaPosting",
+      headline:
+        displayCaption ||
+        displayAltText ||
+        "Post on LookSphere",
+      articleBody: displayCaption
+        ? displayAltText
+          ? `${displayCaption} (Alt: ${displayAltText})`
+          : displayCaption
+        : displayAltText || "",
+      description: displayAltText || displayCaption || "",
+      author: {
+        "@type": "Person",
+        name: postAuthor?.username || "Unknown",
+      },
+      image: post.mediaType === "Image" ? post.mediaUrl : undefined,
+      datePublished: post.createdAt,
+      url: `https://looksphere.vercel.app/profile/${postAuthor?.username || ""}?post=${post._id}`,
+    };
+
+    script.textContent = JSON.stringify(structuredData);
+    document.head.appendChild(script);
+
+    return () => {
+      const existingScript = document.getElementById(script.id);
+      if (existingScript) {
+        document.head.removeChild(existingScript);
+      }
+    };
+  }, [post, isOpen, displayCaption, displayAltText, postAuthor]);
 
   // Lock body scroll when modal is open
   useEffect(() => {
@@ -136,9 +209,7 @@ export default function PostDetailModal({ isOpen, onClose, post, profileUser }) 
           className="post-detail-overlay"
           onClick={handleOverlayClick}
         >
-          <div
-            className="post-detail-container"
-          >
+          <div className="post-detail-container">
             {/* Post Options Menu */}
             {isOwner && (
               <div
@@ -146,7 +217,7 @@ export default function PostDetailModal({ isOpen, onClose, post, profileUser }) 
                 style={{
                   position: "absolute",
                   top: "-40px",
-                  right: "42px",
+                  right: "84px",
                   zIndex: 10,
                 }}
               >
@@ -245,7 +316,10 @@ export default function PostDetailModal({ isOpen, onClose, post, profileUser }) 
               <div
                 onClick={() => {
                   onClose();
-                  if (currentUser && currentUser._id === (postAuthor._id || post.userId)) {
+                  if (
+                    currentUser &&
+                    currentUser._id === (postAuthor._id || post.userId)
+                  ) {
                     navigate("/profile");
                   } else {
                     navigate(`/profile/${postAuthor.username}`);
@@ -315,6 +389,39 @@ export default function PostDetailModal({ isOpen, onClose, post, profileUser }) 
               <X size={22} />
             </button>
 
+            {/* Share Button */}
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(
+                  `${window.location.origin}/posts/${post._id}`,
+                );
+                setIsCopied(true);
+                setTimeout(() => setIsCopied(false), 3000);
+              }}
+              className="post-detail-options-btn"
+              aria-label="Share"
+              style={{
+                position: "absolute",
+                top: "-40px",
+                right: "42px",
+                zIndex: 10,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "36px",
+                height: "36px",
+                borderRadius: "50%",
+                border: "1px solid rgba(255, 255, 255, 0.15)",
+                background: "rgba(0, 0, 0, 0.5)",
+                color: isCopied ? "#22c55e" : "#fff",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+                backdropFilter: "blur(4px)",
+              }}
+            >
+              {isCopied ? <Check size={20} /> : <Link2 size={20} />}
+            </button>
+
             {/* Media Area */}
             <div
               className="post-detail-media-wrapper mt-0.5"
@@ -329,15 +436,16 @@ export default function PostDetailModal({ isOpen, onClose, post, profileUser }) 
             >
               {!isLoaded && (
                 <div className="post-detail-loader">
-                  <div
-                    className="post-detail-spinner animate-spin"
-                  />
+                  <div className="post-detail-spinner animate-spin" />
                 </div>
               )}
 
               {isVideo ? (
                 <video
                   src={post.mediaUrl}
+                  aria-label={
+                    post.altText || post.caption || "Video post - LookSphere"
+                  }
                   preload="metadata"
                   className="post-detail-media"
                   controls
@@ -351,7 +459,7 @@ export default function PostDetailModal({ isOpen, onClose, post, profileUser }) 
               ) : (
                 <img
                   src={post.mediaUrl}
-                  alt={editAltText || editCaption || "Post"}
+                  alt={editAltText || editCaption || "Post - LookSphere"}
                   className="post-detail-media"
                   draggable={false}
                   onLoad={handleImageLoad}
@@ -364,7 +472,9 @@ export default function PostDetailModal({ isOpen, onClose, post, profileUser }) 
               {!isEditing && displayAltText && isLoaded && (
                 <div className="post-detail-alt-trigger">
                   <Info size={16} />
-                  <div className="post-detail-alt-tooltip">{displayAltText}</div>
+                  <div className="post-detail-alt-tooltip">
+                    {displayAltText}
+                  </div>
                 </div>
               )}
             </div>
@@ -385,6 +495,7 @@ export default function PostDetailModal({ isOpen, onClose, post, profileUser }) 
                         Caption
                       </label>
                       <textarea
+                        ref={textareaRef}
                         className="input-field"
                         rows={5}
                         cols={45}
@@ -393,6 +504,9 @@ export default function PostDetailModal({ isOpen, onClose, post, profileUser }) 
                         onChange={(e) => {
                           const val = e.target.value;
                           setEditCaption(val);
+                          e.target.style.height = "auto";
+                          e.target.style.height = `${e.target.scrollHeight}px`;
+
                           if (val.length > 500) {
                             setCaptionError(
                               "Caption cannot exceed 500 characters",
@@ -401,7 +515,7 @@ export default function PostDetailModal({ isOpen, onClose, post, profileUser }) 
                             setCaptionError("");
                           }
                         }}
-                        style={{ resize: "both" }}
+                        style={{ resize: "none", overflow: "hidden" }}
                       />
                       {captionError && (
                         <p
@@ -414,7 +528,10 @@ export default function PostDetailModal({ isOpen, onClose, post, profileUser }) 
                           {captionError}
                         </p>
                       )}
-                      <div className="flex justify-between mt-1 text-xs" style={{ color: "var(--text-muted)" }}>
+                      <div
+                        className="flex justify-between mt-1 text-xs"
+                        style={{ color: "var(--text-muted)" }}
+                      >
                         <span>Add context to your post</span>
                         <span
                           style={{
@@ -466,7 +583,10 @@ export default function PostDetailModal({ isOpen, onClose, post, profileUser }) 
                           {altTextError}
                         </p>
                       )}
-                      <div className="flex justify-between mt-1 text-xs" style={{ color: "var(--text-muted)" }}>
+                      <div
+                        className="flex justify-between mt-1 text-xs"
+                        style={{ color: "var(--text-muted)" }}
+                      >
                         <span>Helps users with screen readers</span>
                         <span
                           style={{
@@ -526,9 +646,7 @@ export default function PostDetailModal({ isOpen, onClose, post, profileUser }) 
                           setIsSaving(true);
                           try {
                             const payload = {};
-                            if (
-                              editCaption.trim() !== displayCaption.trim()
-                            ) {
+                            if (editCaption.trim() !== displayCaption.trim()) {
                               payload.caption = editCaption.trim();
                             }
                             if (
@@ -604,7 +722,9 @@ export default function PostDetailModal({ isOpen, onClose, post, profileUser }) 
                         )}
                       </div>
                     )}
-                    {displayCaption && <p>{displayCaption}</p>}
+                    {displayCaption && (
+                      <p className="whitespace-pre-wrap">{displayCaption}</p>
+                    )}
                   </>
                 )}
               </div>

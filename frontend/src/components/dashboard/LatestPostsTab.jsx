@@ -34,6 +34,7 @@ const DashboardVideoCard = memo(function DashboardVideoCard({ post }) {
       {isPlaying ? (
         <video
           ref={videoRef}
+          aria-label={post.altText || post.caption || "Video post - LookSphere"}
           src={`${post.mediaUrl}#t=1.0`}
           className="w-full h-full object-cover"
           muted
@@ -129,7 +130,7 @@ export default function LatestPostsTab({ latestPosts: initialPosts, now }) {
                 ) : (
                   <img
                     src={post.mediaUrl}
-                    alt={post.altText || "Post media"}
+                    alt={post.altText || "Post media - LookSphere"}
                     loading="lazy"
                     decoding="async"
                     className="w-full h-full object-cover"
@@ -156,7 +157,7 @@ export default function LatestPostsTab({ latestPosts: initialPosts, now }) {
                     style={{ backgroundColor: "var(--surface-card)" }}
                   >
                     {post.userId?.profileImage ? (
-                      <img src={post.userId.profileImage} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
+                      <img src={post.userId.profileImage} alt={`Profile image: ${post.userId.username}${post.userId.tagline ? ' - ' + post.userId.tagline : ''}`} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                     ) : (
                       <User size={12} style={{ color: "var(--text-muted)" }} />
                     )}

@@ -43,13 +43,17 @@ const CATEGORY_OPTIONS = [
 ];
 
 export default function ContactUs() {
-  useDocumentMetadata("Contact Us");
+  useDocumentMetadata("Contact Us", "Get in touch with the LookSphere team. Send feedback, report issues, or inquire about business opportunities directly to developer Pranav Shilu.");
 
   const navigation = useNavigation();
   const submit = useSubmit();
   const actionData = useActionData();
   const navigate = useNavigate();
   const isSubmitting = navigation.state === "submitting";
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const {
     formData,
@@ -505,8 +509,12 @@ export default function ContactUs() {
               rows={5}
               placeholder="Tell us what's on your mind..."
               value={formData.message}
-              onChange={(e) => updateField("message", e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border text-sm font-medium transition-all focus:outline-none focus:ring-2 resize-y min-h-30 disabled:cursor-not-allowed disabled:opacity-60"
+              onChange={(e) => {
+                updateField("message", e.target.value);
+                e.target.style.height = "auto";
+                e.target.style.height = `${e.target.scrollHeight}px`;
+              }}
+              className="w-full px-4 py-3 rounded-xl border text-sm font-medium transition-all focus:outline-none focus:ring-2 resize-none overflow-hidden min-h-30 disabled:cursor-not-allowed disabled:opacity-60"
               style={inputStyle}
               {...focusHandlers}
             />
@@ -660,6 +668,7 @@ export default function ContactUs() {
                     >
                       <video
                         src={videoPreview}
+                        aria-label="Contact attachment LookSphere"
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         muted
                       />

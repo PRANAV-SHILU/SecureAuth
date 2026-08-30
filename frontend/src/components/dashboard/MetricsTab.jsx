@@ -88,7 +88,7 @@ export default function MetricsTab({ stats, userList }) {
         />
         <ArrowDown
           size={10}
-          className={`transition-colors mt-[2px] ${
+          className={`transition-colors mt-0.5 ${
             isActive && sortConfig.direction === "desc"
               ? "text-(--primary-500)"
               : "text-gray-400 dark:text-zinc-600"
@@ -110,7 +110,7 @@ export default function MetricsTab({ stats, userList }) {
             className="p-6 rounded-2xl relative overflow-hidden shadow-lg transition-transform duration-300 hover:-translate-y-1"
             style={{ background: card.gradient, color: "#FFFFFF" }}
           >
-            <div className="absolute right-[-20px] bottom-[-20px] opacity-15 text-white scale-[2.5] pointer-events-none">
+            <div className="absolute -right-5 -bottom-5 opacity-15 text-white scale-[2.5] pointer-events-none">
               {card.icon}
             </div>
             <div className="flex items-center justify-between mb-4">
@@ -167,7 +167,7 @@ export default function MetricsTab({ stats, userList }) {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[700px] text-left border-collapse">
+            <table className="w-full min-w-175 text-left border-collapse">
               <thead>
                 <tr className="border-b" style={{ borderColor: "var(--border-light)" }}>
                   <th className="pb-4 font-semibold text-sm" style={{ color: "var(--text-muted)" }}>User</th>

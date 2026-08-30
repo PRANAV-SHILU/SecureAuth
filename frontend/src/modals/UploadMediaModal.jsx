@@ -182,7 +182,7 @@ export default function UploadMediaModal({
               <>
                 {/* Preview Panel */}
                 <div
-                  className="w-[200px] h-[200px] mx-auto flex items-center justify-center relative group"
+                  className="w-50 h-50 mx-auto flex items-center justify-center relative group"
                   style={{
                     borderRadius: "var(--radius-sm)",
                     border: "1px solid var(--border-light)",
@@ -193,13 +193,14 @@ export default function UploadMediaModal({
                     (mediaType === "Image" ? (
                       <img
                         src={previewUrl}
-                        alt="Preview"
+                        alt="Preview image - LookSphere"
                         className="w-full h-full object-cover"
                         draggable={false}
                       />
                     ) : (
                       <video
                         src={previewUrl}
+                        aria-label="Preview video - LookSphere"
                         preload="metadata"
                         className="w-full h-full object-cover"
                         controls
@@ -225,12 +226,14 @@ export default function UploadMediaModal({
                   <textarea
                     className="input-field"
                     rows={5}
-                    style={{ resize: "vertical" }}
+                    style={{ resize: "none", overflow: "hidden" }}
                     placeholder="Write a caption..."
                     value={caption}
                     onChange={(e) => {
                       const val = e.target.value;
                       setCaption(val);
+                      e.target.style.height = "auto";
+                      e.target.style.height = `${e.target.scrollHeight}px`;
                       if (val.length > 500) {
                         setCaptionError("Caption cannot exceed 500 characters");
                       } else {

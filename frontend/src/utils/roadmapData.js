@@ -1,4 +1,5 @@
 import {
+  CheckCircle,
   Shield,
   KeyRound,
   Fingerprint,
@@ -19,7 +20,42 @@ import {
   Search,
   Globe,
   Settings,
+  Link,
+  Share2,
 } from "lucide-react";
+
+export const COMPLETED_FEATURES = {
+  id: "completed",
+  title: "Completed & Achieved",
+  icon: CheckCircle,
+  color: "#6366F1", // Indigo
+  items: [
+    {
+      icon: Link,
+      title: "Profile Link Sharing",
+      description:
+        "Instant profile URL copying right beside username.",
+    },
+    {
+      icon: Share2,
+      title: "Dedicated Post View & Sharing",
+      description:
+        "Standalone post view pages with shareable URLs.",
+    },
+    {
+      icon: Settings,
+      title: "Change Password",
+      description:
+        "Secure, authenticated flow for to change account password directly from Settings.",
+    },
+    {
+      icon: MessageSquare,
+      title: "Contact Us & Inquiries",
+      description:
+        "Interactive contact form and My Inquiry page to track admin responses.",
+    },
+  ],
+};
 
 export const ROADMAP_CATEGORIES = [
   {

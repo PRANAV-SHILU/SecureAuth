@@ -6,7 +6,7 @@ import AdminSidebar from "../components/admin/AdminSidebar";
 import MetricsTab from "../components/dashboard/MetricsTab";
 import RecentActivityTab from "../components/dashboard/RecentActivityTab";
 import LatestPostsTab from "../components/dashboard/LatestPostsTab";
-import DashboardSkeleton from "../skeletons/DashboardSkeleton";
+import PageLoader from "../shared-components/PageLoader";
 
 const TABS = [
   { key: "metrics", label: "Metrics", icon: <BarChart3 size={16} /> },
@@ -82,14 +82,14 @@ function DashboardContent({ data }) {
 
 export default function Dashboard() {
   const { dashboardData } = useLoaderData();
-  useDocumentMetadata("Dashboard");
+  useDocumentMetadata("Dashboard", "Access your LookSphere admin dashboard to manage posts, track analytics, and oversee platform activity on the social network built by Pranav Shilu.", true);
 
   return (
     <div className="pb-12 md:pb-16 flex flex-col md:flex-row gap-6 mt-6 w-full">
       <AdminSidebar />
 
       <main className="flex-1 min-w-0 bg-(--surface-card) border border-(--border-normal) rounded-2xl p-4 sm:p-6 md:p-8">
-        <Suspense fallback={<DashboardSkeleton />}>
+        <Suspense fallback={<PageLoader />}>
           <Await
             resolve={dashboardData}
             errorElement={

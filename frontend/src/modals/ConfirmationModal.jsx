@@ -17,7 +17,7 @@ export default function ConfirmationModal({
           className="fixed inset-0 z-1000 flex items-center justify-center bg-black/50 backdrop-blur-md"
         >
           <div
-            className="w-[90%] max-w-[400px] bg-(--surface-card) p-8 rounded-2xl text-center shadow-[0_10px_30px_rgba(0,0,0,0.2)]"
+            className="w-[90%] max-w-100 bg-(--surface-card) p-8 rounded-2xl text-center shadow-[0_10px_30px_rgba(0,0,0,0.2)]"
           >
             {title && <h3 style={{ marginBottom: "1rem", color: "var(--text-primary)" }}>{title}</h3>}
             {message && (

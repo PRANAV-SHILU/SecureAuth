@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
   Shield,
   User,
@@ -27,29 +28,15 @@ export const FAQ_CATEGORIES = [
       },
       {
         q: "Does LookSphere track my browsing or sell my data?",
-        a: "Absolutely not. We do not use tracking cookies for marketing, nor do we partner with advertising networks. The cookies used are strictly functional (maintaining your active login session). Your profile and data are never sold or shared.",
+        a: (
+          <span>
+            Absolutely not. We do not use tracking cookies for marketing, nor do we partner with advertising networks. The cookies used are strictly functional (maintaining your active login session). Your profile and data are never sold or shared. For more details, see our <Link to="/privacy-policy" className="text-(--primary-500) hover:underline">Privacy Policy</Link>.
+          </span>
+        ),
       },
     ],
   },
-  {
-    id: "contact",
-    title: "Contact Information",
-    icon: Mail,
-    questions: [
-      {
-        q: "How do I report bugs, security concerns, or inappropriate content?",
-        a: "If you encounter a bug, a visual layout issue, a security concern, or inappropriate user-generated content, you can report it directly by submitting the details on our internal /contact-us form, emailing us at pranavshilu@zohomail.in, or by sending a direct message on LinkedIn (linkedin.com/in/pranavshilu). All reports are reviewed promptly.\n\nOnce submitted, you can track your inquiry and view admin responses anytime at /my-inquiries. You will also receive a mail notification when your inquiry is responded to.",
-      },
-      {
-        q: "How can I contact the developer or submit feedback?",
-        a: "You can reach out through any of the following channels:\n\n1. Contact Form: Navigate to our internal /contact-us page.\n2. Email: Send an email directly to pranavshilu@zohomail.in.\n3. LinkedIn: Connect at linkedin.com/in/pranavshilu.\n\nAll responses to your contact form submissions will appear in your My Inquiries page (/my-inquiries), accessible from your profile menu. You will also be notified via email when a response is sent.",
-      },
-      {
-        q: "How long does it typically take to receive a response?",
-        a: "We aim to respond to all your inquiries and contact form submissions within 24 to 48 hours. You will receive the response directly in your My Inquiries dashboard (/my-inquiries), where you can toggle between Pending and Responded tickets, as well as via email. LinkedIn connection requests and messages are reviewed daily.",
-      },
-    ],
-  },
+
   {
     id: "general",
     title: "General & Project",
@@ -71,6 +58,7 @@ export const FAQ_CATEGORIES = [
         q: "Can I clone or contribute to LookSphere?",
         a: "Yes! LookSphere is open source. You are welcome to clone the repository from GitHub, set up your own local environment (by copying .env.example), and run the developer build. Pull requests and feature suggestions are always welcome!",
       },
+
     ],
   },
   {
@@ -80,15 +68,35 @@ export const FAQ_CATEGORIES = [
     questions: [
       {
         q: "How do I register an account on LookSphere?",
-        a: "To register, click the 'Register' button on the navbar. You will need to provide a unique username, a valid email address, and a secure password. Once registered, you can login and begin customizing your profile immediately.",
+        a: (
+          <span>
+            To register, click the <Link to="/register" className="text-(--primary-500) hover:underline">'Register'</Link> button on the navbar. You will need to provide a unique username, a valid email address, and a secure password. By registering, you agree to our <Link to="/terms-and-conditions" className="text-(--primary-500) hover:underline">Terms & Conditions</Link>. Once registered, you can login and begin customizing your profile immediately.
+          </span>
+        ),
       },
       {
-        q: "How can I edit my profile information (including username and email)?",
-        a: "Once logged in, click your avatar or username to visit your profile page, then click the 'Edit Profile' button. From there, you can upload a new profile picture, customize your bio/tagline, update your contact links, and change your registered username and email address directly.",
+        q: "How can I edit my profile information?",
+        a: (
+          <span>
+            Once logged in, click your avatar or username to visit your profile page, then click the <Link to="/edit-profile" className="text-(--primary-500) hover:underline">'Edit Profile'</Link> button. From there, you can upload a new profile picture, customize your bio/tagline, update your contact links, and change your registered username and email address directly.
+          </span>
+        ),
+      },
+      {
+        q: "How can I change my password?",
+        a: (
+          <span>
+            To change your password, open the profile dropdown menu in the top navigation bar and select <Link to="/settings" className="text-(--primary-500) hover:underline">'Settings'</Link>. Under the 'Account' section, click on <Link to="/settings/change-password" className="text-(--primary-500) hover:underline">'Change Password'</Link> to securely update your current password.
+          </span>
+        ),
       },
       {
         q: "Are there plans to support Two-Step Verification (2FA)?",
-        a: "Yes! Two-Step Verification (2FA) is on our active project roadmap. This feature will provide an extra layer of security for your account by requiring a secondary code (e.g., sent via email or an authenticator app) during login.",
+        a: (
+          <span>
+            Yes! Two-Step Verification (2FA) is on our active project <Link to="/roadmap" className="text-(--primary-500) hover:underline">roadmap</Link>. This feature will provide an extra layer of security for your account by requiring a secondary code (e.g., sent via email or an authenticator app) during login.
+          </span>
+        ),
       },
       {
         q: "What customization themes does LookSphere support?",
@@ -146,6 +154,51 @@ export const FAQ_CATEGORIES = [
       },
     ],
   },
+
+  {
+    id: "roadmap",
+    title: "Roadmap & Future Plans",
+    icon: Rocket,
+    questions: [
+      {
+        q: "What is the roadmap for Communication features on LookSphere?",
+        a: (
+          <span>
+            As part of our <Link to="/roadmap" className="text-(--primary-500) hover:underline">roadmap</Link>, we plan to implement the following features to improve platform communication:{"\n\n"}
+            • Real-Time Chatting: Direct messaging between users with live chat powered by WebSockets.{"\n"}
+            • Live Notifications: Real-time action logs and activity alerts.{"\n"}
+            • Admin Notes: Support for customized notifications sent directly by administrators to specific user feeds.{"\n"}
+            • Mail Services: Automated email flows for registration, security changes, and notifications.
+          </span>
+        ),
+      },
+      {
+        q: "What security and authentication upgrades are planned?",
+        a: (
+          <span>
+            To ensure user protection, our active <Link to="/roadmap" className="text-(--primary-500) hover:underline">roadmap</Link> includes:{"\n\n"}
+            • Reset & Forgot Password: Secure, token-based verification flows to recover accounts.{"\n"}
+            • Google OAuth: One-click registration and login via Google credentials.{"\n"}
+            • Two-Step Verification (2FA): Secondary passcode checks to safeguard active accounts.
+          </span>
+        ),
+      },
+      {
+        q: "What community and social features will be added?",
+        a: (
+          <span>
+            As part of our <Link to="/roadmap" className="text-(--primary-500) hover:underline">roadmap</Link>, we are preparing to launch a range of social mechanisms:{"\n\n"}
+            • Spotlights: A high-engagement vertical layout feed for short-form videos.{"\n"}
+            • User Interactions: Liking, commenting, and sharing tools on posts and creator profiles.{"\n"}
+            • Social Graph: Follow/unfollow mechanics to curate a personalized home feed.{"\n"}
+            • Content Library: Ability to bookmark and save posts inside a private profile tab.{"\n"}
+            • Microblogging Feed: A text-based timeline feed (similar to Twitter) for rapid sharing.{"\n"}
+            • Leaderboard: A comparative ranking page highlighting top posts, top creators, and highly viewed profiles.
+          </span>
+        ),
+      },
+    ],
+  },
   {
     id: "technical",
     title: "Technical Stack & Hosting",
@@ -170,21 +223,38 @@ export const FAQ_CATEGORIES = [
     ],
   },
   {
-    id: "roadmap",
-    title: "Roadmap & Future Plans",
-    icon: Rocket,
+    id: "contact",
+    title: "Contact Information",
+    icon: Mail,
     questions: [
       {
-        q: "What is the roadmap for Communication features on LookSphere?",
-        a: "We plan to implement the following features to improve platform communication:\n\n• Real-Time Chatting: Direct messaging between users with live chat powered by WebSockets.\n• Live Notifications: Real-time action logs and activity alerts.\n• Admin Notes: Support for customized notifications sent directly by administrators to specific user feeds.\n• Mail Services: Automated email flows for registration, security changes, and notifications.\n\n✅ Already shipped: Contact Us form with categorized submissions and My Inquiries dashboard to track responses at /my-inquiries.",
+        q: "How do I report bugs, security concerns, or inappropriate content?",
+        a: (
+          <span>
+            If you encounter a bug, a visual layout issue, a security concern, or inappropriate user-generated content, you can report it directly by submitting the details on our internal <Link to="/contact-us" className="text-(--primary-500) hover:underline">/contact-us</Link> form, emailing us at <a href="mailto:pranavshilu@zohomail.in" className="text-(--primary-500) hover:underline">pranavshilu@zohomail.in</a>, or by sending a direct message on LinkedIn (<a href="https://linkedin.com/in/pranavshilu" target="_blank" rel="noopener noreferrer" className="text-(--primary-500) hover:underline">linkedin.com/in/pranavshilu</a>). All reports are reviewed promptly.{"\n\n"}
+            Once submitted, you can track your inquiry and view admin responses anytime at <Link to="/my-inquiries" className="text-(--primary-500) hover:underline">/my-inquiries</Link>. You will also receive a mail notification when your inquiry is responded to.
+          </span>
+        ),
       },
       {
-        q: "What security and authentication upgrades are planned?",
-        a: "To ensure user protection, our active roadmap includes:\n\n• Reset & Forgot Password: Secure, token-based verification flows to recover accounts.\n• Google OAuth: One-click registration and login via Google credentials.\n• Two-Step Verification (2FA): Secondary passcode checks to safeguard active accounts.",
+        q: "How can I contact the developer or submit feedback?",
+        a: (
+          <span>
+            You can reach out through any of the following channels:{"\n\n"}
+            1. Contact Form: Navigate to our internal <Link to="/contact-us" className="text-(--primary-500) hover:underline">/contact-us</Link> page.{"\n"}
+            2. Email: Send an email directly to <a href="mailto:pranavshilu@zohomail.in" className="text-(--primary-500) hover:underline">pranavshilu@zohomail.in</a>.{"\n"}
+            3. LinkedIn: Connect at <a href="https://www.linkedin.com/in/pranavshilu" target="_blank" rel="noopener noreferrer" className="text-(--primary-500) hover:underline">linkedin.com/in/pranavshilu</a>.{"\n\n"}
+            All responses to your contact form submissions will appear in your <Link to="/my-inquiries" className="text-(--primary-500) hover:underline">My Inquiries</Link> page (/my-inquiries), accessible from your profile menu. You will also be notified via email when a response is sent.
+          </span>
+        ),
       },
       {
-        q: "What community and social features will be added?",
-        a: "We are preparing to launch a range of social mechanisms:\n\n• Spotlights: A high-engagement vertical layout feed for short-form videos.\n• User Interactions: Liking, commenting, and sharing tools on posts and creator profiles.\n• Social Graph: Follow/unfollow mechanics to curate a personalized home feed.\n• Content Library: Ability to bookmark and save posts inside a private profile tab.\n• Microblogging Feed: A text-based timeline feed (similar to Twitter) for rapid sharing.\n• Leaderboard: A comparative ranking page highlighting top posts, top creators, and highly viewed profiles.",
+        q: "How long does it typically take to receive a response?",
+        a: (
+          <span>
+            We aim to respond to all your inquiries and contact form submissions within 24 to 48 hours. You will receive the response directly in your <Link to="/my-inquiries" className="text-(--primary-500) hover:underline">My Inquiries</Link> dashboard, where you can toggle between Pending and Responded tickets, as well as via email. LinkedIn connection requests and messages are reviewed daily.
+          </span>
+        ),
       },
     ],
   },

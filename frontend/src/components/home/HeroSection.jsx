@@ -5,6 +5,7 @@ import {
   HeroBackground,
   CardGlow,
 } from "../../shared-components/SharedHomeComponents";
+import { Compass, User, Sparkles } from "lucide-react";
 
 export default function HeroSection({ user }) {
   return (
@@ -44,7 +45,7 @@ export default function HeroSection({ user }) {
           )}
 
           <div
-            className="tab-container mx-auto mt-8 flex-wrap"
+            className="tab-container mx-auto mt-8 flex-nowrap items-center justify-center gap-1 xsm:gap-2 overflow-hidden"
           >
             {navLinks.map((link) => {
               const Icon = link.icon;
@@ -53,13 +54,41 @@ export default function HeroSection({ user }) {
                   key={link.to}
                   to={link.to}
                   className={({ isActive }) =>
-                    `tab-btn flex items-center gap-1.5 xsm:gap-2 py-2 px-3 xsm:px-4 sm:px-5 text-xs xsm:text-sm sm:text-base 3xl:text-lg no-underline transition-all duration-200 hover:scale-[1.02] ${
+                    `tab-btn flex items-center gap-1 py-1.5 px-2 xsm:py-2 xsm:px-4 text-[11px] xsm:text-xs sm:text-base 3xl:text-lg no-underline transition-all duration-200 hover:scale-[1.02] hover:text-blue-400! whitespace-nowrap ${
                       isActive ? "active" : ""
                     }`
                   }
                 >
                   <div>
-                    <Icon size={18} />
+                    <Icon className="w-3.5 h-3.5 xsm:w-4.5 xsm:h-4.5" />
+                  </div>
+                  {link.label}
+                </NavLink>
+              );
+            })}
+          </div>
+          
+          <div
+            className="tab-container mx-auto mt-4 flex-nowrap items-center justify-center gap-1 xsm:gap-2 overflow-hidden"
+          >
+            {[
+              { to: "/roadmap", icon: Compass, label: "Roadmap" },
+              ...(user ? [{ to: "/profile", icon: User, label: "Profile" }] : []),
+              { to: "/whats-new", icon: Sparkles, label: "What's New" },
+            ].map((link) => {
+              const Icon = link.icon;
+              return (
+                <NavLink
+                  key={link.to}
+                  to={link.to}
+                  className={({ isActive }) =>
+                    `tab-btn flex items-center gap-1 py-1.5 px-2 xsm:py-2 xsm:px-4 text-[11px] xsm:text-xs sm:text-base 3xl:text-lg no-underline transition-all duration-200 hover:scale-[1.02] hover:text-blue-400! whitespace-nowrap ${
+                      isActive ? "active" : ""
+                    }`
+                  }
+                >
+                  <div>
+                    <Icon className="w-3.5 h-3.5 xsm:w-4.5 xsm:h-4.5" />
                   </div>
                   {link.label}
                 </NavLink>

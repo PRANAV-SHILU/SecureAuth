@@ -36,3 +36,12 @@ export async function updateOwnProfile(payload) {
   }
 }
 
+export async function changePassword(payload) {
+  try {
+    const res = await apiClient.patch(ENDPOINTS.USER.CHANGE_PASSWORD, payload);
+    return res.data;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+}
+

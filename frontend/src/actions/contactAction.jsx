@@ -7,7 +7,7 @@ export async function contactAction({ request }) {
     
     const logData = Object.fromEntries(formData);
     logData.images = formData.getAll("images");
-    console.log("Contact Form Data:", logData);
+    // console.log("Contact Form Data:", logData);
 
     await contactService.submitContactForm(formData);
     toast.success("Your message has been sent successfully!");

@@ -53,7 +53,7 @@ function CreatorsContent({ creatorsList }) {
         {query && (
           <button
             onClick={() => setQuery("")}
-            className="transition-colors p-0.5 rounded-full hover:bg-zinc-800/80"
+            className="transition-colors p-0.5 rounded-full hover:bg-(--surface-hover)"
             style={{
               color: isClearHovered
                 ? "var(--text-primary)"
@@ -83,14 +83,9 @@ function CreatorsContent({ creatorsList }) {
           No creators match &ldquo;{query}&rdquo;.
         </div>
       ) : (
-        <div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 2xl:gap-8"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 2xl:gap-8">
           {creatorsList.map((creator) => (
-            <div
-              key={creator.username}
-              className="h-full"
-            >
+            <div key={creator.username} className="h-full">
               <Link
                 to={`/profile/${creator.username}`}
                 className="group relative flex flex-col h-full p-6 4xl:p-8 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1"
@@ -117,7 +112,10 @@ function CreatorsContent({ creatorsList }) {
                     className="w-16 h-16 4xl:w-21 4xl:h-21 shrink-0 rounded-full overflow-hidden flex items-center justify-center border-2 transition-colors duration-300 shadow-sm"
                     style={{
                       backgroundColor: "var(--surface-input)",
-                      borderColor: hoveredCreator === creator.username ? "var(--primary-500)" : "transparent"
+                      borderColor:
+                        hoveredCreator === creator.username
+                          ? "var(--primary-500)"
+                          : "transparent",
                     }}
                   >
                     {creator.profileImage ? (
@@ -127,7 +125,11 @@ function CreatorsContent({ creatorsList }) {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <User size={32} className="4xl:size-36" style={{ color: "var(--text-muted)" }} />
+                      <User
+                        size={32}
+                        className="4xl:size-36"
+                        style={{ color: "var(--text-muted)" }}
+                      />
                     )}
                   </div>
 
@@ -135,7 +137,12 @@ function CreatorsContent({ creatorsList }) {
                   <div className="flex-1 overflow-hidden">
                     <h2
                       className="text-xl 4xl:text-3xl font-bold truncate transition-colors"
-                      style={{ color: hoveredCreator === creator.username ? "var(--primary-600)" : "var(--text-primary)" }}
+                      style={{
+                        color:
+                          hoveredCreator === creator.username
+                            ? "var(--primary-600)"
+                            : "var(--text-primary)",
+                      }}
                     >
                       {creator.username}
                     </h2>
@@ -153,9 +160,7 @@ function CreatorsContent({ creatorsList }) {
                   style={{ borderColor: "var(--border-light)" }}
                 >
                   {/* View Count */}
-                  <div
-                    className="flex items-center gap-3"
-                  >
+                  <div className="flex items-center gap-3">
                     <div
                       className="flex items-center space-x-1.5 text-xs 4xl:text-base font-semibold px-2.5 py-1.5 4xl:py-2.5 rounded-md"
                       style={{
@@ -200,12 +205,13 @@ function CreatorsContent({ creatorsList }) {
 
 export default function Creators() {
   const { creatorsData } = useLoaderData();
-  useDocumentMetadata("Creators");
+  useDocumentMetadata(
+    "Creators",
+    "Discover top creators, influencers, and trending profiles on LookSphere. Explore amazing content curated on the platform built by Pranav Shilu.",
+  );
 
   return (
-    <div
-      className="pb-12 md:pb-16"
-    >
+    <div className="pb-12 md:pb-16">
       <div className="mb-10 mt-8 4xl:mt-16 gap-4 flex items-start justify-between">
         <div className="text-center md:text-left">
           <h1
@@ -214,7 +220,10 @@ export default function Creators() {
           >
             Creators
           </h1>
-          <p className="text-base xsm:text-lg text-left" style={{ color: "var(--text-muted)" }}>
+          <p
+            className="text-base xsm:text-lg text-left"
+            style={{ color: "var(--text-muted)" }}
+          >
             Discover and connect with other creators on LookSphere.
           </p>
         </div>
@@ -222,7 +231,14 @@ export default function Creators() {
       </div>
 
       <Suspense fallback={<CreatorsSkeleton />}>
-        <Await resolve={creatorsData} errorElement={<div className="text-center py-10">Error loading creators data.</div>}>
+        <Await
+          resolve={creatorsData}
+          errorElement={
+            <div className="text-center py-10">
+              Error loading creators data.
+            </div>
+          }
+        >
           {(creatorsList) => <CreatorsContent creatorsList={creatorsList} />}
         </Await>
       </Suspense>

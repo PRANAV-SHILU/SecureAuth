@@ -1,4 +1,4 @@
-<div align="right">Last Modified: 15-Aug-2026</div>
+<div align="right">Last Modified: 1-Sep-2026</div>
 
 # File Tree: Frontend
 
@@ -14,10 +14,15 @@
 ├── ⚙️ package-lock.json
 ├── ⚙️ package.json
 ├── 📁 public
-│   └── 🖼️ favicon.png
+│   ├── 🖼️ favicon.png
+│   ├── 📄 manifest.json
+│   ├── 🖼️ og-image.jpg
+│   ├── 📄 robots.txt
+│   └── 📄 sitemap.xml
 ├── 📝 README.md
 ├── 📁 src
 │   ├── 📁 actions
+│   │   ├── 📄 changePasswordAction.jsx
 │   │   ├── 📄 contactAction.jsx
 │   │   ├── 📄 editProfileAction.jsx
 │   │   ├── 📄 loginAction.jsx
@@ -69,6 +74,7 @@
 │   │   ├── 📄 editProfileLoader.jsx
 │   │   ├── 📄 feedLoader.jsx
 │   │   ├── 📄 myInquiriesLoader.jsx
+│   │   ├── 📄 postDetailLoader.jsx
 │   │   ├── 📄 profileLoader.jsx
 │   │   └── 📄 redirectIfAuthenticated.jsx
 │   ├── 🎨 main.css
@@ -89,6 +95,7 @@
 │   ├── 📁 pages
 │   │   ├── 📄 About.jsx
 │   │   ├── 📄 AdminContact.jsx
+│   │   ├── 📄 ChangePassword.jsx
 │   │   ├── 📄 ContactUs.jsx
 │   │   ├── 📄 Creators.jsx
 │   │   ├── 📄 Dashboard.jsx
@@ -99,10 +106,12 @@
 │   │   ├── 📄 Home.jsx
 │   │   ├── 📄 Login.jsx
 │   │   ├── 📄 MyInquiries.jsx
+│   │   ├── 📄 PostDetail.jsx
 │   │   ├── 📄 PrivacyPolicy.jsx
 │   │   ├── 📄 Profile.jsx
 │   │   ├── 📄 Register.jsx
 │   │   ├── 📄 Roadmap.jsx
+│   │   ├── 📄 Settings.jsx
 │   │   ├── 📄 TermsAndConditions.jsx
 │   │   └── 📄 WhatsNew.jsx
 │   ├── 📁 routes
@@ -122,6 +131,7 @@
 │   ├── 📁 shared-components
 │   │   ├── 📄 BackButton.jsx
 │   │   ├── 📄 LegalDocument.jsx
+│   │   ├── 📄 PageLoader.jsx
 │   │   ├── 📄 SharedHomeComponents.jsx
 │   │   └── 📄 SvgIcons.jsx
 │   ├── 📁 skeletons
@@ -129,6 +139,7 @@
 │   │   ├── 📄 DashboardSkeleton.jsx
 │   │   ├── 📄 ExploreSkeleton.jsx
 │   │   ├── 📄 FeedSkeleton.jsx
+│   │   ├── 📄 MyInquiriesSkeleton.jsx
 │   │   └── 📄 ProfileSkeleton.jsx
 │   └── 📁 utils
 │       ├── 📄 aboutData.js

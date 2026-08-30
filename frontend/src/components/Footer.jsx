@@ -57,7 +57,7 @@ export default function Footer() {
           </div>
 
           {/* Links Columns */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-4">
+          <nav aria-label="Footer navigation" className="grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-4">
             {/* Group 1: Navigation/Account */}
             <div className="flex flex-col gap-3">
               <h3 className="font-bold text-(--text-primary) text-lg mb-2">
@@ -69,14 +69,7 @@ export default function Footer() {
               >
                 Home
               </NavLink>
-              {user?.role === "admin" && (
-                <NavLink
-                  to="/dashboard"
-                  className="text-(--text-secondary) hover:text-(--primary-500) transition-colors text-sm"
-                >
-                  Dashboard
-                </NavLink>
-              )}
+
               {!user && (
                 <>
                   <NavLink
@@ -103,9 +96,17 @@ export default function Footer() {
                   </NavLink>
                   <NavLink
                     to="/my-inquiries"
-                    className="text-(--text-secondary) hover:text-(--primary-500) transition-colors text-sm"
+                    className="text-(--text-secondary) hover:text-(--primary-500) transition-colors text-sm flex items-center gap-2 w-fit"
                   >
+                    <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
                     My Inquiries
+                  </NavLink>
+                  <NavLink
+                    to="/settings"
+                    className="text-(--text-secondary) hover:text-(--primary-500) transition-colors text-sm flex items-center gap-2 w-fit"
+                  >
+                    <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                    Settings
                   </NavLink>
                 </>
               )}
@@ -194,7 +195,7 @@ export default function Footer() {
                 Contact Us
               </NavLink>
             </div>
-          </div>
+          </nav>
         </div>
 
         {/* Bottom Bar */}
@@ -203,7 +204,7 @@ export default function Footer() {
             Thank you for visiting! We hope you enjoy exploring LookSphere.
           </div>
           <p className="text-(--text-secondary) text-sm">
-            © {year} LookSphere. Made with{" "}
+            © {year} LookSphere. Built by Pranav Shilu. Made with{" "}
             <span className="text-red-500">❤️</span> in India.
           </p>
         </div>

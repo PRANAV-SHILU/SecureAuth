@@ -16,6 +16,7 @@ import {
   ChevronDown,
   Sparkles,
   MessageSquareText,
+  Settings,
 } from "lucide-react";
 import ConfirmationModal from "../modals/ConfirmationModal.jsx";
 import { desktopNavLinkClass, mobileNavLinkClass } from "../utils/styles";
@@ -129,16 +130,20 @@ export default function Header() {
 
           <nav className="hidden lg:flex lg:gap-6 3xl:gap-8 4xl:gap-10 items-center">
             {user?.role === "admin" && (
-              <NavLink to="/dashboard" className={desktopNavLinkClass}>
+              <NavLink
+                to="/admin/dashboard"
+                className={desktopNavLinkClass}
+                style={{ color: "red" }}
+              >
                 <LayoutDashboard className="w-4.5 h-4.5 3xl:w-5 3xl:h-5 4xl:w-5.5 4xl:h-5.5 transition-transform duration-300 group-hover:scale-110" />{" "}
-                Dashboard
+                Admin
               </NavLink>
             )}
             <NavLink to="/whats-new" className={desktopNavLinkClass}>
               <Sparkles className="w-4.5 h-4.5 3xl:w-5 3xl:h-5 4xl:w-5.5 4xl:h-5.5 transition-transform duration-300 group-hover:scale-110" />
-              <div className="relative">
+              <div className="relative inline-flex pr-3">
                 What's New
-                <span className="absolute -top-0.5 -right-2.5 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
               </div>
             </NavLink>
             <NavLink to="/feed" className={desktopNavLinkClass}>
@@ -211,12 +216,12 @@ export default function Header() {
                     <NavLink
                       to="/profile"
                       onClick={() => setDropdownOpen(false)}
-                      className="block px-4 py-3 text-sm text-(--text-primary) no-underline bg-transparent cursor-pointer transition-all duration-300 hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/30 dark:hover:text-blue-400 hover:pl-5 group"
+                      className="block px-4 py-3 text-sm text-(--text-primary) no-underline bg-transparent cursor-pointer dropdown-item-hover"
                     >
                       <div className="flex items-center gap-2">
                         <User
                           size={16}
-                          className="transition-transform duration-300 group-hover:scale-110 group-hover:-translate-x-1"
+                          className="transition-colors duration-300"
                         />{" "}
                         Profile
                       </div>
@@ -225,14 +230,28 @@ export default function Header() {
                     <NavLink
                       to="/my-inquiries"
                       onClick={() => setDropdownOpen(false)}
-                      className="block px-4 py-3 text-sm text-(--text-primary) no-underline bg-transparent cursor-pointer transition-all duration-300 hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/30 dark:hover:text-blue-400 hover:pl-5 group"
+                      className="block px-4 py-3 text-sm text-(--text-primary) no-underline bg-transparent cursor-pointer dropdown-item-hover"
                     >
                       <div className="flex items-center gap-2">
                         <MessageSquareText
                           size={16}
-                          className="transition-transform duration-300 group-hover:scale-110 group-hover:-translate-x-1"
+                          className="transition-colors duration-300"
                         />{" "}
                         My Inquiries
+                      </div>
+                    </NavLink>
+
+                    <NavLink
+                      to="/settings"
+                      onClick={() => setDropdownOpen(false)}
+                      className="block px-4 py-3 text-sm text-(--text-primary) no-underline bg-transparent cursor-pointer dropdown-item-hover"
+                    >
+                      <div className="flex items-center gap-2">
+                        <Settings
+                          size={16}
+                          className="transition-colors duration-300"
+                        />{" "}
+                        Settings
                       </div>
                     </NavLink>
 
@@ -296,23 +315,17 @@ export default function Header() {
                 </button>
               </div>
 
-              {/* Nav Links */}
-              <NavLink
-                to="/"
-                onClick={() => setMobileMenuOpen(false)}
-                className={mobileNavLinkClass}
-              >
-                <Home size={20} className="text-inherit" /> Home
-              </NavLink>
+
 
               {user?.role === "admin" && (
                 <NavLink
-                  to="/dashboard"
+                  to="/admin/dashboard"
                   onClick={() => setMobileMenuOpen(false)}
                   className={mobileNavLinkClass}
+                  style={{ color: "red" }}
                 >
                   <LayoutDashboard size={20} className="text-inherit" />{" "}
-                  Dashboard
+                  Admin
                 </NavLink>
               )}
               <NavLink
@@ -342,9 +355,9 @@ export default function Header() {
                 className={mobileNavLinkClass}
               >
                 <Sparkles size={20} className="text-inherit" />
-                <div className="relative">
+                <div className="relative inline-flex pr-3">
                   What's New
-                  <span className="absolute -top-0.5 -right-2.5 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                  <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
                 </div>
               </NavLink>
 
@@ -413,9 +426,21 @@ export default function Header() {
                           setMobileMenuOpen(false);
                           setMobileProfileOpen(false);
                         }}
-                        className="flex items-center gap-3 px-3 text-(--text-primary) no-underline rounded-lg hover:bg-(--surface-hover) transition-colors"
+                        className="flex items-center gap-3 px-3 py-2 text-(--text-primary) no-underline rounded-lg hover:bg-(--surface-hover) transition-colors"
                       >
-                        <MessageSquareText size={18} /> My Inquiries
+                        <MessageSquareText size={18} />
+                        My Inquiries
+                      </NavLink>
+                      <NavLink
+                        to="/settings"
+                        onClick={() => {
+                          setMobileMenuOpen(false);
+                          setMobileProfileOpen(false);
+                        }}
+                        className="flex items-center gap-3 px-3 py-2 text-(--text-primary) no-underline rounded-lg hover:bg-(--surface-hover) transition-colors"
+                      >
+                        <Settings size={18} />
+                        Settings
                       </NavLink>
                       <button
                         onClick={() => {

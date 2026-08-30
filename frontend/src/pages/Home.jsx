@@ -16,7 +16,7 @@ import CTASection from "../components/home/CTASection";
 
 export default function Home() {
   const user = useRouteLoaderData("root");
-  useDocumentMetadata("Home");
+  useDocumentMetadata("Home", "Welcome to LookSphere, a next-gen social media platform by Pranav Shilu. Connect with friends, share media, and discover trending content globally.");
 
   return (
     <>

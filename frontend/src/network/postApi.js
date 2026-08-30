@@ -19,6 +19,16 @@ export async function getFeed(page, limit, search) {
   }
 }
 
+// get post by id
+export async function getPostById(id) {
+  try {
+    const res = await apiClient.get(ENDPOINTS.POST.GET_POST(id));
+    return res.data;
+  } catch (err) {
+    throw new Error(err.response?.data?.message || err.message);
+  }
+}
+
 //create post
 export async function createPost(formData) {
   try {

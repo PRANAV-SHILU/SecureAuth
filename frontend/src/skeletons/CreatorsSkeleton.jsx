@@ -12,12 +12,12 @@ export default function CreatorsSkeleton() {
         >
           <div className="flex items-start space-x-4 mb-5">
             {/* Avatar Skeleton */}
-            <div className="w-16 h-16 4xl:w-[84px] 4xl:h-[84px] shrink-0 rounded-full bg-zinc-200 dark:bg-zinc-800 animate-pulse" />
+            <div className="w-16 h-16 4xl:w-21 4xl:h-21 shrink-0 rounded-full bg-zinc-200 dark:bg-zinc-800 animate-pulse" />
             
             {/* Creator Info Skeleton */}
             <div className="flex-1 mt-1 4xl:mt-3">
-              <div className="h-6 4xl:h-8 w-3/4 max-w-[150px] bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse mb-3" />
-              <div className="h-4 4xl:h-5 w-full max-w-[200px] bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse" />
+              <div className="h-6 4xl:h-8 w-3/4 max-w-37.5 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse mb-3" />
+              <div className="h-4 4xl:h-5 w-full max-w-50 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse" />
             </div>
           </div>
 
