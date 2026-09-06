@@ -205,6 +205,10 @@ export const changeEmail = asyncHandler("changeEmail", async (req, res) => {
   if (!isMatch)
     return res.status(400).json({ message: "Current password is incorrect" });
 
+  // Check if the new email is the same as the current one
+  if (user.email === newEmail.toLowerCase()) {
+    return res.status(400).json({ message: "New email is the same as your current email." });
+  }
 
   user.email = newEmail;
   await user.save();
